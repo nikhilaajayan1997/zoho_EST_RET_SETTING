@@ -191,7 +191,7 @@ function calc() {
             $('#igst').val(parseFloat(d.toFixed(2)));
             document.getElementById("tr_cgst").style.display = "table-row";
             document.getElementById("tr_sgst").style.display = "table-row";
-
+            document.getElementById('tr_igst').style.display = "none";
 
         }
         if (pos != state) {
@@ -202,6 +202,8 @@ function calc() {
             $('#cgst').val(d.toFixed(2));
             $('#sgst').val(d.toFixed(2));
             document.getElementById('tr_igst').style.display = "table-row";
+            document.getElementById('tr_cgst').style.display = "none";
+            document.getElementById('tr_sgst').style.display = "none";
             // document.getElementById('tr_cgst').style.display = "table-row";
             // document.getElementById('tr_sgst').style.display = "table-row";
 
@@ -379,6 +381,29 @@ function calc() {
                         
                     </div>
                 </div>
+                <div class="row mb-4 d-none" id="cgst_treat_row" >
+                  <div class="col-sm-2"><label for="">GST Treatment</label></div>
+                  <div class="col-sm-6"><input type="text" id="customer_gst_treat" name="" class="form-control text-dark"
+                          value="" readonly>
+                      
+                  </div>
+              </div>
+              <div class="row mb-4 d-none" id="cgstno_row" >
+                <div class="col-sm-2 col-lg-2 col-md-2"><label for="">GST Number</label></div>
+                <div class="col-sm-6 col-lg-6 col-md-6"><input type="text" id="customer_gstno" name="" class="form-control text-dark"
+                        value="" readonly>
+                    
+                </div>
+            </div>
+            <div class="row mb-4 d-none" id="cplace_supply_row" >
+              <div class="col-sm-2"><label for="">Place Of Supply</label></div>
+              <div class="col-sm-6"><input type="text" id="cus_place1" name="" class="form-control text-dark"
+                      value="" readonly>
+                  
+              </div>
+          </div>
+
+
                 <div class="row mb-4">
                     <div class="col-sm-2"><label for="estimate_number">Estimate#*</label></div>
                     <div class="col-sm-6"><input type="text" id="estimate_number" name="estimate_number" class="form-control text-dark"
@@ -412,8 +437,9 @@ function calc() {
                             onchange="calc()">
                             <thead>
                                 <tr>
-                                    <th class="" style="font-weight: bold;color: rgb(245, 154, 36);" >Item Details <a href="" data-toggle="modal" data-target="#newitem"><i class="fas fa-plus p-2 rounded"
+                                    <th class="p-3" style="font-weight: bold;color: rgb(245, 154, 36);" >Item  <a href="" data-toggle="modal" data-target="#newitem"><i class="fas fa-plus p-2 rounded"
                                                 style="color: white; background-color: rgb(210, 132, 30);"></i></a></th>
+                                   <th class="text-right" style="font-weight: bold;color: rgb(245, 154, 36);">Hsn</th>
                                     <th class="text-right" style="font-weight: bold;color: rgb(245, 154, 36);">Quantity</th>
                                     <th class="text-right" style="font-weight: bold;color: rgb(245, 154, 36);">Rate</th>
                                     <th class="text-right" style="font-weight: bold;color: rgb(245, 154, 36);">Discount</th>
@@ -435,6 +461,11 @@ function calc() {
                                             </select>
                                         </div>
                                     </td>
+                                    <td class='text-right'><input type='number' id='hsn1'
+                                      class='form-control bg-transparent border-0 text-light text-right hsn' name='hsn[]'
+                                      value='0' readonly>
+                                    </td>
+
                                     <td class='text-right'><input type='number' id='qty1'
                                             class='form-control bg-transparent border-0 text-light text-right qty' name='quantity[]'
                                             value='0'>
@@ -503,13 +534,13 @@ function calc() {
             onchange="calc()" >
             <thead>
                 <tr>
-                    <th class="" style="font-weight: bold;color:rgb(245, 154, 36);">Item Details <a href="" data-toggle="modal" data-target="#newitem"><i class="fas fa-plus p-2 rounded"
+                    <th class="p-3" style="font-weight: bold;color:rgb(245, 154, 36);">Item  <a href="" data-toggle="modal" data-target="#newitem"><i class="fas fa-plus p-2 rounded"
                                 style="color: white; background-color: rgb(210, 132, 30);"></i></a></th>
+                     <th class="text-right" style="font-weight: bold;color: rgb(245, 154, 36);">Hsn</th>
                     <th class="text-right" style="font-weight: bold;color:rgb(245, 154, 36);">Quantity</th>
                     <th class="text-right" style="font-weight: bold;color:rgb(245, 154, 36);">Rate</th>
                     <th class="text-right" style="font-weight: bold;color:rgb(245, 154, 36);">Discount</th>
                     <th class="text-right" style="font-weight: bold;color:rgb(245, 154, 36);" >Tax</th>
-                    <th class="text-right" style="font-weight: bold;color:rgb(245, 154, 36);" >Tax-amt</th>
 
                     <th class="text-right" style="font-weight: bold;color:rgb(245, 154, 36);">Amount</th>
                 </tr>
@@ -527,6 +558,10 @@ function calc() {
                                 {% endfor %}
                             </select>
                         </div>
+                    </td>
+                    <td class='text-right'><input type='number' id='hsnn1'
+                      class='form-control bg-transparent border-0 text-light text-right hsnn' name='hsnn[]'
+                      value='0' readonly>
                     </td>
                     <td class='text-right'><input type='number' id='qtyy1'
                             class='form-control bg-transparent border-0 text-light text-right qtyy' name='quantityy[]'
@@ -723,12 +758,21 @@ function calc() {
               </div>
             </div>
             <div class="row mt-2">
+              <div class="col-md-3">
+                <label for="" style="color: rgb(190, 88, 88);">HSN*</label>
+              </div>
+              <div class="col-md-6">
+                <input type="text" class="form-control text-dark bg-light" id="hsn_no" name="hsn_no" required>
+                <label for="" id="hsn_label"></label>
+              </div>
+            </div>
+            <div class="row mt-2">
               <div class="col-md-3 ">
                 <label for="units">Unit</label>
               </div>
               <div class="col-md-6">
                 <div class="d-flex">
-                  <select class="form-control text-dark bg-light" id="item_units" name="item_units" required>
+                  <select class="form-control text-dark bg-light" id="item_units"  name="item_units" required>
                     <option value="">Select Unit</option>
                     {% for u in units %}
                     <option value="{{u.id}}">{{u.unit}}</option>
@@ -1138,14 +1182,14 @@ function calc() {
                     </select>
                   </div>       
                 </div>
-
+               
                 <div class="row gstrow d-none" >
                   <div class="col-md-3 mt-2">
                     <label id="glbl" style="color:rgb(190, 88, 88);">GSTIN/UIN *</label>
                   </div>
                   <div class="col-md-6 mt-2">
                     <input type="text" class="form-control text-dark bg-light" id="c_gstin" name="c_gstin" 
-                    pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$"  placeholder="29APPCK7465F1Z1">
+                      placeholder="29APPCK7465F1Z1">
                     <label id="gst_label"></label>
                   </div>       
                 </div>
@@ -1318,7 +1362,7 @@ function calc() {
                   <div class="col-md-1"></div>
 
                 </div>
-
+                
                 <div class="row mt-2">
                   <div class="col-md-1">
                     <label for="ccity">City</label>
@@ -1337,7 +1381,7 @@ function calc() {
                   <div class="col-md-1">
                   </div>
                 </div>
-
+                
                 <div class="row mt-2">
                   <div class="col-md-1">
                     <label for="cstate">State</label>
@@ -1387,7 +1431,7 @@ function calc() {
                     </select>
                   </div>
                   <div class="col-md-1"></div>
-  
+                  
                   <div class="col-md-1">
                     <label for="csstate">State</label>
                   </div>
@@ -1479,7 +1523,7 @@ function calc() {
                   <div class="col-md-1"></div>
 
                 </div>
-
+                
                 <div class="row mt-2">
 
                   <div class="col-md-1">
@@ -1519,7 +1563,7 @@ function calc() {
                   <div class="col-md-1"></div>
 
                 </div>
-
+                
                 <div class="row mt-2">
                     <div class="col-md-6">
                       <input type="checkbox" value="" id="invalidCheck" name="invalidCheck" required>
@@ -1704,7 +1748,7 @@ function addressSame(){
     $(document).ready(function() {
     $("#c_gstin").change(function() {
 
-        var x=$("c_gstin").val();
+        var x=$("#c_gstin").val();
         var gst_label=document.getElementById("gst_label")
         var expr=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
         if (!expr.test(x)) {
@@ -1717,6 +1761,27 @@ function addressSame(){
 
         }
       });
+    });
+
+
+    $(document).ready(function(){
+      $("#hsn_no").change(function(){
+        var x=$("#hsn_no").val();
+        var hsn_label=document.getElementById("hsn_label")
+        var expr=/^[0-9]{6}$/;
+        if ( !expr.test(x)){
+          hsn_label.style.color="red";
+            hsn_label.innerHTML = "Invalid HSN Number.";
+        }
+        else{
+            hsn_label.style.color="green";
+            hsn_label.innerHTML = "valid HSN Number.";
+
+        }
+
+
+      })
+
     });
 
 </script>
@@ -1754,6 +1819,9 @@ function addressSame(){
                             <option class="text-dark" value="{{i.Name}}">{{i.Name}}</option>
                             {% endfor %}
                         </select></div>
+                </td>
+                <td class='text-right '><input type='number' id='hsn${RowCount}'
+                        class='form_control bg-transparent border-0 text-light text-right hsn' name='hsn[]' style="width:85%" value='0.00' readonly>
                 </td>
                 <td class='text-right '><input type='number' id='qty${RowCount}'
                         class='form_control bg-transparent border-0 text-light text-right qty' name='quantity[]' style="width:85%" value='0.00' >
@@ -1818,6 +1886,9 @@ function addressSame(){
                             <option class="text-dark" value="{{i.Name}}">{{i.Name}}</option>
                             {% endfor %}
                         </select></div>
+                </td>
+                <td class='text-right '><input type='number' id='hsnn${RowCountt}'
+                        class='form_control bg-transparent border-0 text-light text-right hsnn' name='hsnn[]' style="width:85%" value='0.00' readonly>
                 </td>
                 <td class='text-right '><input type='number' id='qtyy${RowCountt}'
                         class='form_control bg-transparent border-0 text-light text-right qtyy' name='quantityy[]' style="width:85%" value='0.00' >
@@ -1949,7 +2020,7 @@ else{
 $.ajax({
   
   type : 'POST',
-  url:"{% url 'recurbills_customer' %}",
+  url:"{% url 'new_estimate_customer' %}",
 
   data:{
       customer_type : custType,
@@ -1965,6 +2036,7 @@ $.ajax({
       desg :$("#c_desg").val(),
       dpt :$("#c_dpt").val(),
       gsttype :$("#c_gsttype").val(),
+      gstno:$("#c_gstin").val(),
       placeofsupply :$("#placesupply").val(),
       tax_preference :cust_tax,
       currency : $("#c_curn").val(),
@@ -1977,9 +2049,16 @@ $.ajax({
       pincode : $("#cpincode").val(),
       fax : $("#cfax").val(),
       phone : $("#cphone").val(),
-      country : $("ccountry").val(),
+      country : $("#ccountry").val(),
+      sstreet1 : $("#csstreet1").val(),
+      sstreet2 : $("#csstreet2").val(),
+      scity : $("#cscity").val(),
+      sstate : $("#csstate").val(),
+      scountry : $("#cscountry").val(),
+      spincode : $("#cspincode").val(),
+      sphone: $("#csphone").val(),
+      sfax: $("#csfax").val(),
       csrfmiddlewaretoken: '{{ csrf_token }}'
-      
     },
   
     success: function(response) {
@@ -2036,15 +2115,40 @@ $(document).ready(function() {
 
               $("#cemail_row").removeClass('d-none');
               $("#cemail_row").addClass('d-flex');
+
+              $("#cgst_treat_row").removeClass('d-none');
+              $("#cgst_treat_row").addClass('d-flex');
+
+              $("#cplace_supply_row").removeClass('d-none');
+              $("#cplace_supply_row").addClass('d-flex');
               
               
               $('#customer_mail').val(' '+ data.customer_email);
               $('#samp').val(data.cust_place_supply);
               $('#customer_id').val(data.cust_id);
+              $('#cus_place1').val(data.cust_place_supply);
+              $('#customer_gst_treat').val(data.cust_gst_treat);
+              $('#customer_gstno').val(data.cust_gstno);
+              var GSTNO=document.getElementById('customer_gstno').value;
+              var expr=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
 
-              var plc=document.getElementById("samp").value
+              if (!expr.test(GSTNO)) 
+              {
+                $("#cgstno_row").removeClass('d-flex');
+                $("#cgstno_row").addClass('d-none');
+             }
+           else{
+                $("#cgstno_row").removeClass('d-none');
+                $("#cgstno_row").addClass('d-flex');
+
+
+           }
+
+             
+                
+              var plc=document.getElementById("samp").value;
               
-              var ste=document.getElementById("state1").value
+              var ste=document.getElementById("state1").value;
               var y=ste.toLowerCase();  
               var inputstring=plc;
               const parts = inputstring.split("-");   
@@ -2194,11 +2298,12 @@ else{
 $.ajax({
   
   type : 'POST',
-  url:"{% url 'recurbills_item' %}",
+  url:"{% url 'new_estimate_item' %}",
   
   data:{
       type : itemtype,
       name : $("#item_name").val(),
+      hsn:$("#hsn_no").val(),
       unit : $("#item_units").val(),
       inter : inter_st,
       intra : intra_st,
@@ -2321,8 +2426,9 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
                   document.getElementById('rate1').value = data
-
+                  document.getElementById('hsn1').value = data4
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst1').innerHTML = data1 + ' % GST';
                       document.getElementById('tgst1').value = data1
@@ -2351,7 +2457,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate2').value = data
+
+                  document.getElementById('hsn2').value = data4
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst2').innerHTML = data1 + ' % GST';
@@ -2383,7 +2493,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate3').value = data
+
+                  document.getElementById('hsn3').value = data4
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst3').innerHTML = data1 + ' % GST';
@@ -2415,7 +2529,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate4').value = data
+
+                  document.getElementById('hsn4').value = data4
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst4').innerHTML = data1 + ' % GST';
@@ -2447,7 +2565,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate5').value = data
+
+                  document.getElementById('hsn5').value = data4
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst5').innerHTML = data1 + ' % GST';
@@ -2479,7 +2601,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate6').value = data
+
+                  document.getElementById('hsn6').value = data4
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst6').innerHTML = data1 + ' % GST';
@@ -2511,7 +2637,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate7').value = data
+
+                  document.getElementById('hsn7').value = data4
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst7').innerHTML = data1 + ' % GST';
@@ -2543,7 +2673,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate8').value = data
+
+                  document.getElementById('hsn8').value = data4
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst8').innerHTML = data1 + ' % GST';
@@ -2575,7 +2709,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate9').value = data
+
+                  document.getElementById('hsn9').value = data4
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst9').innerHTML = data1 + ' % GST';
@@ -2607,7 +2745,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate10').value = data
+                  document.getElementById('hsn10').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst10').innerHTML = data1 + ' % GST';
@@ -2639,7 +2781,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate11').value = data
+                  document.getElementById('hsn11').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst11').innerHTML = data1 + ' % GST';
@@ -2671,7 +2817,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate12').value = data
+                  document.getElementById('hsn12').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst12').innerHTML = data1 + ' % GST';
@@ -2703,7 +2853,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate13').value = data
+                  document.getElementById('hsn13').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst13').innerHTML = data1 + ' % GST';
@@ -2735,7 +2889,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate14').value = data
+                  document.getElementById('hsn14').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst14').innerHTML = data1 + ' % GST';
@@ -2767,7 +2925,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate15').value = data
+                  document.getElementById('hsn15').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst15').innerHTML = data1 + ' % GST';
@@ -2799,7 +2961,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate16').value = data
+                  document.getElementById('hsn16').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst16').innerHTML = data1 + ' % GST';
@@ -2831,7 +2997,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate17').value = data
+                  document.getElementById('hsn17').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst17').innerHTML = data1 + ' % GST';
@@ -2863,7 +3033,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate18').value = data
+                  document.getElementById('hsn18').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst18').innerHTML = data1 + ' % GST';
@@ -2895,7 +3069,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate19').value = data
+                  document.getElementById('hsn19').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst19').innerHTML = data1 + ' % GST';
@@ -2927,7 +3105,11 @@ function reloadUnit() {
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
+                  data4=response.hsn
+
                   document.getElementById('rate20').value = data
+                  document.getElementById('hsn20').value = data4
+
 
                   if (data3 == '{{ company.state }}') {
                       document.getElementById('tgst20').innerHTML = data1 + ' % GST';
@@ -2953,15 +3135,20 @@ function reloadUnit() {
                   id: select,
                   cust: customer
               },
-              success: function (response) {
+              success: function (response) 
+              {
                   console.log(response)
                   data = response.rate
                   data1 = response.gst
                   data2 = response.igst
                   data3 = response.pos
-                  document.getElementById('rate21').value = data
+                  data4=response.hsn
 
-                  if (data3 == '{{ company.state }}') {
+                  document.getElementById('rate21').value = data
+                  document.getElementById('hsn21').value = data4
+
+                  if (data3 == '{{ company.state }}') 
+                  {
                       document.getElementById('tgst21').innerHTML = data1 + ' % GST';
                       document.getElementById('tgst21').value = data1
                   }
@@ -3003,7 +3190,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee1').value = data
+                    document.getElementById('hsnn1').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst1').innerHTML = data1 + ' % GST';
@@ -3033,7 +3223,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee2').value = data
+                    document.getElementById('hsnn2').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst2').innerHTML = data1 + ' % GST';
@@ -3065,8 +3258,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
-                    document.getElementById('ratee3').value = data
+                    data4=response.hsn
 
+                    document.getElementById('ratee3').value = data
+                    document.getElementById('hsnn3').value = data4
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst3').innerHTML = data1 + ' % GST';
                         document.getElementById('tgst3').value = data1
@@ -3097,7 +3292,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee4').value = data
+                    document.getElementById('hsnn4').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst4').innerHTML = data1 + ' % GST';
@@ -3129,7 +3327,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee5').value = data
+                    document.getElementById('hsnn5').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst5').innerHTML = data1 + ' % GST';
@@ -3161,7 +3362,11 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+
+                    data4=response.hsn
+
                     document.getElementById('ratee6').value = data
+                    document.getElementById('hsnn6').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst6').innerHTML = data1 + ' % GST';
@@ -3193,7 +3398,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee7').value = data
+                    document.getElementById('hsnn7').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst7').innerHTML = data1 + ' % GST';
@@ -3225,7 +3433,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee8').value = data
+                    document.getElementById('hsnn8').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst8').innerHTML = data1 + ' % GST';
@@ -3257,7 +3468,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee9').value = data
+                    document.getElementById('hsnn9').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst9').innerHTML = data1 + ' % GST';
@@ -3289,7 +3503,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee10').value = data
+                    document.getElementById('hsnn10').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst10').innerHTML = data1 + ' % GST';
@@ -3321,7 +3538,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee11').value = data
+                    document.getElementById('hsnn11').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst11').innerHTML = data1 + ' % GST';
@@ -3353,8 +3573,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
-                    document.getElementById('ratee12').value = data
+                    data4=response.hsn
 
+                    document.getElementById('ratee12').value = data
+                    document.getElementById('hsnn12').value = data4
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst12').innerHTML = data1 + ' % GST';
                         document.getElementById('tgst12').value = data1
@@ -3385,7 +3607,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee13').value = data
+                    document.getElementById('hsnn13').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst13').innerHTML = data1 + ' % GST';
@@ -3417,7 +3642,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
-                    document.getElementById('ratee14').value = data
+                    data4=response.hsn
+
+document.getElementById('ratee14').value = data
+document.getElementById('hsnn14').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst14').innerHTML = data1 + ' % GST';
@@ -3449,7 +3677,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee15').value = data
+                    document.getElementById('hsnn15').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst15').innerHTML = data1 + ' % GST';
@@ -3481,7 +3712,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
-                    document.getElementById('ratee16').value = data
+                    data4=response.hsn
+
+document.getElementById('ratee16').value = data
+document.getElementById('hsnn16').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst16').innerHTML = data1 + ' % GST';
@@ -3513,7 +3747,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee17').value = data
+                    document.getElementById('hsnn17').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst17').innerHTML = data1 + ' % GST';
@@ -3545,7 +3782,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee18').value = data
+                    document.getElementById('hsnn18').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst18').innerHTML = data1 + ' % GST';
@@ -3577,7 +3817,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee19').value = data
+                    document.getElementById('hsnn19').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst19').innerHTML = data1 + ' % GST';
@@ -3609,7 +3852,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee20').value = data
+                    document.getElementById('hsnn20').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst20').innerHTML = data1 + ' % GST';
@@ -3641,7 +3887,10 @@ function reloadUnit() {
                     data1 = response.gst
                     data2 = response.igst
                     data3 = response.pos
+                    data4=response.hsn
+
                     document.getElementById('ratee21').value = data
+                    document.getElementById('hsnn21').value = data4
 
                     if (data3 == '{{ company.state }}') {
                         document.getElementById('tgst21').innerHTML = data1 + ' % GST';

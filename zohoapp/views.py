@@ -1441,6 +1441,7 @@ def createestimate(request):
         if x == y:
 
           item = request.POST.getlist('item[]')
+          hsn=request.POST.getlist('hsn[]')
           quantity = request.POST.getlist('quantity[]')
           rate = request.POST.getlist('rate[]')
           discount = request.POST.getlist('discount[]')
@@ -1449,6 +1450,7 @@ def createestimate(request):
         
         else:
           itemm = request.POST.getlist('itemm[]')
+          hsnn=request.POST.getlist('hsnn[]')
           quantityy = request.POST.getlist('quantityy[]')
           ratee = request.POST.getlist('ratee[]')
           discountt = request.POST.getlist('discountt[]')
@@ -1478,19 +1480,19 @@ def createestimate(request):
 
         if x == y:
 
-           if len(item) == len(quantity) == len(rate) == len(discount) == len(tax) == len(amount):
-             mapped = zip(item, quantity, rate, discount, tax, amount)
+           if len(item) == len(hsn) == len(quantity) == len(rate) == len(discount) == len(tax) == len(amount):
+             mapped = zip(item,hsn,quantity, rate, discount, tax, amount)
              mapped = list(mapped)
              for element in mapped:
                 created = EstimateItems.objects.get_or_create(
-                    estimate=estimate, item_name=element[0], quantity=element[1], rate=element[2], discount=element[3], tax_percentage=element[4], amount=element[5])
+                    estimate=estimate, item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
         else:
-            if len(itemm) == len(quantityy) == len(ratee) == len(discountt) == len(taxx) == len(amountt):
-             mapped = zip(itemm, quantityy, ratee, discountt, taxx, amountt )
+            if len(itemm) == len(hsnn) == len(quantityy) == len(ratee) == len(discountt) == len(taxx) == len(amountt):
+             mapped = zip(itemm,hsnn,quantityy, ratee, discountt, taxx, amountt )
              mapped = list(mapped)
              for element in mapped:
                 created = EstimateItems.objects.get_or_create(
-                    estimate=estimate, item_name=element[0], quantity=element[1], rate=element[2], discount=element[3], tax_percentage=element[4], amount=element[5])
+                    estimate=estimate, item_name=element[0],hsn=element[1], quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
 
     return redirect('newestimate')
 
@@ -4294,8 +4296,9 @@ def itemdata_challan(request):
     name=item.Name
     rate = item.p_price
     place = company.state
+    hsn=item.hsn
 
-    return JsonResponse({"status": " not", 'place': place, 'rate': rate})
+    return JsonResponse({"status": " not", 'place': place, 'rate': rate,'hsn':hsn})
     return redirect('/')
     
 
@@ -5209,6 +5212,9 @@ def get_customerdet(request):
     email = cust.customerEmail
     cust_id=id
     cust_place_supply=cust.placeofsupply
+    cust_gst_treat=cust.GSTTreatment
+    cust_gstno=cust.GSTIN
+    
     gstin = 0
     gsttr = cust.GSTTreatment
     cstate = cust.placeofsupply.split("] ")[1:]
@@ -5216,7 +5222,7 @@ def get_customerdet(request):
     print(gstin)
     print(id)
     state = 'Not Specified' if cstate == "" else cstate
-    return JsonResponse({'customer_email' :email, 'gst_treatment':gsttr, 'gstin': gstin , 'state' : state,'cust_id':cust_id,'cust_place_supply':cust_place_supply},safe=False)
+    return JsonResponse({'customer_email' :email, 'gst_treatment':gsttr, 'gstin': gstin , 'state' : state,'cust_id':cust_id,'cust_place_supply':cust_place_supply,'cust_gst_treat':cust_gst_treat,'cust_gstno':cust_gstno},safe=False)
 
 @login_required(login_url='login')
 def recurbills_vendor(request):
@@ -5341,6 +5347,47 @@ def unit_dropdown(request):
         options[option.id] = [option.unit,option.id]
 
     return JsonResponse(options)
+
+
+def new_estimate_item(request):
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+        
+        type=request.POST.get('type')
+        name=request.POST.get('name')
+        hsn=request.POST.get('hsn')
+        ut=request.POST.get('unit')
+        inter=request.POST.get('inter')
+        intra=request.POST.get('intra')
+        sell_price=request.POST.get('sell_price')
+        sell_acc=request.POST.get('sell_acc')
+        sell_desc=request.POST.get('sell_desc')
+        cost_price=request.POST.get('cost_price')
+        cost_acc=request.POST.get('cost_acc')      
+        cost_desc=request.POST.get('cost_desc')
+        
+        units=Unit.objects.get(id=ut)
+        sel=Sales.objects.get(id=sell_acc)
+        cost=Purchase.objects.get(id=cost_acc)
+
+        history="Created by " + str(request.user)
+
+        u  = User.objects.get(id = request.user.id)
+
+        item=AddItem(type=type,Name=name,hsn=hsn,p_desc=cost_desc,s_desc=sell_desc,s_price=sell_price,p_price=cost_price,
+                     user=u ,creat=history,interstate=inter,intrastate=intra,unit = units,sales = sel, purchase = cost)
+
+        item.save()
+
+        return HttpResponse({"message": "success"})
+    
+    return HttpResponse("Invalid request method.")
+
+
+
+
+
 
 @login_required(login_url='login')
 def recurbills_item(request):
@@ -5672,6 +5719,77 @@ def customer_me(request):
             
             return redirect("create_recur")
         return redirect("/")
+
+def new_estimate_customer(request):
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+
+        # title=request.POST.get('title')
+        # first_name=request.POST.get('firstname')
+        # last_name=request.POST.get('lastname')
+        # comp=request.POST.get('company_name')
+        cust_type = request.POST.get('customer_type')
+        name = request.POST.get('display_name')
+        comp_name = request.POST.get('company_name')
+        email=request.POST.get('email')
+        website=request.POST.get('website')
+        w_mobile=request.POST.get('work_mobile')
+        p_mobile=request.POST.get('pers_mobile')
+        fb = request.POST.get('facebook')
+        twitter = request.POST.get('twitter')
+        skype = request.POST.get('skype')
+        desg = request.POST.get('desg')
+        dpt = request.POST.get('dpt')
+        gsttype=request.POST.get('gsttype')
+        gstin=request.POST.get('gstno')
+        # panno=request.POST.get('panno')
+        supply=request.POST.get('placeofsupply')
+        tax = request.POST.get('tax_preference')
+        currency=request.POST.get('currency')
+        balance=request.POST.get('openingbalance')
+        payment=request.POST.get('paymentterms')
+        street1=request.POST.get('street1')
+        street2=request.POST.get('street2')
+        city=request.POST.get('city')
+        state=request.POST.get('state')
+        pincode=request.POST.get('pincode')
+        country=request.POST.get('country')
+        fax=request.POST.get('fax')
+        phone=request.POST.get('phone')
+        sAddress1=request.POST.get('sstreet1')
+        sAddress2=request.POST.get('sstreet2')
+        scity=request.POST.get('scity')
+        sstate=request.POST.get('sstate')
+        scountry=request.POST.get('scountry')
+        szipcode=request.POST.get('spincode')
+        sphone1=request.POST.get('sphone')
+        sfax=request.POST.get('sfax')
+
+        # shipstreet1=request.POST.get('shipstreet1')
+        # shipstreet2=request.POST.get('shipstreet2')
+        # shipcity=request.POST.get('shipcity')
+        # shipstate=request.POST.get('shipstate')
+        # shippincode=request.POST.get('shippincode')
+        # shipcountry=request.POST.get('shipcountry')
+        # shipfax=request.POST.get('shipfax')
+        # shipphone=request.POST.get('shipphone')
+
+        u = User.objects.get(id = request.user.id)
+
+        cust = customer(customerName = name,customerType = cust_type, companyName= comp_name, GSTTreatment=gsttype,GSTIN=gstin, 
+                        customerWorkPhone = w_mobile,customerMobile = p_mobile, customerEmail=email,skype = skype,Facebook = fb, 
+                        Twitter = twitter,placeofsupply=supply,Taxpreference = tax,currency=currency, website=website, 
+                        designation = desg, department = dpt,OpeningBalance=balance,Address1=street1,Address2=street2, city=city, 
+                        state=state, PaymentTerms=payment,zipcode=pincode,country=country,  fax = fax,  phone1 = phone,
+                        sAddress1=sAddress1,sAddress2=sAddress2,scity=scity,sstate=sstate,scountry=scountry,szipcode=szipcode,
+                        sphone1=sphone1,sfax=sfax,user=u)
+        cust.save()
+
+        return HttpResponse({"message": "success"})
+        
+
+
         
         
 @login_required(login_url='login')
