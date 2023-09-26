@@ -232,6 +232,7 @@ class Estimates(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     customer=models.ForeignKey(customer,on_delete=models.CASCADE,null=True,blank=True)
     customer_name = models.CharField(max_length=100,null=True,blank=True)
+    customer_mailid = models.CharField(max_length=100,null=True,blank=True)
     estimate_no = models.CharField(max_length=100,null=True,blank=True)
     reference = models.CharField(max_length=100,null=True,blank=True)
     estimate_date = models.DateField(null=True)
@@ -258,6 +259,12 @@ class EstimateItems(models.Model):
     discount = models.FloatField(null=True,blank=True)
     tax_percentage = models.IntegerField(null=True,blank=True)
     amount = models.FloatField(null=True,blank=True)
+
+class estimate_comments(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    estimate=models.ForeignKey(Estimates,on_delete=models.CASCADE,null=True,blank=True)
+    comments=models.CharField(max_length=500,null=True,blank=True)
+    
 
 class payment(models.Model):
     term=models.TextField(max_length=255)
@@ -957,11 +964,7 @@ class usernamez(models.Model):
     
     
     
-class estimate_comments(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
-    estimate=models.ForeignKey(Estimates,on_delete=models.CASCADE,null=True,blank=True)
-    comments=models.CharField(max_length=500,null=True,blank=True)
-    
+
     
     
 class Vendor_Credits(models.Model):

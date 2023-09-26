@@ -51,7 +51,26 @@
       <div class="col-sm-12 col-md-5 col-lg-5">
         <input type="text" id="search" class="form-control bg-light text-dark" placeholder="Search.." autocomplete="off">
       </div>
-      <div class="col-sm-6 col-md-4 col-lg-4"></div>
+      <div class="col-sm-1 col-md-1 col-lg-1">
+        <div class="col-md-1 ">
+          <div class="dropdown " >
+            <a class="dropdown-toggle btn btn-secondary text-dark pt-2 pb-2" href="" data-toggle="dropdown">
+              <i style="color: chocolate;" class="fas fa-sort-alpha-down"></i>
+            </a>
+            <div class="dropdown-menu m-1">
+              <a class="dropdown-item" href="{% url 'allestimates' %}">All</a>
+
+              
+              <a class="dropdown-item" href="{% url 'est_sort_by_name' %}">Name [A-Z]</a>
+              <a class="dropdown-item" href="{% url 'est_sort_by_estno' %}">EST No [1-9]</a>
+            </div>
+          </div>
+
+          
+        </a>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3 col-lg-3"></div>
       <div class="col-sm-1 col-md-1 col-lg-1">
         <div class="col-md-1 ">
           <div class="dropdown " >
@@ -63,6 +82,7 @@
 
               <a class="dropdown-item" href="{% url 'filter_by_draft' %}">Draft</a>
               <a class="dropdown-item" href="{% url 'filter_by_sent' %}">Sent</a>
+              
             </div>
           </div>
 
@@ -80,26 +100,25 @@
       <table id="estimates-table" class="table  text-white text-center" style="cursor: pointer;">
         <thead>
           <tr>
-            <th>ESTIMATE NUMBER</th>
             <th>DATE</th>
-            <th>REFERENCE NUMBER</th>
+            <th>ESTIMATE NUMBER</th>
             <th>CUSTOMER NAME</th>
             <th>CUSTOMER MAIL ID</th>
-            <th>STATUS</th>
             <th>AMOUNT</th>
+            <th>STATUS</th>
           </tr>
         </thead>
         <tbody id="table">
           {% for estimate in estimates %}
           <tr id="tr_data" class="clickable-row" data-href="{% url 'estimateslip' estimate.id %}">
+            <td>{{estimate.estimate_date}}</td>
+
             <td style="color: rgb(230, 151, 6);">{{estimate.estimate_no}}</td>
 
-            <td>{{estimate.estimate_date}}</td>
-            <td>{{estimate.reference}}</td>
             <td>{{estimate.customer_name}}</td>
-            <td>{{estimate.customer.customerEmail}}</td>
-            <td>{{estimate.status}}</td>
+            <td>{{estimate.customer_mailid}}</td>
             <td>{{estimate.total}}</td>
+            <td>{{estimate.status}}</td>
           </tr>
           {% endfor %}
         </tbody>

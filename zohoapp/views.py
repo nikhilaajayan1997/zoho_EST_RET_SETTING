@@ -1430,9 +1430,11 @@ def createestimate(request):
 
         cust_idd = request.POST['customer_name'].split(" ")[0]
         cust_name2=customer.objects.get(id=cust_idd)
-        cust_name=cust_name2.customerName
+        cust_name1=cust_name2.customerName
+        cust_name=cust_name1.upper()
         customer_id=request.POST['customer_id']
         customer_id1=customer.objects.get(id=customer_id)
+        customer_mailid=request.POST['customer_mail']
         est_number = request.POST['estimate_number']
         reference = request.POST['reference']
         est_date = request.POST['estimate_date']
@@ -1472,7 +1474,7 @@ def createestimate(request):
         status = 'Draft'
         
 
-        estimate = Estimates(user=user,customer=customer_id1,customer_name=cust_name, estimate_no=est_number, reference=reference, estimate_date=est_date, 
+        estimate = Estimates(user=user,customer=customer_id1,customer_name=cust_name,customer_mailid=customer_mailid,estimate_no=est_number, reference=reference, estimate_date=est_date, 
                              expiry_date=exp_date, sub_total=sub_total,igst=igst,sgst=sgst,cgst=cgst,tax_amount=tax_amnt, shipping_charge=shipping,
                              adjustment=adjustment, total=total, status=status, customer_notes=cust_note, terms_conditions=tearms_conditions, 
                              attachment=attachment)
@@ -1507,9 +1509,11 @@ def create_and_send_estimate(request):
 
         cust_idd = request.POST['customer_name'].split(" ")[0]
         cust_name2=customer.objects.get(id=cust_idd)
-        cust_name=cust_name2.customerName
+        cust_name1=cust_name2.customerName
+        cust_name=cust_name1.upper()
         customer_id=request.POST['customer_id']
         customer_id1=customer.objects.get(id=customer_id)
+        customer_mailid=request.POST['customer_mail']
         est_number = request.POST['estimate_number']
         reference = request.POST['reference']
         est_date = request.POST['estimate_date']
@@ -1555,7 +1559,7 @@ def create_and_send_estimate(request):
         attachment = request.FILES.get('file')
         status = 'Sent'
         tot_in_string = str(total)
-        estimate = Estimates(user=user,customer=customer_id1,customer_name=cust_name, estimate_no=est_number, reference=reference, estimate_date=est_date, 
+        estimate = Estimates(user=user,customer=customer_id1,customer_name=cust_name,customer_mailid=customer_mailid,estimate_no=est_number, reference=reference, estimate_date=est_date, 
                              expiry_date=exp_date, sub_total=sub_total,igst=igst,sgst=sgst,cgst=cgst,tax_amount=tax_amnt, shipping_charge=shipping,
                              adjustment=adjustment, total=total, status=status, customer_notes=cust_note, terms_conditions=tearms_conditions, 
                              attachment=attachment)
@@ -1615,6 +1619,7 @@ def editestimate(request,est_id):
     items = AddItem.objects.filter(user_id=user.id)
     estimate = Estimates.objects.get(id=est_id)
     cust=estimate.customer.placeofsupply
+    cust_email=estimate.customer.customerEmail
     cust_id=estimate.customer.id
     unit=Unit.objects.all()
     sales=Sales.objects.all()
@@ -1633,6 +1638,7 @@ def editestimate(request,est_id):
         'units':unit,
         'sales':sales,
         'purchase':purchase,
+        'cust_email':cust_email,
     }
     return render(request,'edit_estimate.html', context)
 
@@ -1653,6 +1659,7 @@ def updateestimate(request,pk):
         custr=request.POST['customer_id']
         customer_id=customer.objects.get(id=custr)
         estimate.customer=customer_id
+        estimate.customer_mailid=request.POST['customer_mail']
         estimate.estimate_no = request.POST['estimate_number']
         estimate.reference = request.POST['reference']
         estimate.estimate_date = request.POST['estimate_date']
@@ -4585,6 +4592,32 @@ def recurring_bill(request):
     return render(request,'recurring_bills.html',context)
 
 # filter
+
+def est_sort_by_estno(request):
+    user=request.user.id
+    est=Estimates.objects.filter(user=user).values()
+    for r in est:
+        vn = r['estimate_no'].split("-")
+        r['est_no'] = " ".join(vn)
+    sorted_est = sorted(est, key=lambda r: r['est_no'])  
+    context = {
+                'estimates' : sorted_est
+            }  
+    return render(request,'all_estimates.html',context)
+
+def est_sort_by_name(request):
+    user=request.user.id
+    est=Estimates.objects.filter(user=user).values()
+    for r in est:
+        vn = r['customer_name'].split()[1:]
+        r['cust_name'] = " ".join(vn)
+    sorted_est = sorted(est, key=lambda r: r['cust_name'])  
+    context = {
+                'estimates' : sorted_est
+            }  
+    return render(request,'all_estimates.html',context)
+
+
 
 @login_required(login_url='login')
 def recur_custasc(request):
