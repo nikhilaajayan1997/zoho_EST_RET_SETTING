@@ -223,13 +223,14 @@
                     
                     <div class="dropdown ms-3 mt-5 ms-4 pt-1">
                         <a class="dropdown-toggle btn btn-secondary text-dark pt-2 pb-2" href="" data-toggle="dropdown">
-                          <i style="color: chocolate;" class="fa fa-filter"></i>
+                          <i style="color: chocolate;" class="fas fa-sort-alpha-down"></i>
                         </a>
                         <div class="dropdown-menu m-1">
-                          <a class="dropdown-item" href="{% url 'estimateslip' estimate.id %}">All</a>
-            
-                          <a class="dropdown-item" href="{% url 'filter_by_draft_estimate_view' estimate.id %}">Draft</a>
-                          <a class="dropdown-item" href="{% url 'filter_by_sent_estimate_view' estimate.id %}">Sent</a>
+                            <a class="dropdown-item" href="{% url 'estimateslip' estimate.id %}">All</a>
+
+              
+                            <a class="dropdown-item" href="{% url 'est_sort_by_name_estimate_view' estimate.id %}">Name [A-Z]</a>
+                            <a class="dropdown-item" href="{% url 'est_sort_by_estno_estimate_view' estimate.id %}">EST No [1-9]</a>
                         </div>
                       </div>
                         
@@ -304,9 +305,11 @@
         </div>
         <div class="col-md-9 col-lg-9">
             <div class="row  mx-2 py-3"  style="background-color: rgba(136, 136, 135, 0.5)">
-                <div class="col-md-5 text-light" style="font-size: 2.5rem;">
+                <div class="col-md-5 text-light" style="font-size: 2.3rem;">
                     {{estimate.estimate_no }}
-                    <button class="btn btn-secondary" onclick="overview_function()">Overview</button>
+                    <button class="btn" onclick="overview_function()" style="background-color:rgb(212, 139, 3)  ;border-radius: 5px;height: 1.7rem;" title="Overview"><i class="fa fa-eye"></i></button>
+                    <button class="btn" onclick="template_function()" style="background-color:rgb(212, 139, 3)  ;border-radius: 5px;height: 1.7rem;" title="Template"><i class="fa fa-file-word"></i></button>
+
                 </div>
                 <div class="col-md-7 text-white text-right my-auto " style="text-align: end;">
                     <div class="btn-group" role="group" aria-label="Basic example">
@@ -575,7 +578,7 @@
                     </div>
                 </div>
                 {% endif %}
-                <div class="row mt-1 border-bottom pb-4" >
+                <div class="row mt-1  pb-4" >
                     <div class="col-sm-4 col-md-4 col-lg-4">
                         <label for="">Place Of Supply:</label>
                         
@@ -583,17 +586,17 @@
                     <div class="col-sm-6">
                         <label for="">{{estimate.customer.placeofsupply}}</label>
                     </div>
-                </div>
-                <div class="row mt-3">
+                </div> <hr>
+                <div class="row mt-5 ">
                     <div class="col-sm-4 col-md-4 col-lg-4">
-                        <label for="">Estimate No:</label>
+                        <label for="" class="text-black">Estimate No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
                         
                     </div>
                     <div class="col-sm-6">
                         <label for="">{{estimate.estimate_no}}</label>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-1">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                         <label for="">Reference:</label>
                         
@@ -602,7 +605,7 @@
                         <label for="">{{estimate.reference}}</label>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-1">
                     <div class="col-sm-6 col-md-2 col-lg-2">
                         <label for="">Estimate Date:</label>
                         
@@ -618,7 +621,7 @@
                         <label for="">{{estimate.expiry_date}}</label>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                         <label for="">Customer Notes:</label>
                         
@@ -627,7 +630,7 @@
                         <label for="">{{estimate.customer_notes}}</label>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-1">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                         <label for="">Terms & Conditions:</label>
                         
@@ -636,6 +639,7 @@
                         <label for="">{{estimate.terms_conditions}}</label>
                     </div>
                 </div>
+                <hr>
 
             </div>
             <div class="col-sm-4 col-md-4 col-lg-4 " style="padding-top: 5%;">
@@ -710,11 +714,96 @@
 
                         </div>
                     </div>
+                    
 
                 </div>
 
             </div>
         </div>
+
+        <div class="row mt-3">
+            {% for item in items %}
+            <div class="col-sm-12 col-md-4 col-lg-4 mt-1">
+
+                <div class="p-2" style="width: 100%;height: 260px;background-color: rgb(49, 49, 49);border-radius: 15px;">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                          <h6 style="text-align: center;">{{ forloop.counter }}</h6>
+
+                        </div>
+                    </div>
+                    <div class="row pt-1">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label class="text-warning" for="" style="font-weight: 400;">Item :</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label class="text-light" for="" style="font-weight: 400;">{{ item.item_name }}</label>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label class="text-warning" for="" style="font-weight: 400;">HSN :</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label class="text-light" for="" style="font-weight: 400;">{{ item.hsn }}</label> 
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label class="text-warning" for="" style="font-weight: 400;">Rate :</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label class="text-light" for="" style="font-weight: 400;">{{ item.rate|floatformat:1 }}</label>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label class="text-warning" for="" style="font-weight: 400;">Quantity :</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label class="text-light" for="" style="font-weight: 400;">{{ item.quantity }}</label>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label class="text-warning" for="" style="font-weight: 400;">Discount :</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label class="text-light" for="" style="font-weight: 400;">{{ item.discount|floatformat:1 }}</label>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label class="text-warning" for="" style="font-weight: 400;">Tax :</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label class="text-light" for="" style="font-weight: 400;">{{ item.tax_percentage }}%</label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label class="text-warning" for="" style="font-weight: 400;">Total :</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label class="text-light" for="" style="font-weight: 400;">{{ item.amount|floatformat:1 }}</label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
        </div>
     </div>
 </fieldset>
@@ -790,6 +879,11 @@
     {
         document.getElementById("div_estimate").style.display="none";
         document.getElementById("fieldset1").style.display="block";
+    }
+    function template_function()
+    {
+        document.getElementById("div_estimate").style.display="block";
+        document.getElementById("fieldset1").style.display="none";
     }
 </script>
 

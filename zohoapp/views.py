@@ -1621,9 +1621,12 @@ def editestimate(request,est_id):
     cust=estimate.customer.placeofsupply
     cust_email=estimate.customer.customerEmail
     cust_id=estimate.customer.id
+    cust_gst_treat=estimate.customer.GSTTreatment
+    cust_gstno=estimate.customer.GSTIN
     unit=Unit.objects.all()
     sales=Sales.objects.all()
     purchase=Purchase.objects.all()
+    payments = payment_terms.objects.all()
 
     est_items = EstimateItems.objects.filter(estimate=estimate)
     context = {
@@ -1639,6 +1642,9 @@ def editestimate(request,est_id):
         'sales':sales,
         'purchase':purchase,
         'cust_email':cust_email,
+        'payments':payments,
+        'cust_gst_treat':cust_gst_treat,
+        'cust_gstno':cust_gstno,
     }
     return render(request,'edit_estimate.html', context)
 
@@ -9135,7 +9141,44 @@ def filter_by_draft_estimate_view(request,pk):
         'items': items,
     }
     return render(request, 'estimate_slip.html', context)
-    
+
+def est_sort_by_name_estimate_view(request,pk):
+    user=request.user.id
+    company = company_details.objects.get(user=user)
+    est=Estimates.objects.filter(user=user).values()
+    estimate = Estimates.objects.get(id=pk)
+    items = EstimateItems.objects.filter(estimate=estimate)
+    for r in est:
+        vn = r['customer_name'].split()[1:]
+        r['cust_name'] = " ".join(vn)
+    sorted_est = sorted(est, key=lambda r: r['cust_name'])  
+    context = {
+                'all_estimates' : sorted_est,
+                'company': company,
+                'estimate': estimate,
+                'items': items,
+            }  
+    return render(request,'estimate_slip.html', context)
+
+def est_sort_by_estno_estimate_view(request,pk):
+    user=request.user.id
+    company = company_details.objects.get(user=user)
+    est=Estimates.objects.filter(user=user).values()
+    estimate = Estimates.objects.get(id=pk)
+    items = EstimateItems.objects.filter(estimate=estimate)
+     
+    for r in est:
+        vn = r['estimate_no'].split("-")
+        r['est_no'] = " ".join(vn)
+    sorted_est = sorted(est, key=lambda r: r['est_no']) 
+    context = {
+                'all_estimates' : sorted_est,
+                'company': company,
+                'estimate': estimate,
+                'items': items,
+            }  
+    return render(request, 'estimate_slip.html', context)
+
     
 def filter_by_sent_estimate_view(request,pk):
     user = request.user
