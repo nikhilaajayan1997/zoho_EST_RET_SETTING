@@ -531,63 +531,63 @@
 
 <fieldset id="fieldset1" class="mt-3" style="display: none;">
     <div class="p-2" style="background-color: rgba(124, 124, 123, 0.507);">
-       <div class="p-2" style="background-color: rgb(209, 207, 207);">
+       <div class="p-2" style="background-color: rgb(223, 221, 221);border-radius: 10px;">
         <div class="row">
-            <div class="col-sm-8 col-md-8 col-lg-8 text-dark" >
-                <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6 text-dark" >
+                <div class="row mt-3">
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <h2 style="text-align: center;">ESTIMATE</h2>
                         
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <label for="">Customer Name:</label>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <label for=""  style="font-weight: 500;">Customer Name:</label>
                         
                     </div>
-                    <div class="col-sm-6">
-                        <label for="">{{estimate.customer_name}}</label>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <label for="" style="color: rgb(197, 129, 3);"><b>{{estimate.customer_name}}</b></label>
                     </div>
                 </div>
-                <div class="row mt-1">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <label for="">Customer Mail ID:</label>
+                <div class="row mt-2">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <label for="" style="font-weight: 500;">Customer Mail ID:</label>
                         
                     </div>
-                    <div class="col-sm-6">
-                        <label for="">{{estimate.customer_mailid}}</label>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <label for="" style="color: rgb(197, 129, 3);"><b>{{estimate.customer_mailid}}</b></label>
                     </div>
                 </div>
-                <div class="row mt-1">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <label for="">GST Treatment:</label>
+                <div class="row mt-2">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <label for="" style="font-weight: 500;">GST Treatment:</label>
                         
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
                         <label for="">{{estimate.customer.GSTTreatment}}</label>
                     </div>
                 </div>
                 {% if estimate.customer.GSTIN %}
-                <div class="row mt-1">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <label for="">GST Number:</label>
+                <div class="row mt-2">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <label for="" style="font-weight: 500;">GST Number:</label>
                         
                     </div>
-                    <div class="col-sm-6">
-                        <label for="">{{estimate.customer.GSTIN}}</label>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <label for=""><b>{{estimate.customer.GSTIN}}</b></label>
                     </div>
                 </div>
                 {% endif %}
                 <div class="row mt-1  pb-4" >
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <label for="">Place Of Supply:</label>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <label for="" style="font-weight: 500;">Place Of Supply:</label>
                         
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
                         <label for="">{{estimate.customer.placeofsupply}}</label>
                     </div>
                 </div> <hr>
-                <div class="row mt-5 ">
+                <!-- <div class="row mt-5 ">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                         <label for="" class="text-black">Estimate No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
                         
@@ -604,8 +604,8 @@
                     <div class="col-sm-6">
                         <label for="">{{estimate.reference}}</label>
                     </div>
-                </div>
-                <div class="row mt-1">
+                </div> -->
+                <!-- <div class="row mt-1">
                     <div class="col-sm-6 col-md-2 col-lg-2">
                         <label for="">Estimate Date:</label>
                         
@@ -620,33 +620,90 @@
                     <div class="col-sm-6 col-lg-4 col-md-4">
                         <label for="">{{estimate.expiry_date}}</label>
                     </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <label for="">Customer Notes:</label>
+                </div> -->
+                <div class="row mt-3">
+                    <!-- <div class="col-sm-4 col-md-4 col-lg-4">
+                        <label for="" style="font-weight: 500;">Customer Notes:</label>
                         
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="">{{estimate.customer_notes}}</label>
+                    </div> -->
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <!-- <label for="">{{estimate.customer_notes}}</label> -->
+                        <label for="" style="font-weight: 500;">Customer Notes:</label>
+
+                        <textarea name="" id="" cols="35" rows="3" style="border: transparent;background-color: transparent;">{{estimate.customer_notes}}</textarea>
                     </div>
                 </div>
                 <div class="row mt-1">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <label for="">Terms & Conditions:</label>
+                    <!-- <div class="col-sm-4 col-md-6 col-lg-6">
+                        <label for="" style="font-weight: 500;">Terms & <br>Conditions:</label>
                         
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="">{{estimate.terms_conditions}}</label>
+                    </div> -->
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <!-- <label for="">{{estimate.terms_conditions}}</label> -->
+                        <label for="" style="font-weight: 500;">Terms & Conditions:</label>
+
+                        <textarea name="" id="" cols="35" rows="3" style="border: transparent;background-color: transparent;">{{estimate.terms_conditions}}</textarea>
+
                     </div>
                 </div>
+              
                 <hr>
 
             </div>
-            <div class="col-sm-4 col-md-4 col-lg-4 " style="padding-top: 5%;">
-                <div class="p-2" style="width: 100%;height: 360px;background-color: rgba(46, 46, 46, 0.822);border-radius: 15px;">
+            <div class="col-sm-6 col-md-6 col-lg-6 " style="padding-top: 5%;">
+                <div class="p-2" style="width: 100%;height: 570px;background-color: rgba(46, 46, 46, 0.822);border-radius: 15px;">
+                    <div class="row mt-3">
+                        <div class="col-sm-8 col-md-8 col-lg-8 ">
+                            <label for="" style="font-weight: 500;">Estimate No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label for="">{{estimate.estimate_no}}</label>
+
+                        </div>
+
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-sm-8 col-md-8 col-lg-8 ">
+                            <label for="" style="font-weight: 500;">Reference&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label for="">{{estimate.reference}}</label>
+
+                        </div>
+
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-sm-8 col-md-8 col-lg-8 ">
+                            <label for="" style="font-weight: 500;">Estimate Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label for="">{{estimate.estimate_date}}</label>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8 col-md-8 col-lg-8 mt-1">
+                            <label for="" style="font-weight: 500;">Expiry Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <label for="">{{estimate.expiry_date}}</label>
+
+                        </div>
+
+                    </div>
+                    <hr>
+
+                    <h4 style="color: rgb(233, 153, 5);text-align: center;">Item's Details</h4>
+
                     <div class="row mt-4">
                         <div class="col-sm-8 col-md-8 col-lg-8 ">
-                            <label for=""><b>Sub Total  :</b></label>
+                            <label for="" style="font-weight: 500;">Sub Total &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :</label>
 
                         </div>
                         <div class="col-sm-4 col-md-4 col-lg-4">
@@ -656,7 +713,8 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-sm-8 col-md-8 col-lg-8 ">
-                            <label for=""><b>IGST  :</b></label>
+                            <label for="" style="font-weight: 500;">IGST  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;:</label>
 
                         </div>
                         <div class="col-sm-4 col-md-4 col-lg-4">
@@ -666,7 +724,8 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-sm-8 col-md-8 col-lg-8 ">
-                            <label for=""><b>CGST  :</b></label>
+                            <label for="" style="font-weight: 500;">CGST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  :</label>
 
                         </div>
                         <div class="col-sm-4 col-md-4 col-lg-4">
@@ -676,7 +735,8 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-sm-8 col-md-8 col-lg-8 ">
-                            <label for=""><b>SGST  :</b></label>
+                            <label for="" style="font-weight: 500;">SGST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  :</label>
 
                         </div>
                         <div class="col-sm-4 col-md-4 col-lg-4">
@@ -686,20 +746,20 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-sm-8 col-md-8 col-lg-8 ">
-                            <label for=""><b>Shipping <br>Charge  :</b></label>
+                            <label for="" style="font-weight: 500;">Shipping Charge &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :</label>
 
                         </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4 pt-4">
+                        <div class="col-sm-4 col-md-4 col-lg-4 ">
                             <label for=""><b>{{estimate.shipping_charge}}</b></label>
 
                         </div>
                     </div>
                     <div class="row mt-3 pb-2 ">
                         <div class="col-sm-8 col-md-8 col-lg-8 ">
-                            <label for=""><b>Adjustment Charge  :</b></label>
+                            <label for="" style="font-weight: 500;">Adjustment Charge  :</label>
 
                         </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4 pt-4">
+                        <div class="col-sm-4 col-md-4 col-lg-4 ">
                             <label for=""><b>{{estimate.adjustment}}</b></label>
 
                         </div>
@@ -721,7 +781,7 @@
             </div>
         </div>
 
-        <div class="row mt-3">
+        <div class="row ">
             {% for item in items %}
             <div class="col-sm-12 col-md-4 col-lg-4 mt-1">
 

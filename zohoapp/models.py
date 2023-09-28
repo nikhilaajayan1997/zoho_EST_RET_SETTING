@@ -248,7 +248,9 @@ class Estimates(models.Model):
     status = models.CharField(max_length=100,null=True,blank=True)
     customer_notes = models.CharField(max_length=250,null=True,blank=True)
     terms_conditions = models.CharField(max_length=250,null=True,blank=True)
-    attachment = models.ImageField(upload_to="image/", null=True)   
+    attachment = models.ImageField(upload_to="image/", null=True) 
+    convert_invoice=models.CharField(max_length=50,null=True,blank=True) 
+    convert_sales=models.CharField(max_length=50,null=True,blank=True)  
 
 class EstimateItems(models.Model):
     estimate = models.ForeignKey(Estimates,on_delete=models.CASCADE,null=True,blank=True)
@@ -423,7 +425,6 @@ class Expense(models.Model):
         return self.profile_name
 
 
-    
 class SalesOrder(models.Model):
     customer=models.ForeignKey(customer,on_delete=models.CASCADE,null=True,blank=True)
     sales_no=models.CharField(max_length=255,null=True,blank=True)
@@ -443,6 +444,7 @@ class SalesOrder(models.Model):
     terms_condition=models.TextField(max_length=255,null=True,blank=True)
     status=models.TextField(max_length=255,null=True,blank=True)
     terms=models.ForeignKey(payment_terms,on_delete=models.CASCADE,null=True,blank=True)
+    estimate=models.CharField(max_length=100,null=True,blank=True)
     def __str__(self) :
         return self.invoice_no
     
@@ -457,7 +459,8 @@ class sales_item(models.Model):
     desc=models.TextField(max_length=255,null=True,blank=True)
     rate=models.TextField(max_length=255,null=True,blank=True)
     sale=models.ForeignKey(SalesOrder,on_delete=models.CASCADE,null=True,blank=True)
-    
+   
+
 class DeliveryChellan(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     customer = models.ForeignKey(customer,on_delete=models.CASCADE,null=True,blank=True)

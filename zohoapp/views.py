@@ -1472,12 +1472,14 @@ def createestimate(request):
         tearms_conditions = request.POST['terms_conditions']
         attachment = request.FILES.get('file')
         status = 'Draft'
+        convert_invoice='not_converted'
+        convert_sales='not_converted'
         
 
         estimate = Estimates(user=user,customer=customer_id1,customer_name=cust_name,customer_mailid=customer_mailid,estimate_no=est_number, reference=reference, estimate_date=est_date, 
                              expiry_date=exp_date, sub_total=sub_total,igst=igst,sgst=sgst,cgst=cgst,tax_amount=tax_amnt, shipping_charge=shipping,
                              adjustment=adjustment, total=total, status=status, customer_notes=cust_note, terms_conditions=tearms_conditions, 
-                             attachment=attachment)
+                             attachment=attachment,convert_invoice=convert_invoice,convert_sales=convert_sales)
         estimate.save()
 
         if x == y:
@@ -1496,7 +1498,7 @@ def createestimate(request):
                 created = EstimateItems.objects.get_or_create(
                     estimate=estimate, item_name=element[0],hsn=element[1], quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
 
-    return redirect('newestimate')
+    return redirect('allestimates')
 
 
 def create_and_send_estimate(request):
@@ -1522,6 +1524,7 @@ def create_and_send_estimate(request):
         if x == y:
 
             item = request.POST.getlist('item[]')
+            hsn=request.POST.getlist('hsn[]')
             quantity1 = request.POST.getlist('quantity[]')
             quantity = [float(x) for x in quantity1]
             rate1 = request.POST.getlist('rate[]')
@@ -1534,6 +1537,7 @@ def create_and_send_estimate(request):
             amount = [float(x) for x in amount1]
         else:
             itemm = request.POST.getlist('itemm[]')
+            hsnn=request.POST.getlist('hsnn[]')
             quantityy1 = request.POST.getlist('quantityy[]')
             quantityy = [float(x) for x in quantityy1]
             ratee1 = request.POST.getlist('ratee[]')
@@ -1558,28 +1562,30 @@ def create_and_send_estimate(request):
         tearms_conditions = request.POST['terms_conditions']
         attachment = request.FILES.get('file')
         status = 'Sent'
+        convert_invoice='not_converted'
+        convert_sales='not_converted'
         tot_in_string = str(total)
         estimate = Estimates(user=user,customer=customer_id1,customer_name=cust_name,customer_mailid=customer_mailid,estimate_no=est_number, reference=reference, estimate_date=est_date, 
                              expiry_date=exp_date, sub_total=sub_total,igst=igst,sgst=sgst,cgst=cgst,tax_amount=tax_amnt, shipping_charge=shipping,
                              adjustment=adjustment, total=total, status=status, customer_notes=cust_note, terms_conditions=tearms_conditions, 
-                             attachment=attachment)
+                             attachment=attachment,convert_invoice=convert_invoice,convert_sales=convert_sales)
         estimate.save()
 
         if x == y:
-            if len(item) == len(quantity) == len(rate) == len(discount) == len(tax) == len(amount):
-              mapped = zip(item, quantity, rate, discount, tax, amount)
+            if len(item)== len(hsn) == len(quantity) == len(rate) == len(discount) == len(tax) == len(amount):
+              mapped = zip(item,hsn,quantity, rate, discount, tax, amount)
               mapped = list(mapped)
               for element in mapped:
                     created = EstimateItems.objects.get_or_create(
-                    estimate=estimate, item_name=element[0], quantity=element[1], rate=element[2], discount=element[3], tax_percentage=element[4], amount=element[5])
+                    estimate=estimate,item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
         
         else:
-            if len(itemm) == len(quantityy) == len(ratee) == len(discountt) == len(taxx) == len(amountt):
-              mapped = zip(itemm, quantityy, ratee, discountt, taxx, amountt)
+            if len(itemm)== len(hsnn) == len(quantityy) == len(ratee) == len(discountt) == len(taxx) == len(amountt):
+              mapped = zip(itemm,hsnn,quantityy,ratee,discountt,taxx,amountt)
               mapped = list(mapped)
               for element in mapped:
                     created = EstimateItems.objects.get_or_create(
-                    estimate=estimate, item_name=element[0], quantity=element[1], rate=element[2], discount=element[3], tax_percentage=element[4], amount=element[5])
+                    estimate=estimate,item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
 
         cust_email = customer.objects.get(
             user=user, customerName=cust_name).customerEmail
@@ -1589,14 +1595,14 @@ def create_and_send_estimate(request):
         recipient = cust_email
         send_mail(subject, message, settings.EMAIL_HOST_USER, [recipient])
 
-    return redirect('newestimate')
+    return redirect('allestimates')
 
 def estimateslip(request, est_id):
     user = request.user
     company = company_details.objects.get(user=user)
     all_estimates = Estimates.objects.filter(user=user)
     estimate = Estimates.objects.get(id=est_id)
-    
+      
     items = EstimateItems.objects.filter(estimate=estimate)
     est_comments=estimate_comments.objects.filter(estimate=estimate.id,user=user)
     context = {
@@ -1618,6 +1624,7 @@ def editestimate(request,est_id):
     customers = customer.objects.filter(user_id=user.id)
     items = AddItem.objects.filter(user_id=user.id)
     estimate = Estimates.objects.get(id=est_id)
+    
     cust=estimate.customer.placeofsupply
     cust_email=estimate.customer.customerEmail
     cust_id=estimate.customer.id
@@ -1657,11 +1664,14 @@ def updateestimate(request,pk):
         y=request.POST["hidden_cus_place"]
 
         estimate = Estimates.objects.get(id=pk)
+        convert_inv=estimate.convert_invoice
+        convert_sal=estimate.convert_sales
         estimate.user = user
         cust_idd = request.POST['customer_name'].split(" ")[0]
         cust_name2=customer.objects.get(id=cust_idd)
         cust_name=cust_name2.customerName
         estimate.customer_name=cust_name
+        
         custr=request.POST['customer_id']
         customer_id=customer.objects.get(id=custr)
         estimate.customer=customer_id
@@ -1682,6 +1692,8 @@ def updateestimate(request,pk):
         estimate.total = float(request.POST['total'])
         estimate.terms_conditions = request.POST['terms_conditions']
         estimate.status = 'Draft'
+        estimate.convert_invoice=convert_inv
+        estimate.convert_sales=convert_sal
 
         old=estimate.attachment
         new=request.FILES.get('file')
@@ -1694,6 +1706,7 @@ def updateestimate(request,pk):
 
         if x == y:
           item = request.POST.getlist('item[]')
+          hsn=request.POST.getlist('hsn[]')
           quantity1 = request.POST.getlist('quantity[]')
           quantity = [float(x) for x in quantity1]
           rate1 = request.POST.getlist('rate[]')
@@ -1706,6 +1719,7 @@ def updateestimate(request,pk):
           amount = [float(x) for x in amount1]
         else:
           itemm = request.POST.getlist('itemm[]')
+          hsnn=request.POST.getlist('hsnn[]')
           quantityy1 = request.POST.getlist('quantityy[]')
           quantityy = [float(x) for x in quantityy1]
           ratee1 = request.POST.getlist('ratee[]')
@@ -1721,19 +1735,19 @@ def updateestimate(request,pk):
         objects_to_delete.delete()
 
         if x == y:
-           if len(item) == len(quantity) == len(rate) == len(discount) == len(tax) == len(amount):
-              mapped = zip(item, quantity, rate, discount, tax, amount)
+           if len(item)== len(hsn)== len(quantity) == len(rate) == len(discount) == len(tax) == len(amount):
+              mapped = zip(item,hsn,quantity,rate,discount,tax,amount)
               mapped = list(mapped)
               for element in mapped:
                 created = EstimateItems.objects.get_or_create(
-                    estimate=estimate, item_name=element[0], quantity=element[1], rate=element[2], discount=element[3], tax_percentage=element[4], amount=element[5])
+                    estimate=estimate,item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
         else:
-           if len(itemm) == len(quantityy) == len(ratee) == len(discountt) == len(taxx) == len(amountt):
-              mapped = zip(itemm, quantityy, ratee, discountt, taxx, amountt)
+           if len(itemm)==len(hsnn)==len(quantityy)==len(ratee)==len(discountt)==len(taxx)==len(amountt):
+              mapped = zip(itemm,hsnn,quantityy, ratee, discountt, taxx, amountt)
               mapped = list(mapped)
               for element in mapped:
                 created = EstimateItems.objects.get_or_create(
-                    estimate=estimate, item_name=element[0], quantity=element[1], rate=element[2], discount=element[3], tax_percentage=element[4], amount=element[5])
+                    estimate=estimate,item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
 
     return redirect('allestimates')
 
@@ -1743,8 +1757,16 @@ def converttoinvoice(request,est_id):
     estimate = Estimates.objects.get(id=est_id)
     items = EstimateItems.objects.filter(estimate=estimate)
     cust = customer.objects.get(customerName=estimate.customer_name,user=user)
-    invoice_count = invoice.objects.count()
-    next_no = invoice_count+1 
+    # invoice_count = invoice.objects.count()
+    # next_no = invoice_count+1 
+    if invoice.objects.all().exists():
+        invoice_count = invoice.objects.last().id
+        count=invoice_count+1
+        next_no='INV-'+'count'
+    else:
+        count=1 
+        next_no='INV-'+'count'
+
     inv = invoice(customer=cust,invoice_no=next_no,terms='null',order_no=estimate.estimate_no,
                       inv_date=estimate.estimate_date,due_date=estimate.expiry_date,igst=estimate.igst,cgst=estimate.cgst,
                       sgst=estimate.sgst,t_tax=estimate.tax_amount,subtotal=estimate.sub_total,grandtotal=estimate.total,
@@ -3274,6 +3296,7 @@ def add_sales_order(request):
             tc=request.POST['ter_cond']
 
             status="draft"
+            estimate=0
              
         
             product=request.POST.getlist('item[]')
@@ -3287,7 +3310,7 @@ def add_sales_order(request):
             
             sales=SalesOrder(customer_id=custo,sales_no=sales_no,terms=term,reference=reference, sales_date=sa_date,ship_date=sh_date,
                         cxnote=cxnote,subtotal=subtotal,igst=igst,cgst=cgst,sgst=sgst,t_tax=totaltax,
-                        grandtotal=t_total,status=status,terms_condition=tc,file=file,sos=sos,sh_charge=sh_charge)
+                        grandtotal=t_total,status=status,terms_condition=tc,file=file,sos=sos,sh_charge=sh_charge,estimate=estimate)
             sales.save()
             sale_id=SalesOrder.objects.get(id=sales.id)
           
