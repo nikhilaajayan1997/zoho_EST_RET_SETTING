@@ -1664,6 +1664,7 @@ def updateestimate(request,pk):
         y=request.POST["hidden_cus_place"]
 
         estimate = Estimates.objects.get(id=pk)
+        
         convert_inv=estimate.convert_invoice
         convert_sal=estimate.convert_sales
         estimate.user = user
@@ -1748,8 +1749,80 @@ def updateestimate(request,pk):
               for element in mapped:
                 created = EstimateItems.objects.get_or_create(
                     estimate=estimate,item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
+        
+        if SalesOrder.objects.filter(estimate=pk).exists():
+            sal=SalesOrder.objects.get(estimate=pk)
+            # sal_item=sales_item.objects.filter(sale=sal.id)
+            sal.customer_id=estimate.customer.id
+            sal.reference=estimate.reference
+            sal.sales_date=estimate.estimate_date
+            sal.cxnote=estimate.customer_notes
+            sal.subtotal=estimate.sub_total
+            sal.igst=estimate.igst
+            sal.cgst=estimate.cgst
+            sal.sgst=estimate.sgst
+            sal.t_tax=estimate.tax_amount
+            sal.grandtotal=estimate.total
+            sal.status=estimate.status
+            sal.terms_condition=estimate.terms_conditions
+            sal.file=estimate.attachment
+            sal.sos=estimate.customer.placeofsupply
+            sal.sh_charge=estimate.shipping_charge
+            sal.save()
+
+            objects_to_delete = sales_item.objects.filter(sale=sal.id)
+            objects_to_delete.delete()
+
+            items = EstimateItems.objects.filter(estimate=estimate.id)
+            saleid = SalesOrder.objects.get(id=sal.id)
+            for item in items:
+                itemss = sales_item(product=item.item_name,quantity=item.quantity,hsn=item.hsn,tax=item.tax_percentage,
+                                    total=item.amount,desc=item.discount,rate=item.rate,sale=saleid)
+                itemss.save()
+
+
+
 
     return redirect('allestimates')
+
+def convert_to_salesorder(request,pk):
+    user = request.user.id
+    estimate=Estimates.objects.get(id=pk)
+    sale_status=estimate.convert_sales
+    if sale_status=='not_converted':
+        new_status="converted"
+    else:
+        new_status="converted"
+    items = EstimateItems.objects.filter(estimate=estimate.id)
+    cust=estimate.customer.id
+    cust1=customer.objects.get(id=cust)
+    if SalesOrder.objects.all().exists():
+        sales_count = SalesOrder.objects.last().id
+        count=sales_count+1
+        sal_string="SO-"
+        next_no=sal_string+str(count)
+    else:
+        count=1 
+        sal_string="SO-"
+        next_no=sal_string+str(count)
+    sal = SalesOrder(customer_id=cust1.id,sales_no=next_no,reference=estimate.reference, sales_date=estimate.estimate_date,
+                        cxnote=estimate.customer_notes,subtotal=estimate.sub_total,igst=estimate.igst,cgst=estimate.cgst,sgst=estimate.sgst,t_tax=estimate.tax_amount,
+                        grandtotal=estimate.total,status=estimate.status,terms_condition=estimate.terms_conditions,file=estimate.attachment,
+                        sos=estimate.customer.placeofsupply,sh_charge=estimate.shipping_charge,estimate=estimate.id)
+    sal.save()
+    saleid = SalesOrder.objects.get(id=sal.id)
+    for item in items:
+        itemss = sales_item(product=item.item_name,quantity=item.quantity,hsn=item.hsn,tax=item.tax_percentage,
+                             total=item.amount,desc=item.discount,rate=item.rate,sale=saleid)
+        itemss.save()
+    
+    estimate.convert_sales=new_status
+    estimate.save()
+
+    
+    return redirect('allestimates')
+
+# ....................................................................................
 
 def converttoinvoice(request,est_id):
     user = request.user
@@ -1778,6 +1851,7 @@ def converttoinvoice(request,est_id):
         items = invoice_item(product=item.item_name,quantity=item.quantity,hsn='null',tax=item.tax_percentage,
                              total=item.amount,desc=item.discount,rate=item.rate,inv=inv)
         items.save()
+    
     return redirect('allestimates')
 
 class EmailAttachementView(View):
@@ -3345,7 +3419,7 @@ def sales_order_det(request,id):
         
                     }
     
-    return render(request,'sales_order_det.html',context)
+    return render(request, 'sales_order_det.html',context)
 
 
     
@@ -3369,13 +3443,14 @@ def edit_sales_order(request,id):
 
     if request.method == 'POST':
         u=request.user.id
+        est=sales.estimate
         c=request.POST['cx_name']
         
         cust=customer.objects.get(id=c) 
         sales.customer=cust
         term=request.POST['term']
         
-        
+        sales.estimate=est
         sales.terms = payment_terms.objects.get(id=term)
         sales.sales_date = request.POST['sa_date']
         sales.shipdate=request.POST['sh_date']

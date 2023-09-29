@@ -52,73 +52,10 @@
   }
 </style>
 
-<!-- <script>
 
-
-    async function generatePDF() {
-        // document.getElementById("downloadButton").innerHTML = "Currently downloading, please wait";
-        console.log('pdf');
-        //Downloading
-        var downloading = document.getElementById("whatToPrint");
-        var doc = new jsPDF('l', 'pt');
-
-        await html2canvas(downloading, {
-            //allowTaint: true,
-            //useCORS: true,
-            // width: 600
-
-        }).then((canvas) => {
-            //Canvas (convert to PNG)
-            doc.addImage(canvas.toDataURL("image/png"), 'PNG', 15, 10, 700, 850);
-        })
-
-
-
-        doc.save("Document.pdf");
-
-
-        //End of downloading
-
-        // document.getElementById("downloadButton").innerHTML = "Click to download";
-    }
-
-
-</script> -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 
-<!-- <script>
-
-    $(document).on('click', '.btn_print', function (event) {
-        event.preventDefault();
-
-        // get the content to print
-        var content = document.getElementById("whatToPrint");
-
-        // create a blob object from the content
-        var blob = new Blob([content.outerHTML], { type: "text/html" });
-
-        // show the Save As dialog box
-        if (window.showSaveFilePicker) {
-            // if the browser supports the method
-            window.showSaveFilePicker().then(function (fileHandle) {
-                // write the blob to the file
-                fileHandle.createWritable().then(function (writer) {
-                    writer.write(blob);
-                    writer.close();
-                });
-            });
-        } else {
-            // if the browser doesn't support the method, fall back to a normal download
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement("a");
-            a.href = url;
-            a.download = "file.html";
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-    });
-</script> -->
 
 <script type="text/javascript">
     $(document).ready(function ($) {
@@ -162,54 +99,18 @@
 
 
 
+<script>
+    function printClick() {  
+    var w = window.open();  
+    var html = $("#whatToPrint").html(); 
+    html.style.width = '1%';   
+    $(w.document.body).html(html); 
+}
 
-<!-- <script>
-
-    function uplodfile() {
-        console.log('upload');
-
-        async function generatePDF() {
-            // document.getElementById("downloadButton").innerHTML = "Currently downloading, please wait";
-
-            //Downloading
-            var downloading = document.getElementById("whatToPrint");
-            var doc = new jsPDF('l', 'pt');
-
-            await html2canvas(downloading, {
-                //allowTaint: true,
-                //useCORS: true,
-                // width: 600
-
-            }).then((canvas) => {
-                //Canvas (convert to PNG)
-                doc.addImage(canvas.toDataURL("image/png"), 'PNG', 15, 10, 700, 850);
-            })
-
-
-
-            data = doc.save("Document.pdf");
-
-
-            //End of downloading
-
-            // document.getElementById("downloadButton").innerHTML = "Click to download";
-        }
-
-        $.ajax({
-            method: "POST",
-            url: "/estimate_pdf/",
-            processData: false,
-            contentType: false,
-            data: data,
-            success: function (res) {
-                console.log(res)
-            }
-
-
-        })
-    }
-
-</script> -->
+$(function() {
+    $("#slip").click(printClick); 
+});
+</script>
 
 
 
@@ -322,6 +223,9 @@
                         <a href="" class="btn btn-sm text-white ms-1 btn_print" style="background-color:  rgb(212, 139, 3);height: 1.7rem;border-radius: 5px;"
                             data-toggle="tooltip" title="PDF" id="pdf">
                             <i class="far fa-file-pdf"></i></a>
+                            <a href="" class="btn btn-sm text-white ms-1 btn_print" style="background-color:  rgb(212, 139, 3);height: 1.7rem;border-radius: 5px;"
+                            data-toggle="tooltip" title="slip" id="slip">
+                            <i class="fas fa-receipt"></i></a>
                         <!-- <a href="" class="btn btn-sm text-white ms-1 btn_print" onclick="print()" style="background-color:  rgb(212, 139, 3);border-radius: 5px;"
                             data-toggle="tooltip" title="Print">
                             <i class="fa fa-print"></i></a> -->
@@ -354,14 +258,32 @@
                         <!-- <button  class="btn btn-sm text-white ms-1"
                         style="background-color:  rgb(212, 139, 3);border-radius: 5px;" data-toggle="tooltip" title="Comments" onclick="comment_list()">
                             <i class="fas fa-comment-dots"></i></button> -->
+
+                            <div class="dropdown m-0 p-0 ms-1" title="Convert" style="background-color:  rgb(212, 139, 3);border-radius: 5px;height: 1.7rem;">
+                                <a href=" " class=" fas fa-file-invoice dropdown-toggle  btn-sm text-white ms-1"  
+                                    data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false"> 
+                                </a>
+        
+                                <div class="dropdown-menu" aria-labelledby="attachmentDropdown">
+                                    <a href="" class="dropdown-item" style="cursor: pointer;" onclick="return confirm('Do you want to convert this estimate to an invoice?');" >To Invoice</a>
+                                    {% if estimate.convert_sales == "not_converted" %}
+                                    <a href="{% url 'convert_to_salesorder' estimate.id %}" class="dropdown-item" style="cursor: pointer;" onclick="return confirm('Do you want to convert this estimate to sales order?');">To SalesOrder</a>
+                                    {% else %}  
+                                    <!-- <a  class="dropdown-item disabled" >To SalesOrder <br>(converted) -->
+                                        <a href="{% url 'convert_to_salesorder' estimate.id %}" class="dropdown-item disabled" style="cursor: pointer;" onclick="return confirm('Do you want to convert this estimate to sales order?');">To SalesOrder <br>(converted)
+                                        </a>
+                                    </a>
+
+
+                                    {% endif %}   
+                                </div>
+                            </div>
                         
                     </div>
-                    <!-- <a href="{% url 'converttoinvoice' estimate.id %}" class="btn btn-sm text-white "
-                        style="background-color: rgb(210, 132, 30);" onclick="return confirm('Do you want to convert this estimate to an invoice?');">
-                        Convert to Invoice</a> -->
-                        <a href="" class="btn btn-sm text-white " data-toggle="tooltip" title="Convert to invoice"
+                    
+                        <!-- <a href="" class="btn btn-sm text-white " data-toggle="tooltip" title="Convert to invoice"
                         style="background-color: rgb(210, 132, 30);height: 1.7rem;" onclick="return confirm('Do you want to convert this estimate to an invoice?');">
-                        <i class="fas fa-file-invoice"></i></a>
+                        <i class="fas fa-file-invoice"></i></a> -->
                     <a href="{% url 'deleteestimate' estimate.id %}" class="btn btn-sm text-white" title="Delete" style="background-color:  rgb(212, 139, 3);border-radius: 5px;height: 1.7rem;" 
                     onclick="return confirm('Do you want to Delete this Estimate?');"><i class="fas fa-trash-alt"></i></a>
                 </div>
@@ -793,66 +715,66 @@
                         </div>
                     </div>
                     <div class="row pt-1">
-                        <div class="col-sm-8 col-md-8 col-lg-8">
+                        <div class="col-sm-5 col-md-5 col-lg-5">
                             <label class="text-warning" for="" style="font-weight: 400;">Item :</label>
 
                         </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4">
+                        <div class="col-sm-7 col-md-7 col-lg-7">
                             <label class="text-light" for="" style="font-weight: 400;">{{ item.item_name }}</label>
                         </div>
                     </div>
                     <div class="row mt-1">
-                        <div class="col-sm-8 col-md-8 col-lg-8">
+                        <div class="col-sm-5 col-md-5 col-lg-5">
                             <label class="text-warning" for="" style="font-weight: 400;">HSN :</label>
 
                         </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4">
+                        <div class="col-sm-7 col-md-7 col-lg-7">
                             <label class="text-light" for="" style="font-weight: 400;">{{ item.hsn }}</label> 
                         </div>
                     </div>
                     <div class="row mt-1">
-                        <div class="col-sm-8 col-md-8 col-lg-8">
+                        <div class="col-sm-5 col-md-5 col-lg-5">
                             <label class="text-warning" for="" style="font-weight: 400;">Rate :</label>
 
                         </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4">
+                        <div class="col-sm-7 col-md-7 col-lg-7">
                             <label class="text-light" for="" style="font-weight: 400;">{{ item.rate|floatformat:1 }}</label>
                         </div>
                     </div>
                     <div class="row mt-1">
-                        <div class="col-sm-8 col-md-8 col-lg-8">
+                        <div class="col-sm-5 col-md-5 col-lg-5">
                             <label class="text-warning" for="" style="font-weight: 400;">Quantity :</label>
 
                         </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4">
+                        <div class="col-sm-7 col-md-7 col-lg-7">
                             <label class="text-light" for="" style="font-weight: 400;">{{ item.quantity }}</label>
                         </div>
                     </div>
                     <div class="row mt-1">
-                        <div class="col-sm-8 col-md-8 col-lg-8">
+                        <div class="col-sm-5 col-md-5 col-lg-5">
                             <label class="text-warning" for="" style="font-weight: 400;">Discount :</label>
 
                         </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4">
+                        <div class="col-sm-7 col-md-7 col-lg-7">
                             <label class="text-light" for="" style="font-weight: 400;">{{ item.discount|floatformat:1 }}</label>
                         </div>
                     </div>
                     <div class="row mt-1">
-                        <div class="col-sm-8 col-md-8 col-lg-8">
+                        <div class="col-sm-5 col-md-5 col-lg-5">
                             <label class="text-warning" for="" style="font-weight: 400;">Tax :</label>
 
                         </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4">
+                        <div class="col-sm-7 col-md-7 col-lg-7">
                             <label class="text-light" for="" style="font-weight: 400;">{{ item.tax_percentage }}%</label>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-sm-8 col-md-8 col-lg-8">
+                        <div class="col-sm-5 col-md-5 col-lg-5">
                             <label class="text-warning" for="" style="font-weight: 400;">Total :</label>
 
                         </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4">
+                        <div class="col-sm-7 col-md-7 col-lg-7">
                             <label class="text-light" for="" style="font-weight: 400;">{{ item.amount|floatformat:1 }}</label>
                         </div>
                     </div>

@@ -61,6 +61,7 @@ urlpatterns = [
     path('est_sort_by_estno',views.est_sort_by_estno,name='est_sort_by_estno'),
     path('est_sort_by_name_estimate_view/<int:pk>',views.est_sort_by_name_estimate_view,name='est_sort_by_name_estimate_view'),
     path('est_sort_by_estno_estimate_view/<int:pk>',views.est_sort_by_estno_estimate_view,name='est_sort_by_estno_estimate_view'),
+    path('convert_to_salesorder/<int:pk>',views.convert_to_salesorder,name='convert_to_salesorder'),
     path('createestimate/',views.createestimate,name='createestimate'),
     path('itemdata_est/',views.itemdata_est,name='itemdata_est'),
     path('create_and_send_estimate/',views.create_and_send_estimate,name='create_and_send_estimate'),
