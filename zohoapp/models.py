@@ -214,6 +214,7 @@ class customer_contact_person_table(models.Model):
 class RetainerInvoice(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     customer_name=models.ForeignKey(customer,on_delete=models.CASCADE)
+    customer_mailid = models.CharField(max_length=100,null=True,blank=True)
     retainer_invoice_number=models.CharField(max_length=255)
     refrences=models.CharField(max_length=255)
     retainer_invoice_date=models.DateField()
@@ -227,7 +228,13 @@ class Retaineritems(models.Model):
     retainer=models.ForeignKey(RetainerInvoice, on_delete=models.CASCADE)
     description=models.TextField()
     amount=models.CharField(max_length=100)
+
+class retainer_invoice_comments(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    retainer=models.ForeignKey(RetainerInvoice,on_delete=models.CASCADE,null=True,blank=True)
+    comments=models.CharField(max_length=500,null=True,blank=True)
             
+
 class Estimates(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     customer=models.ForeignKey(customer,on_delete=models.CASCADE,null=True,blank=True)
@@ -1210,10 +1217,7 @@ class invoice_comments(models.Model):
     invoice=models.ForeignKey(invoice,on_delete=models.CASCADE,null=True,blank=True)
     comments=models.CharField(max_length=500,null=True,blank=True)
 
-class retainer_invoice_comments(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
-    retainer=models.ForeignKey(RetainerInvoice,on_delete=models.CASCADE,null=True,blank=True)
-    comments=models.CharField(max_length=500,null=True,blank=True)
+
     
     
 class delivery_chellan_comments(models.Model):

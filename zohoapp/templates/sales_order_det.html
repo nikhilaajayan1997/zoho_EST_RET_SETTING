@@ -244,41 +244,23 @@
                    </div>
                   </section>
  
-                  <script>
+              <script>
  
+                  function printSelectedArea() 
+                  {
+                    var selectedArea = document.getElementById("selected-area");
+                    var printWindow = window.open('', 'PrintWindow', 'height=800,width=800');
+                    printWindow.document.write('<html><head><title>Print Selected Area</title></head><body>' + selectedArea.innerHTML + '</body></html>');
+                    printWindow.print();
+                    printWindow.close();
+                  }
  
-                  function printSelectedArea() {
- 
-   var selectedArea = document.getElementById("selected-area");
-   
- 
-   var printWindow = window.open('', 'PrintWindow', 'height=800,width=800');
-   
- 
-   printWindow.document.write('<html><head><title>Print Selected Area</title></head><body>' + selectedArea.innerHTML + '</body></html>');
-   
-  
-   printWindow.print();
-   
-   
-   printWindow.close();
- }
- 
-                 </script>
-       
- 
+              </script>
             </div>
- 
- 
-               </div>
-               
           </div>
-          
-                
         </div>
-     
         </div>
-     
+        </div>
        </div>
   </div>
  

@@ -1156,6 +1156,7 @@ def create_invoice_draft(request):
         user=request.user
         select=request.POST['customer_id']
         customer_name=customer.objects.get(id=select)
+        customer_mailid=request.POST['cx_mail']
         retainer_invoice_number=request.POST['retainer-invoice-number']
         references=request.POST['references']
         retainer_invoice_date=request.POST['invoicedate']
@@ -1164,7 +1165,7 @@ def create_invoice_draft(request):
         terms_and_conditions=request.POST['terms']
     
         retainer_invoice=RetainerInvoice(
-            user=user,customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
+            user=user,customer_name=customer_name,customer_mailid=customer_mailid,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
     
         retainer_invoice.save()
         
@@ -1189,6 +1190,7 @@ def create_invoice_send(request):
         user=request.user
         select=request.POST['customer_id']
         customer_name=customer.objects.get(id=select)
+        customer_mailid=request.POST['cx_mail']
         retainer_invoice_number=request.POST['retainer-invoice-number']
         references=request.POST['references']
         retainer_invoice_date=request.POST['invoicedate']
@@ -1196,7 +1198,7 @@ def create_invoice_send(request):
         customer_notes=request.POST['customer_notes']
         terms_and_conditions=request.POST['terms']
         retainer_invoice=RetainerInvoice(
-        user=user,customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions,is_draft=False)
+        user=user,customer_name=customer_name,customer_mailid=customer_mailid,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions,is_draft=False)
         retainer_invoice.save()
 
         description = request.POST.getlist('description[]')
@@ -1252,6 +1254,7 @@ def retainer_update(request,pk):
         retainer_invoice=RetainerInvoice.objects.get(id=pk)
         select=request.POST['customer_id']
         retainer_invoice.customer_name=customer.objects.get(id=select)
+        retainer_invoice.customer_mailid=request.POST['cx_mail']
         retainer_invoice.retainer_invoice_number=request.POST['retainer-invoice-number']
         retainer_invoice.refrences=request.POST['references']
         retainer_invoice.retainer_invoice_date=request.POST['invoicedate']
@@ -1349,6 +1352,99 @@ def retainer_delete(request,pk):
     retainer=RetainerInvoice.objects.get(id=pk)
     retainer.delete()
     return redirect('retainer_invoice')
+
+
+def filter_by_draft(request):
+    user = request.user
+    estimates=Estimates.objects.filter(status='draft',user=user)
+    return render(request, 'all_estimates.html', {'estimates':estimates})
+    
+    
+def filter_by_sent(request):
+    user = request.user
+    estimates=Estimates.objects.filter(status='sent',user=user)
+    return render(request, 'all_estimates.html', {'estimates':estimates})
+    
+    
+def filter_by_draft_estimate_view(request,pk):
+    user = request.user
+    company = company_details.objects.get(user=user)
+    all_estimates = Estimates.objects.filter(user=user,status='draft')
+    estimate = Estimates.objects.get(id=pk)
+    items = EstimateItems.objects.filter(estimate=estimate)
+    context = {
+        'company': company,
+        'all_estimates':all_estimates,
+        'estimate': estimate,
+        'items': items,
+    }
+    return render(request, 'estimate_slip.html', context)
+
+def est_sort_by_name_estimate_view(request,pk):
+    user=request.user.id
+    company = company_details.objects.get(user=user)
+    est=Estimates.objects.filter(user=user).values()
+    estimate = Estimates.objects.get(id=pk)
+    items = EstimateItems.objects.filter(estimate=estimate)
+    for r in est:
+        vn = r['customer_name'].split()[1:]
+        r['cust_name'] = " ".join(vn)
+    sorted_est = sorted(est, key=lambda r: r['cust_name'])  
+    context = {
+                'all_estimates' : sorted_est,
+                'company': company,
+                'estimate': estimate,
+                'items': items,
+            }  
+    return render(request,'estimate_slip.html', context)
+
+def est_sort_by_estno_estimate_view(request,pk):
+    user=request.user.id
+    company = company_details.objects.get(user=user)
+    est=Estimates.objects.filter(user=user).values()
+    estimate = Estimates.objects.get(id=pk)
+    items = EstimateItems.objects.filter(estimate=estimate)
+     
+    for r in est:
+        vn = r['estimate_no'].split("-")
+        r['est_no'] = " ".join(vn)
+    sorted_est = sorted(est, key=lambda r: r['est_no']) 
+    context = {
+                'all_estimates' : sorted_est,
+                'company': company,
+                'estimate': estimate,
+                'items': items,
+            }  
+    return render(request, 'estimate_slip.html', context)
+
+    
+def filter_by_sent_estimate_view(request,pk):
+    user = request.user
+    company = company_details.objects.get(user=user)
+    all_estimates = Estimates.objects.filter(user=user,status='sent')
+    estimate = Estimates.objects.get(id=pk)
+    items = EstimateItems.objects.filter(estimate=estimate)
+    context = {
+        'company': company,
+        'all_estimates':all_estimates,
+        'estimate': estimate,
+        'items': items,
+    }
+    return render(request, 'estimate_slip.html', context)   
+    
+    
+def add_est_comment(request,pk):
+    if request.method=="POST":
+        user=request.user      
+        estimate=Estimates.objects.get(id=pk)
+       
+        comment=estimate_comments()
+        comment.user=user
+        comment.estimate=estimate
+        comment.comments=request.POST.get('comments')
+       
+        comment.save()
+    return redirect('estimateslip',estimate.id)
         
             
 def allestimates(request):
@@ -1359,12 +1455,8 @@ def allestimates(request):
         'estimates': estimates,
         'company': company,
     }
-    # for i in estimates:
-    #     print(i)
-
+    
     return render(request, 'all_estimates.html', context)
-
-
 
 
 
@@ -1784,6 +1876,145 @@ def updateestimate(request,pk):
 
 
     return redirect('allestimates')
+
+def est_sort_by_estno(request):
+    user=request.user.id
+    est=Estimates.objects.filter(user=user).values()
+    for r in est:
+        vn = r['estimate_no'].split("-")
+        r['est_no'] = " ".join(vn)
+    sorted_est = sorted(est, key=lambda r: r['est_no'])  
+    context = {
+                'estimates' : sorted_est
+            }  
+    return render(request,'all_estimates.html',context)
+
+def est_sort_by_name(request):
+    user=request.user.id
+    est=Estimates.objects.filter(user=user).values()
+    for r in est:
+        vn = r['customer_name'].split()[1:]
+        r['cust_name'] = " ".join(vn)
+    sorted_est = sorted(est, key=lambda r: r['cust_name'])  
+    context = {
+                'estimates' : sorted_est
+            }  
+    return render(request,'all_estimates.html',context)
+
+
+
+
+def new_estimate_item(request):
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+        
+        type=request.POST.get('type')
+        name=request.POST.get('name')
+        hsn=request.POST.get('hsn')
+        ut=request.POST.get('unit')
+        inter=request.POST.get('inter')
+        intra=request.POST.get('intra')
+        sell_price=request.POST.get('sell_price')
+        sell_acc=request.POST.get('sell_acc')
+        sell_desc=request.POST.get('sell_desc')
+        cost_price=request.POST.get('cost_price')
+        cost_acc=request.POST.get('cost_acc')      
+        cost_desc=request.POST.get('cost_desc')
+        
+        units=Unit.objects.get(id=ut)
+        sel=Sales.objects.get(id=sell_acc)
+        cost=Purchase.objects.get(id=cost_acc)
+
+        history="Created by " + str(request.user)
+
+        u  = User.objects.get(id = request.user.id)
+
+        item=AddItem(type=type,Name=name,hsn=hsn,p_desc=cost_desc,s_desc=sell_desc,s_price=sell_price,p_price=cost_price,
+                     user=u ,creat=history,interstate=inter,intrastate=intra,unit = units,sales = sel, purchase = cost)
+
+        item.save()
+
+        return HttpResponse({"message": "success"})
+    
+    return HttpResponse("Invalid request method.")
+
+
+
+
+
+def new_estimate_customer(request):
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+
+        # title=request.POST.get('title')
+        # first_name=request.POST.get('firstname')
+        # last_name=request.POST.get('lastname')
+        # comp=request.POST.get('company_name')
+        cust_type = request.POST.get('customer_type')
+        name1 = request.POST.get('display_name')
+        name=name1.upper()
+        comp_name = request.POST.get('company_name')
+        email=request.POST.get('email')
+        website=request.POST.get('website')
+        w_mobile=request.POST.get('work_mobile')
+        p_mobile=request.POST.get('pers_mobile')
+        fb = request.POST.get('facebook')
+        twitter = request.POST.get('twitter')
+        skype = request.POST.get('skype')
+        desg = request.POST.get('desg')
+        dpt = request.POST.get('dpt')
+        gsttype=request.POST.get('gsttype')
+        gstin=request.POST.get('gstno')
+        # panno=request.POST.get('panno')
+        supply=request.POST.get('placeofsupply')
+        tax = request.POST.get('tax_preference')
+        currency=request.POST.get('currency')
+        balance=request.POST.get('openingbalance')
+        payment=request.POST.get('paymentterms')
+        street1=request.POST.get('street1')
+        street2=request.POST.get('street2')
+        city=request.POST.get('city')
+        state=request.POST.get('state')
+        pincode=request.POST.get('pincode')
+        country=request.POST.get('country')
+        fax=request.POST.get('fax')
+        phone=request.POST.get('phone')
+        sAddress1=request.POST.get('sstreet1')
+        sAddress2=request.POST.get('sstreet2')
+        scity=request.POST.get('scity')
+        sstate=request.POST.get('sstate')
+        scountry=request.POST.get('scountry')
+        szipcode=request.POST.get('spincode')
+        sphone1=request.POST.get('sphone')
+        sfax=request.POST.get('sfax')
+
+        # shipstreet1=request.POST.get('shipstreet1')
+        # shipstreet2=request.POST.get('shipstreet2')
+        # shipcity=request.POST.get('shipcity')
+        # shipstate=request.POST.get('shipstate')
+        # shippincode=request.POST.get('shippincode')
+        # shipcountry=request.POST.get('shipcountry')
+        # shipfax=request.POST.get('shipfax')
+        # shipphone=request.POST.get('shipphone')
+
+        u = User.objects.get(id = request.user.id)
+
+        cust = customer(customerName = name,customerType = cust_type, companyName= comp_name, GSTTreatment=gsttype,GSTIN=gstin, 
+                        customerWorkPhone = w_mobile,customerMobile = p_mobile, customerEmail=email,skype = skype,Facebook = fb, 
+                        Twitter = twitter,placeofsupply=supply,Taxpreference = tax,currency=currency, website=website, 
+                        designation = desg, department = dpt,OpeningBalance=balance,Address1=street1,Address2=street2, city=city, 
+                        state=state, PaymentTerms=payment,zipcode=pincode,country=country,  fax = fax,  phone1 = phone,
+                        sAddress1=sAddress1,sAddress2=sAddress2,scity=scity,sstate=sstate,scountry=scountry,szipcode=szipcode,
+                        sphone1=sphone1,sfax=sfax,user=u)
+        cust.save()
+
+        return HttpResponse({"message": "success"})
+        
+
+
+        
 
 def convert_to_salesorder(request,pk):
     user = request.user.id
@@ -4697,31 +4928,6 @@ def recurring_bill(request):
 
 # filter
 
-def est_sort_by_estno(request):
-    user=request.user.id
-    est=Estimates.objects.filter(user=user).values()
-    for r in est:
-        vn = r['estimate_no'].split("-")
-        r['est_no'] = " ".join(vn)
-    sorted_est = sorted(est, key=lambda r: r['est_no'])  
-    context = {
-                'estimates' : sorted_est
-            }  
-    return render(request,'all_estimates.html',context)
-
-def est_sort_by_name(request):
-    user=request.user.id
-    est=Estimates.objects.filter(user=user).values()
-    for r in est:
-        vn = r['customer_name'].split()[1:]
-        r['cust_name'] = " ".join(vn)
-    sorted_est = sorted(est, key=lambda r: r['cust_name'])  
-    context = {
-                'estimates' : sorted_est
-            }  
-    return render(request,'all_estimates.html',context)
-
-
 
 @login_required(login_url='login')
 def recur_custasc(request):
@@ -5486,43 +5692,6 @@ def unit_dropdown(request):
     return JsonResponse(options)
 
 
-def new_estimate_item(request):
-    company = company_details.objects.get(user = request.user)
-
-    if request.method=='POST':
-        
-        type=request.POST.get('type')
-        name=request.POST.get('name')
-        hsn=request.POST.get('hsn')
-        ut=request.POST.get('unit')
-        inter=request.POST.get('inter')
-        intra=request.POST.get('intra')
-        sell_price=request.POST.get('sell_price')
-        sell_acc=request.POST.get('sell_acc')
-        sell_desc=request.POST.get('sell_desc')
-        cost_price=request.POST.get('cost_price')
-        cost_acc=request.POST.get('cost_acc')      
-        cost_desc=request.POST.get('cost_desc')
-        
-        units=Unit.objects.get(id=ut)
-        sel=Sales.objects.get(id=sell_acc)
-        cost=Purchase.objects.get(id=cost_acc)
-
-        history="Created by " + str(request.user)
-
-        u  = User.objects.get(id = request.user.id)
-
-        item=AddItem(type=type,Name=name,hsn=hsn,p_desc=cost_desc,s_desc=sell_desc,s_price=sell_price,p_price=cost_price,
-                     user=u ,creat=history,interstate=inter,intrastate=intra,unit = units,sales = sel, purchase = cost)
-
-        item.save()
-
-        return HttpResponse({"message": "success"})
-    
-    return HttpResponse("Invalid request method.")
-
-
-
 
 
 
@@ -5857,77 +6026,7 @@ def customer_me(request):
             return redirect("create_recur")
         return redirect("/")
 
-def new_estimate_customer(request):
-    company = company_details.objects.get(user = request.user)
 
-    if request.method=='POST':
-
-        # title=request.POST.get('title')
-        # first_name=request.POST.get('firstname')
-        # last_name=request.POST.get('lastname')
-        # comp=request.POST.get('company_name')
-        cust_type = request.POST.get('customer_type')
-        name = request.POST.get('display_name')
-        comp_name = request.POST.get('company_name')
-        email=request.POST.get('email')
-        website=request.POST.get('website')
-        w_mobile=request.POST.get('work_mobile')
-        p_mobile=request.POST.get('pers_mobile')
-        fb = request.POST.get('facebook')
-        twitter = request.POST.get('twitter')
-        skype = request.POST.get('skype')
-        desg = request.POST.get('desg')
-        dpt = request.POST.get('dpt')
-        gsttype=request.POST.get('gsttype')
-        gstin=request.POST.get('gstno')
-        # panno=request.POST.get('panno')
-        supply=request.POST.get('placeofsupply')
-        tax = request.POST.get('tax_preference')
-        currency=request.POST.get('currency')
-        balance=request.POST.get('openingbalance')
-        payment=request.POST.get('paymentterms')
-        street1=request.POST.get('street1')
-        street2=request.POST.get('street2')
-        city=request.POST.get('city')
-        state=request.POST.get('state')
-        pincode=request.POST.get('pincode')
-        country=request.POST.get('country')
-        fax=request.POST.get('fax')
-        phone=request.POST.get('phone')
-        sAddress1=request.POST.get('sstreet1')
-        sAddress2=request.POST.get('sstreet2')
-        scity=request.POST.get('scity')
-        sstate=request.POST.get('sstate')
-        scountry=request.POST.get('scountry')
-        szipcode=request.POST.get('spincode')
-        sphone1=request.POST.get('sphone')
-        sfax=request.POST.get('sfax')
-
-        # shipstreet1=request.POST.get('shipstreet1')
-        # shipstreet2=request.POST.get('shipstreet2')
-        # shipcity=request.POST.get('shipcity')
-        # shipstate=request.POST.get('shipstate')
-        # shippincode=request.POST.get('shippincode')
-        # shipcountry=request.POST.get('shipcountry')
-        # shipfax=request.POST.get('shipfax')
-        # shipphone=request.POST.get('shipphone')
-
-        u = User.objects.get(id = request.user.id)
-
-        cust = customer(customerName = name,customerType = cust_type, companyName= comp_name, GSTTreatment=gsttype,GSTIN=gstin, 
-                        customerWorkPhone = w_mobile,customerMobile = p_mobile, customerEmail=email,skype = skype,Facebook = fb, 
-                        Twitter = twitter,placeofsupply=supply,Taxpreference = tax,currency=currency, website=website, 
-                        designation = desg, department = dpt,OpeningBalance=balance,Address1=street1,Address2=street2, city=city, 
-                        state=state, PaymentTerms=payment,zipcode=pincode,country=country,  fax = fax,  phone1 = phone,
-                        sAddress1=sAddress1,sAddress2=sAddress2,scity=scity,sstate=sstate,scountry=scountry,szipcode=szipcode,
-                        sphone1=sphone1,sfax=sfax,user=u)
-        cust.save()
-
-        return HttpResponse({"message": "success"})
-        
-
-
-        
         
 @login_required(login_url='login')
 def recurbills_customer(request):
@@ -9213,98 +9312,8 @@ def split_paragraph(paragraph):
         second_half = ' '.join(words[midpoint:])
         return first_half, second_half
     
-    
-def filter_by_draft(request):
-    user = request.user
-    estimates=Estimates.objects.filter(status='draft',user=user)
-    return render(request, 'all_estimates.html', {'estimates':estimates})
-    
-    
-def filter_by_sent(request):
-    user = request.user
-    estimates=Estimates.objects.filter(status='sent',user=user)
-    return render(request, 'all_estimates.html', {'estimates':estimates})
-    
-    
-def filter_by_draft_estimate_view(request,pk):
-    user = request.user
-    company = company_details.objects.get(user=user)
-    all_estimates = Estimates.objects.filter(user=user,status='draft')
-    estimate = Estimates.objects.get(id=pk)
-    items = EstimateItems.objects.filter(estimate=estimate)
-    context = {
-        'company': company,
-        'all_estimates':all_estimates,
-        'estimate': estimate,
-        'items': items,
-    }
-    return render(request, 'estimate_slip.html', context)
 
-def est_sort_by_name_estimate_view(request,pk):
-    user=request.user.id
-    company = company_details.objects.get(user=user)
-    est=Estimates.objects.filter(user=user).values()
-    estimate = Estimates.objects.get(id=pk)
-    items = EstimateItems.objects.filter(estimate=estimate)
-    for r in est:
-        vn = r['customer_name'].split()[1:]
-        r['cust_name'] = " ".join(vn)
-    sorted_est = sorted(est, key=lambda r: r['cust_name'])  
-    context = {
-                'all_estimates' : sorted_est,
-                'company': company,
-                'estimate': estimate,
-                'items': items,
-            }  
-    return render(request,'estimate_slip.html', context)
 
-def est_sort_by_estno_estimate_view(request,pk):
-    user=request.user.id
-    company = company_details.objects.get(user=user)
-    est=Estimates.objects.filter(user=user).values()
-    estimate = Estimates.objects.get(id=pk)
-    items = EstimateItems.objects.filter(estimate=estimate)
-     
-    for r in est:
-        vn = r['estimate_no'].split("-")
-        r['est_no'] = " ".join(vn)
-    sorted_est = sorted(est, key=lambda r: r['est_no']) 
-    context = {
-                'all_estimates' : sorted_est,
-                'company': company,
-                'estimate': estimate,
-                'items': items,
-            }  
-    return render(request, 'estimate_slip.html', context)
-
-    
-def filter_by_sent_estimate_view(request,pk):
-    user = request.user
-    company = company_details.objects.get(user=user)
-    all_estimates = Estimates.objects.filter(user=user,status='sent')
-    estimate = Estimates.objects.get(id=pk)
-    items = EstimateItems.objects.filter(estimate=estimate)
-    context = {
-        'company': company,
-        'all_estimates':all_estimates,
-        'estimate': estimate,
-        'items': items,
-    }
-    return render(request, 'estimate_slip.html', context)
-    
-    
-def add_est_comment(request,pk):
-    if request.method=="POST":
-        user=request.user      
-        estimate=Estimates.objects.get(id=pk)
-       
-        comment=estimate_comments()
-        comment.user=user
-        comment.estimate=estimate
-        comment.comments=request.POST.get('comments')
-       
-        comment.save()
-    return redirect('estimateslip',estimate.id)
     
     
 ###########Report############
