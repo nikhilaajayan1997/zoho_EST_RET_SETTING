@@ -1156,6 +1156,7 @@ def create_invoice_draft(request):
         user=request.user
         select=request.POST['customer_id']
         customer_name=customer.objects.get(id=select)
+        customer_name1=customer_name.customerName
         customer_mailid=request.POST['cx_mail']
         retainer_invoice_number=request.POST['retainer-invoice-number']
         references=request.POST['references']
@@ -1165,7 +1166,7 @@ def create_invoice_draft(request):
         terms_and_conditions=request.POST['terms']
     
         retainer_invoice=RetainerInvoice(
-            user=user,customer_name=customer_name,customer_mailid=customer_mailid,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
+            user=user,customer_name=customer_name,customer_name1=customer_name1,customer_mailid=customer_mailid,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
     
         retainer_invoice.save()
         
@@ -1190,6 +1191,7 @@ def create_invoice_send(request):
         user=request.user
         select=request.POST['customer_id']
         customer_name=customer.objects.get(id=select)
+        customer_name1=customer_name.customerName
         customer_mailid=request.POST['cx_mail']
         retainer_invoice_number=request.POST['retainer-invoice-number']
         references=request.POST['references']
@@ -1198,7 +1200,7 @@ def create_invoice_send(request):
         customer_notes=request.POST['customer_notes']
         terms_and_conditions=request.POST['terms']
         retainer_invoice=RetainerInvoice(
-        user=user,customer_name=customer_name,customer_mailid=customer_mailid,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions,is_draft=False)
+        user=user,customer_name=customer_name,customer_name1=customer_name1,customer_mailid=customer_mailid,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions,is_draft=False)
         retainer_invoice.save()
 
         description = request.POST.getlist('description[]')
@@ -1211,6 +1213,30 @@ def create_invoice_send(request):
         else:
             pass
         return redirect('invoice_view',pk=retainer_invoice.id)
+
+def retainer_invoice_sort_by_name(request):
+    user=request.user.id
+    ret_inv=RetainerInvoice.objects.filter(user=user).values()
+    for r in ret_inv:
+        vn = r['customer_name1'].split()[1:]
+        r['cust_name'] = " ".join(vn)
+    sorted_est = sorted(ret_inv, key=lambda r: r['cust_name'])  
+    context = {
+                'invoices' : sorted_est
+            }  
+    return render(request,'retainer_invoice.html',context)
+
+def retainer_invoice_sort_by_no(request):
+    user=request.user.id
+    ret_inv=RetainerInvoice.objects.filter(user=user).values()
+    for r in ret_inv:
+        vn = r['retainer_invoice_number'].split("-")
+        r['ret_no'] = " ".join(vn)
+    sorted_est = sorted(ret_inv, key=lambda r: r['ret_no'])  
+    context = {
+                'invoices' : sorted_est
+            }  
+    return render(request,'retainer_invoice.html',context)
 
 
 
@@ -1379,6 +1405,38 @@ def filter_by_draft_estimate_view(request,pk):
         'items': items,
     }
     return render(request, 'estimate_slip.html', context)
+
+def sort_retainer_view_name(request,pk):
+    user=request.user
+    company=company_details.objects.get(user=user)
+    invoices=RetainerInvoice.objects.filter(user=user).values()
+    invoice=RetainerInvoice.objects.get(id=pk)
+    item=Retaineritems.objects.filter(retainer=pk)
+    ret_comments=retainer_invoice_comments.objects.filter(retainer=invoice.id,user=user)
+    for r in invoices:
+        vn = r['customer_name1'].split()[1:]
+        r['cust_name'] = " ".join(vn)
+    sorted_est = sorted(invoices, key=lambda r: r['cust_name'])  
+
+    context={'invoices':invoices,'invoice':invoice,'item':item,'company':company,'ret_comments':ret_comments,'invoices':sorted_est}
+    return render(request,'invoice_view.html',context)
+
+def sort_retainer_view_no(request,pk):
+    user=request.user
+    company=company_details.objects.get(user=user)
+    invoices=RetainerInvoice.objects.filter(user=user).values()
+    invoice=RetainerInvoice.objects.get(id=pk)
+    item=Retaineritems.objects.filter(retainer=pk)
+    ret_comments=retainer_invoice_comments.objects.filter(retainer=invoice.id,user=user)
+    for r in invoices:
+        vn = r['retainer_invoice_number'].split()[1:]
+        r['cust_no'] = " ".join(vn)
+    sorted_est = sorted(invoices, key=lambda r: r['cust_no'])  
+
+    context={'invoices':invoices,'invoice':invoice,'item':item,'company':company,'ret_comments':ret_comments,'invoices':sorted_est}
+    return render(request,'invoice_view.html',context)
+
+
 
 def est_sort_by_name_estimate_view(request,pk):
     user=request.user.id
@@ -1889,6 +1947,7 @@ def est_sort_by_estno(request):
             }  
     return render(request,'all_estimates.html',context)
 
+
 def est_sort_by_name(request):
     user=request.user.id
     est=Estimates.objects.filter(user=user).values()
@@ -1900,7 +1959,6 @@ def est_sort_by_name(request):
                 'estimates' : sorted_est
             }  
     return render(request,'all_estimates.html',context)
-
 
 
 

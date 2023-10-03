@@ -44,6 +44,12 @@ urlpatterns = [
     path('add_customer/',views.add_customer,name='add_customer'),
     path('retainer_invoices/',views.retainer_invoice,name='retainer_invoice'),
     path('add_invoice/',views.add_invoice,name='add_invoice'),
+
+    path('retainer_invoice_sort_by_name',views.retainer_invoice_sort_by_name,name='retainer_invoice_sort_by_name'),
+    path('retainer_invoice_sort_by_no',views.retainer_invoice_sort_by_no,name='retainer_invoice_sort_by_no'),
+    path('sort_retainer_view_name/<int:pk>',views.sort_retainer_view_name,name='sort_retainer_view_name'),
+    path('sort_retainer_view_no/<int:pk>',views.sort_retainer_view_no,name='sort_retainer_view_no'),
+
     path('create_invoice_draft/',views.create_invoice_draft,name='create_invoice_draft'),
     path('create_invoice_send/',views.create_invoice_send,name='create_invoice_send'),
     path('view_invoice/<int:pk>',views.invoice_view,name='invoice_view'),

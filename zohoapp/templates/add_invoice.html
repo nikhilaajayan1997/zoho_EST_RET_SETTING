@@ -162,19 +162,46 @@
 
                       </div>
 
-                      <div class="mb-4 mt-4">
+                      <div class="row  mt-4">
                         <div class="col-sm-6 col-md-6 col-lg-6">
-                          <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
-                          <textarea class="form-control   text-dark" style="height: 50%;" cols="5" rows="5" name="customer_notes"  id="floatingTextarea" required></textarea>
+                          <label for="" class="form-label">Customer Notes</label>
+                          <textarea class="form-control   text-dark" style="height: 50%;"  cols="5" rows="10" name="customer_notes"  id="floatingTextarea" required></textarea>
                           
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-4">
+                          <div class="p-2"  id="div_bal" style="width: 100%;height: 180px;background-color: #979797b2;">
+                            <table>
+                                <tr>
+                                  <th>
+                                    <label for="" class="mt-4"><h4 class="text-black">Paid:</h4>
+                                  </th>
+                                  <td>
+                                    <input type="number" name="paid" id="paid" class="form-control mt-3 text-black" onchange="show_bal()" style="width: 100%;" value="0">
+    
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th>
+                                    <label for="" class="mt-4"><h4 class="text-black">Balance :</h4></label>
+                                  </th>
+                                  <td>
+                                    <input type="number" name="balance" id="balance" class="form-control mt-3 text-black" style="width: 100%;" value="0" readonly>
+    
+                                  </td>
+                                </tr>
+                            </table>
+
+
+                          </div>
+
                         </div>
                       </div>
 
 
-                      <div class="mb-4">
+                      <div class="row mb-4">
                         <div class="col-sm-6 col-md-6 col-lg-6">                        
-                          <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
-                          <textarea class="form-control  bg-light text-dark" style="height: 50%;" cols="5" rows="5" name="terms"  id="floatingTextarea" required></textarea>
+                          <label for="" class="form-label">Terms and Conditions</label>
+                          <textarea class="form-control  bg-light text-dark" style="height: 50%;" cols="5" rows="10" name="terms"  id="floatingTextarea" required></textarea>
 
                         </div>
                       </div>
@@ -1225,6 +1252,20 @@ $('#retainer-table').on('click', '.clone-row', function () {
       }
   });
 </script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<script>
+  function show_bal()
+  {
+    var paid_off=$('#paid').val();
+    var total_amount=$('#hidden-total-amount').val();
+    var balance=$('#balance').val();
+    var bal=total_amount-paid_off;
+    $('#balance').val(bal);
+
+
+  }
+</script>
 
 
 <script>
@@ -1234,6 +1275,7 @@ $('#retainer-table').on('click', '.clone-row', function () {
 
   totalAmountElement.addEventListener('DOMSubtreeModified', () => {
     inputField.value = totalAmountElement.innerText.replace('$', '');
+    document.getElementById("paid").value=totalAmountElement.innerText.replace('$', '');
   });
 
 </script>

@@ -214,6 +214,7 @@ class customer_contact_person_table(models.Model):
 class RetainerInvoice(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     customer_name=models.ForeignKey(customer,on_delete=models.CASCADE)
+    customer_name1=models.CharField(max_length=100,null=True,blank=True)
     customer_mailid = models.CharField(max_length=100,null=True,blank=True)
     retainer_invoice_number=models.CharField(max_length=255)
     refrences=models.CharField(max_length=255)
