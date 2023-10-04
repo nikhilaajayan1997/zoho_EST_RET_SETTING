@@ -49,6 +49,7 @@ urlpatterns = [
     path('retainer_invoice_sort_by_no',views.retainer_invoice_sort_by_no,name='retainer_invoice_sort_by_no'),
     path('sort_retainer_view_name/<int:pk>',views.sort_retainer_view_name,name='sort_retainer_view_name'),
     path('sort_retainer_view_no/<int:pk>',views.sort_retainer_view_no,name='sort_retainer_view_no'),
+    path('get_retainer_accno',views.get_retainer_accno,name='get_retainer_accno'),
 
     path('create_invoice_draft/',views.create_invoice_draft,name='create_invoice_draft'),
     path('create_invoice_send/',views.create_invoice_send,name='create_invoice_send'),

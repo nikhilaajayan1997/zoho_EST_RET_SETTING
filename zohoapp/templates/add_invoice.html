@@ -204,6 +204,54 @@
                           <textarea class="form-control  bg-light text-dark" style="height: 50%;" cols="5" rows="10" name="terms"  id="floatingTextarea" required></textarea>
 
                         </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                          <div class="p-3 mt-4 pb-4" style="width: 100%;background-color: #888888a9;">
+                            <div class="row">
+                              <div class="col-sm-12 col-md-12 col-lg-12">
+                                <label for="" class="text-black"><b>Payment Method</b></label>
+                                <select name="pay_method" id="pay_method" class="form-control text-dark" onclick="payment_method()">
+                                  <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------- SELECT --------</option>
+                                  <option value="Bank">Bank</option>
+                                  <option value="UPI">UPI</option>
+                                  <option value="Cash">Cash</option>
+                                  <option value="Cheque">Cheque</option>
+                                </select>
+                              </div>
+                            </div>
+                           <fieldset1  style="display: none;" id="bank_row">
+                            <div class="row">
+                              <div class="col-sm-12 col-md-12 col-lg-12">
+                                <select name="bank" id="bank" class="form-control mt-1 text-dark">
+                                  <option value="" selected>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------- SELECT BANK -------</option>
+                                  {% for i in bank %}
+                                    <option value="{{ i.id }} {{ i.name }}">{{ i.name }}</option>
+                                  {% endfor %}
+                                </select>
+                                <label for="" class="text-black">Account No:</label>
+                              <input type="text" name="acc_no" id="acc_no" class="form-control text-dark" readonly> 
+                              </div>
+
+                            </div>
+                           </fieldset1>
+                            <div class="row" style="display: none;" id="chq_row">
+                              <div class="col-sm-12 col-md-12 col-lg-12">
+                                <label for="" class="text-black">Cheque No:</label>
+                              <input type="text" name="chq_no" id="chq_no" class="form-control text-dark" >
+                              <label for="" id="chq_label"></label>
+                              </div>
+                            </div>
+                            <div class="row" style="display: none;" id="upi_row">
+                              <div class="col-sm-12 col-md-12 col-lg-12">
+                                <label for="" class="text-black">UPI Id:</label>
+                              <input type="text" name="upi_id" id="upi_id" class="form-control text-dark" >
+                              <label for="" id="upi_label"></label>
+                              </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+
                       </div>
 
                         
@@ -857,9 +905,9 @@
                     </button>
                   </div>
                 </div>
-                <div class="col-md-4"></div>
+                <div class="col-md-4" ></div>
               </div>
-            </form>
+            </form >
           </div>
         </div>
       </div>
@@ -884,6 +932,82 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+  
+
+    $(document).ready(function(){
+      $('#chq_no').change(function(){
+        var x=document.getElementById("chq_no").value;
+        var chq_label=document.getElementById("chq_label")
+        var expr=/^[0-9]{6}$/;
+
+       
+        if (!expr.test(x)) {
+          chq_label.style.color="rgb(109, 4, 4)";
+          chq_label.innerHTML = "Invalid Cheque Number.";
+        }
+        else{
+            chq_label.style.color="rgb(3, 75, 3)";
+
+            chq_label.innerHTML = "valid Cheque Number.";
+
+        }
+      });
+    });
+</script>
+
+<script>
+  function payment_method(){
+    var pay_opt=document.getElementById("pay_method").value;
+    if(pay_opt=='Bank')
+    {
+       document.getElementById("bank_row").style.display="block";
+       document.getElementById("upi_row").style.display="none";
+       document.getElementById("chq_row").style.display="none";
+       document.getElementById('upi_id').value="";
+       document.getElementById('chq_no').value="";
+       document.getElementById('acc_no').value="";
+      document.getElementById('bank').value="";
+       document.getElementById('chq_label').innerHTML=" ";
+    }
+    else if(pay_opt=='Cheque')
+    {
+      document.getElementById("bank_row").style.display="none";
+      document.getElementById("upi_row").style.display="none";
+      document.getElementById("chq_row").style.display="block";
+      document.getElementById('chq_label').innerHTML=" ";
+      document.getElementById('chq_no').value="";
+      document.getElementById('upi_id').value="";
+      document.getElementById('acc_no').value="";
+      document.getElementById('bank').value="";
+    }
+    else if(pay_opt=='UPI')
+    {
+      document.getElementById("bank_row").style.display="none";
+      document.getElementById("upi_row").style.display="block";
+      document.getElementById("chq_row").style.display="none";
+      document.getElementById('chq_label').innerHTML=" ";
+      document.getElementById('chq_no').value="";
+      document.getElementById('upi_id').value="";
+      document.getElementById('acc_no').value="";
+      document.getElementById('bank').value="";
+    }
+    else if(pay_opt=='Cash')
+    {
+      document.getElementById("bank_row").style.display="none";
+      document.getElementById("upi_row").style.display="none";
+      document.getElementById("chq_row").style.display="none";
+      document.getElementById('chq_label').innerHTML=" ";
+      document.getElementById('chq_no').value="";
+      document.getElementById('upi_id').value="";
+      document.getElementById('acc_no').value="";
+      document.getElementById('bank').value="";
+    }
+    
+
+  }
+</script>
 
 
 <script>
@@ -1123,6 +1247,28 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function(){
+  $('#bank').change(function(){
+    var bank=$('#bank').val();
+    var bank_id=bank.split(" ")[0];
+    $.ajax({
+      url:"{% url 'get_retainer_accno' %}",
+      data:{
+        id:bank_id,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+
+      },
+      type:'POST',
+      success:function(data){
+        $('#acc_no').val(data.account_number);
+      }
+
+    });
+
+  });
+
+});
+
 
 // payment term modal
 
@@ -1275,7 +1421,7 @@ $('#retainer-table').on('click', '.clone-row', function () {
 
   totalAmountElement.addEventListener('DOMSubtreeModified', () => {
     inputField.value = totalAmountElement.innerText.replace('$', '');
-    document.getElementById("paid").value=totalAmountElement.innerText.replace('$', '');
+    // document.getElementById("paid").value=totalAmountElement.innerText.replace('$', '');
   });
 
 </script>

@@ -1140,13 +1140,14 @@ def retainer_invoice(request):
 def add_invoice(request):
     company=company_details.objects.get(user_id=request.user)
     payments=payment_terms.objects.all()
+    bank=Bankcreation.objects.all()
     customer1=customer.objects.all()   
     if  RetainerInvoice.objects.all().exists():
         ret_invoice_count = RetainerInvoice.objects.last().id
         count=ret_invoice_count+1 
     else:
         count=1 
-    context={'customer1':customer1,'count':count,'payments':payments,'company':company}    
+    context={'customer1':customer1,'count':count,'payments':payments,'company':company,'bank':bank}    
     return render(request,'add_invoice.html',context)
 
 @login_required(login_url='login')
@@ -1164,12 +1165,26 @@ def create_invoice_draft(request):
         total_amount=request.POST.get('total')
         customer_notes=request.POST['customer_notes']
         terms_and_conditions=request.POST['terms']
-    
+        payment_opt=request.POST['pay_method']
+        bank1=request.POST["bank"]
+        if bank1 == '':
+            bankname="null"
+        else:
+            bank_id=bank1.split()[0]
+            bank_name1=Bankcreation.objects.get(id=bank_id)
+            bankname=bank_name1.name
+
+        acc_no=request.POST['acc_no']
+        cheque_no=request.POST['chq_no']
+        upi_id=request.POST['upi_id']
+        
         retainer_invoice=RetainerInvoice(
             user=user,customer_name=customer_name,customer_name1=customer_name1,customer_mailid=customer_mailid,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
     
         retainer_invoice.save()
-        
+        # retainer1=retainer_invoice.objects.get(id=retainer_invoice.id)
+        ret_payment=retainer_payment_details(user=user,retainer=retainer_invoice,payment_opt=payment_opt,bank_name=bankname,acc_no=acc_no,cheque_no=cheque_no,upi_id=upi_id)
+        ret_payment.save()
 
         description = request.POST.getlist('description[]')
         amount =request.POST.getlist('amount[]')
@@ -1237,6 +1252,14 @@ def retainer_invoice_sort_by_no(request):
                 'invoices' : sorted_est
             }  
     return render(request,'retainer_invoice.html',context)
+
+def get_retainer_accno(request):
+    user=request.user.id
+    id=request.POST.get('id')
+    account_ob=Bankcreation.objects.get(id=id,user=user)
+    account_number=account_ob.ac_no
+    return JsonResponse({'account_number':account_number},safe=False)
+
 
 
 
@@ -5604,6 +5627,9 @@ def get_vendordet(request):
 
     return JsonResponse({'vendor_email' :vemail, 'gst_number' : gstnum,'gst_treatment':gsttr},safe=False)
 
+
+
+
 @login_required(login_url='login')
 def get_customerdet(request):
     company= company_details.objects.get(user = request.user)
@@ -5627,7 +5653,6 @@ def get_customerdet(request):
 
 @login_required(login_url='login')
 def recurbills_vendor(request):
-    
     company = company_details.objects.get(user = request.user)
 
     if request.method=='POST':

@@ -234,6 +234,16 @@ class retainer_invoice_comments(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     retainer=models.ForeignKey(RetainerInvoice,on_delete=models.CASCADE,null=True,blank=True)
     comments=models.CharField(max_length=500,null=True,blank=True)
+
+class retainer_payment_details(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    retainer=models.ForeignKey(RetainerInvoice, on_delete=models.CASCADE,null=True,blank=True)
+    payment_opt=models.CharField(max_length=100,null=True,blank=True)
+    bank_name=models.CharField(max_length=100,null=True,blank=True)
+    acc_no=models.CharField(max_length=100,null=True,blank=True)
+    upi_id=models.CharField(max_length=100,null=True,blank=True)
+    cheque_no=models.CharField(max_length=100,null=True,blank=True)
+
             
 
 class Estimates(models.Model):
