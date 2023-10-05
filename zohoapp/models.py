@@ -240,6 +240,7 @@ class retainer_payment_details(models.Model):
     retainer=models.ForeignKey(RetainerInvoice, on_delete=models.CASCADE,null=True,blank=True)
     payment_opt=models.CharField(max_length=100,null=True,blank=True)
     bank_name=models.CharField(max_length=100,null=True,blank=True)
+    bank_id=models.CharField(max_length=100,null=True,blank=True)
     acc_no=models.CharField(max_length=100,null=True,blank=True)
     upi_id=models.CharField(max_length=100,null=True,blank=True)
     cheque_no=models.CharField(max_length=100,null=True,blank=True)

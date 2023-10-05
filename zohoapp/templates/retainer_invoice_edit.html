@@ -32,6 +32,23 @@
 <script>
   window.onload=function(){        
       document.getElementById("customer_id").value="{{ custo_id }}";
+      document.getElementById("cus_place1").value="{{ cust_placeofsupply }}";
+        document.getElementById("customer_gst_treat").value="{{ cust_gst_treat }}";
+        document.getElementById("customer_gstno").value="{{ cust_gstno }}";
+
+        var GSTNO=document.getElementById('customer_gstno').value;
+              var expr=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+
+              if (!expr.test(GSTNO)) 
+              {
+                $("#cgstno_row").removeClass('d-flex');
+                $("#cgstno_row").addClass('d-none');
+             }
+           else{
+                $("#cgstno_row").removeClass('d-none');
+                $("#cgstno_row").addClass('d-flex');
+              }
+
       
                   
   }
@@ -83,6 +100,27 @@
                   <input type="email" id="cx_mail" name="cx_mail" value="{{invoice.customer_name.customerEmail}}" class="form-control text-dark">
                 </div>
               </div>
+              <div class="row mb-4 " id="cgst_treat_row" >
+                <div class="col-sm-2"><label for="">GST Treatment</label></div>
+                <div class="col-sm-6"><input type="text" id="customer_gst_treat" name="" class="form-control text-dark"
+                        value="" readonly>
+                    
+                </div>
+            </div>
+            <div class="row mb-4 d-none" id="cgstno_row" >
+              <div class="col-sm-2 col-lg-2 col-md-2"><label for="">GST Number</label></div>
+              <div class="col-sm-6 col-lg-6 col-md-6"><input type="text" id="customer_gstno" name="" class="form-control text-dark"
+                      value="" readonly>
+                  
+              </div>
+          </div>
+          <div class="row mb-4" id="cplace_supply_row" >
+            <div class="col-sm-2"><label for="">Place Of Supply</label></div>
+            <div class="col-sm-6"><input type="text" id="cus_place1" name="" class="form-control text-dark"
+                    value="" readonly>
+                
+            </div>
+        </div>
 
 
               <div class="row mb-4">
@@ -148,20 +186,146 @@
               </div>
 
               
-              <div class="mb-4 mt-4">
+              <div class="row mb-4 mt-4">
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
-                  <textarea class="form-control   text-dark" style="height: 50%;" cols="5" rows="5" name="customer_notes"  id="floatingTextarea" required>{{invoice.customer_notes}}</textarea>
+                  <textarea class="form-control   text-dark" style="height: 50%;" cols="5" rows="10" name="customer_notes"  id="floatingTextarea" required>{{invoice.customer_notes}}</textarea>
                   
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-4">
+                  <div class="p-2"  id="div_bal" style="width: 100%;height: 180px;background-color: #979797b2;">
+                    <table>
+                        <tr>
+                          <th>
+                            <label for="" class="mt-4"><h4 class="text-black">Paid:</h4>
+                          </th>
+                          <td>
+                            <input type="number" name="paid" id="paid" class="form-control mt-3 text-black" onchange="show_bal()" style="width: 100%;" value="0">
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            <label for="" class="mt-4"><h4 class="text-black">Balance :</h4></label>
+                          </th>
+                          <td>
+                            <input type="number" name="balance" id="balance" class="form-control mt-3 text-black" style="width: 100%;" value="0" readonly>
+
+                          </td>
+                        </tr>
+                    </table>
+
+
+                  </div>
+
                 </div>
               </div>
 
 
               
-              <div class="mb-4">
+              <div class="row mb-4">
                 <div class="col-sm-6 col-md-6 col-lg-6">                        
                   <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
-                  <textarea class="form-control  bg-light text-dark" style="height: 50%;" cols="5" rows="5"  name="terms"   id="floatingTextarea" required>{{invoice.terms_and_conditions}}</textarea>
+                  <textarea class="form-control  bg-light text-dark" style="height: 50%;" cols="5" rows="10"  name="terms"   id="floatingTextarea" required>{{invoice.terms_and_conditions}}</textarea>
+
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                  <div class="p-3 mt-4 pb-4" style="width: 100%;background-color: #888888a9;">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12 col-lg-12">
+                        <label for="" class="text-black"><b>Payment Method</b></label>
+                        {% if pay_detail.payment_opt %}
+                        <select name="pay_method" id="pay_method" class="form-control text-dark" onclick="payment_method()">
+                          <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------- SELECT --------</option>
+                          <option value="{{ pay_detail.payment_opt }}" selected>{{ pay_detail.payment_opt }}</option>
+                          <option value="Bank">Bank</option>
+                          <option value="UPI">UPI</option>
+                          <option value="Cash">Cash</option>
+                          <option value="Cheque">Cheque</option>
+                        </select>
+                        {% else %}
+                        <select name="pay_method" id="pay_method" class="form-control text-dark" onclick="payment_method()">
+                          <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------- SELECT --------</option>
+                          <option value="Bank">Bank</option>
+                          <option value="UPI">UPI</option>
+                          <option value="Cash">Cash</option>
+                          <option value="Cheque">Cheque</option>
+                        </select>
+                        {% endif %}
+                      </div>
+                    </div>
+                    {% if pay_detail.payment_opt == 'Bank' %}
+                   <fieldset1  style="display: block;" id="bank_row">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12 col-lg-12">
+                        <select name="bank" id="bank" class="form-control mt-1 text-dark">
+                          <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------- SELECT BANK -------</option>
+                          <option value="{{ pay_detail.bank_id }} {{ pay_detail.bank_name }}" selected>{{ pay_detail.bank_name }}</option>
+                          {% for i in banks %}
+                            <option value="{{ i.id }} {{ i.name }}">{{ i.name }}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="" class="text-black">Account No:</label>
+                      <input type="text" name="acc_no" id="acc_no" class="form-control text-dark" value="{{ pay_detail.acc_no }}" readonly> 
+                      </div>
+
+                    </div>
+                   </fieldset1>
+                   {% else %}
+                   <fieldset1  style="display: none;" id="bank_row">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12 col-lg-12">
+                        <select name="bank" id="bank" class="form-control mt-1 text-dark">
+                          <option value="" selected>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------- SELECT BANK -------</option>
+                          {% for i in banks %}
+                            <option value="{{ i.id }} {{ i.name }}">{{ i.name }}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="" class="text-black">Account No:</label>
+                      <input type="text" name="acc_no" id="acc_no" class="form-control text-dark" readonly> 
+                      </div>
+
+                    </div>
+                   </fieldset1>
+                   {% endif %}
+
+                   {% if pay_detail.payment_opt == 'Cheque' %}
+                    <div class="row" style="display: block;" id="chq_row">
+                      <div class="col-sm-12 col-md-12 col-lg-12">
+                        <label for="" class="text-black">Cheque No:</label>
+                      <input type="text" name="chq_no" id="chq_no" class="form-control text-dark" value="{{ pay_detail.cheque_no }}">
+                      <label for="" id="chq_label"></label>
+                      </div>
+                    </div>
+                    {% else %}
+                    <div class="row" style="display: none;" id="chq_row">
+                      <div class="col-sm-12 col-md-12 col-lg-12">
+                        <label for="" class="text-black">Cheque No:</label>
+                      <input type="text" name="chq_no" id="chq_no" class="form-control text-dark">
+                      <label for="" id="chq_label"></label>
+                      </div>
+                    </div>
+                    {% endif %}
+
+                    {% if pay_detail.payment_opt == 'UPI' %}
+                    <div class="row" style="display: block;" id="upi_row">
+                      <div class="col-sm-12 col-md-12 col-lg-12">
+                        <label for="" class="text-black">UPI Id:</label>
+                      <input type="text" name="upi_id" id="upi_id" class="form-control text-dark" value="{{ pay_detail.upi_id }}">
+                      <label for="" id="upi_label"></label>
+                      </div>
+                    </div>
+                    {% else %}
+                    <div class="row" style="display: none;" id="upi_row">
+                      <div class="col-sm-12 col-md-12 col-lg-12">
+                        <label for="" class="text-black">UPI Id:</label>
+                      <input type="text" name="upi_id" id="upi_id" class="form-control text-dark" value="{{ pay_detail.upi_id }}">
+                      <label for="" id="upi_label"></label>
+                      </div>
+                    </div>
+                    {% endif %}
+
+                  </div>
 
                 </div>
               </div>
@@ -338,6 +502,17 @@
                       <option value="Overseas- Persons with who you do import or exports of supplies outside india">Overseas- Persons with who you do import or exports of supplies outside india</option>
                       <option value="Special Economic Zone">Special Economic Zone</option>
                     </select>
+                  </div>       
+                </div>
+
+                <div class="row gstrow d-none" >
+                  <div class="col-md-3 mt-2">
+                    <label id="glbl" style="color:rgb(190, 88, 88);">GSTIN/UIN *</label>
+                  </div>
+                  <div class="col-md-6 mt-2">
+                    <input type="text" class="form-control text-dark bg-light" id="c_gstin" name="c_gstin" 
+                      placeholder="29APPCK7465F1Z1">
+                    <label id="gst_label"></label>
                   </div>       
                 </div>
 
@@ -830,10 +1005,135 @@
 
 </section>
 
-<!-- <script>
-  document.getElementById('dateField').valueAsDate = new Date();
-</script> -->
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  function payment_method(){
+    var pay_opt=document.getElementById("pay_method").value;
+    if(pay_opt=='Bank')
+    {
+       document.getElementById("bank_row").style.display="block";
+       document.getElementById("upi_row").style.display="none";
+       document.getElementById("chq_row").style.display="none";
+       document.getElementById('upi_id').value="";
+       document.getElementById('chq_no').value="";
+       document.getElementById('acc_no').value="";
+      document.getElementById('bank').value="";
+       document.getElementById('chq_label').innerHTML=" ";
+    }
+    else if(pay_opt=='Cheque')
+    {
+      document.getElementById("bank_row").style.display="none";
+      document.getElementById("upi_row").style.display="none";
+      document.getElementById("chq_row").style.display="block";
+      document.getElementById('chq_label').innerHTML=" ";
+      document.getElementById('chq_no').value="";
+      document.getElementById('upi_id').value="";
+      document.getElementById('acc_no').value="";
+      document.getElementById('bank').value="";
+    }
+    else if(pay_opt=='UPI')
+    {
+      document.getElementById("bank_row").style.display="none";
+      document.getElementById("upi_row").style.display="block";
+      document.getElementById("chq_row").style.display="none";
+      document.getElementById('chq_label').innerHTML=" ";
+      document.getElementById('chq_no').value="";
+      document.getElementById('upi_id').value="";
+      document.getElementById('acc_no').value="";
+      document.getElementById('bank').value="";
+    }
+    else if(pay_opt=='Cash')
+    {
+      document.getElementById("bank_row").style.display="none";
+      document.getElementById("upi_row").style.display="none";
+      document.getElementById("chq_row").style.display="none";
+      document.getElementById('chq_label').innerHTML=" ";
+      document.getElementById('chq_no').value="";
+      document.getElementById('upi_id').value="";
+      document.getElementById('acc_no').value="";
+      document.getElementById('bank').value="";
+    }
+    
+
+  }
+</script> 
+
+
+
+<script>
+
+  function addressSame(){
+    var chkbtn1 = document.getElementById('vokay');
+    var chkbtn2 = document.getElementById('csokay');
+  
+  
+    if (chkbtn2.checked == true) {
+      document.getElementById('csstreet1').value = document.getElementById('cstreet1').value;
+      document.getElementById('csstreet2').value = document.getElementById('cstreet2').value;
+      document.getElementById('cscity').value = document.getElementById('ccity').value;
+      document.getElementById('cspincode').value = document.getElementById('cpincode').value;
+      document.getElementById('cscountry').value = document.getElementById('ccountry').value;
+      document.getElementById('csstate').value = document.getElementById('cstate').value;
+      document.getElementById('csphone').value = document.getElementById('cphone').value;
+      document.getElementById('csfax').value = document.getElementById('cfax').value;
+    } 
+    else {
+      document.getElementById('csstreet1').value = '';
+      document.getElementById('csstreet2').value = '';
+      document.getElementById('cscity').value = '';
+      document.getElementById('csstate').value = '';
+      document.getElementById('cspincode').value = '';
+      document.getElementById('cscountry').value = '';
+      document.getElementById('csphone').value = '';
+      document.getElementById('csfax').value = '';
+    }
+  }
+  
+  
+  $(document).ready(function() {
+      $("#c_gsttype").change(function() {
+        var x=$('#c_gsttype').val();
+        // console.log(x)
+        if(x=="Unregistered Business-not Registered under GST") 
+        {
+          $(".gstrow").addClass('d-none');
+  
+        }
+        else if(x == 'Overseas- Persons with who you do import or exports of supplies outside india'){
+          $(".gstrow").addClass('d-none');
+        }
+        else 
+        {
+          $(".gstrow").removeClass('d-none');
+          $(".gstrow").addClass('d-flex');
+        }
+      
+      });
+    });
+  
+  
+      $(document).ready(function() {
+      $("#c_gstin").change(function() {
+  
+          var x=$("#c_gstin").val();
+          var gst_label=document.getElementById("gst_label")
+          var expr=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+          if (!expr.test(x)) {
+              gst_label.style.color="red";
+              gst_label.innerHTML = "Invalid GST Number.";
+          }
+          else{
+              gst_label.style.color="green";
+              gst_label.innerHTML = "valid GST Number.";
+  
+          }
+        });
+      });
+  
+  </script>
+  
 
 <script>
 
@@ -870,7 +1170,7 @@ else{
 $.ajax({
   
   type : 'POST',
-  url:"{% url 'recurbills_customer' %}",
+  url:"{% url 'new_estimate_customer' %}",
 
   data:{
       customer_type : custType,
@@ -886,6 +1186,7 @@ $.ajax({
       desg :$("#c_desg").val(),
       dpt :$("#c_dpt").val(),
       gsttype :$("#c_gsttype").val(),
+      gstno:$("#c_gstin").val(),
       placeofsupply :$("#placesupply").val(),
       tax_preference :cust_tax,
       currency : $("#c_curn").val(),
@@ -954,8 +1255,22 @@ $(document).ready(function() {
 
             success: function(data) {
               $('#cx_mail').val(' '+ data.customer_email);
-              // $('#cus_place').val(data.cust_place_supply);
               $('#customer_id').val(data.cust_id);
+              $('#cus_place1').val(data.cust_place_supply);
+              $('#customer_gst_treat').val(data.cust_gst_treat);
+              $('#customer_gstno').val(data.cust_gstno);
+              var GSTNO=document.getElementById('customer_gstno').value;
+              var expr=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+
+              if (!expr.test(GSTNO)) 
+              {
+                $("#cgstno_row").removeClass('d-flex');
+                $("#cgstno_row").addClass('d-none');
+             }
+           else{
+                $("#cgstno_row").removeClass('d-none');
+                $("#cgstno_row").addClass('d-flex');
+              }
               
                                 
                                
@@ -965,6 +1280,32 @@ $(document).ready(function() {
         });
     });
 });
+
+
+
+
+$(document).ready(function(){
+  $('#bank').change(function(){
+    var bank=$('#bank').val();
+    var bank_id=bank.split(" ")[0];
+    $.ajax({
+      url:"{% url 'get_retainer_accno' %}",
+      data:{
+        id:bank_id,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+
+      },
+      type:'POST',
+      success:function(data){
+        $('#acc_no').val(data.account_number);
+      }
+
+    });
+
+  });
+
+});
+
 
 
 
@@ -1098,6 +1439,22 @@ $('#retainer-table').on('click', '.clone-row', function () {
       }
   });
 </script>
+
+<script>
+  function show_bal()
+  {
+    var paid_off=$('#paid').val();
+    var total_amount=$('#hidden-total-amount').val();
+    var balance=$('#balance').val();
+    var bal=total_amount-paid_off;
+    $('#balance').val(bal);
+
+
+  }
+</script>
+
+
+
 <script>
 
   const totalAmountElement = document.getElementById('total-amount');
