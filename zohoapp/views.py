@@ -14068,3 +14068,8 @@ def vendor_customize_report(request):
 def bill_customize_report(request):
     company_data = company_details.objects.get(user=request.user)
     return render(request, 'bill_customize_report.html',{'company': company_data})
+
+
+# ................................  Settings.........................................
+def settings(request):
+    return render (request,'settings.html')

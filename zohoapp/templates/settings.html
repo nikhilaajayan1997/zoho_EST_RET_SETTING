@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+<div class="container-fulid containerprof" >
+    <div class="card radius-15 p-3">
+        <div class="card-body">
+            <div class="card-title">
+              <h2 class="mb-0 text-uppercase text-right">Settings</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card radius-15 p-5">
+        <fieldset>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h3>Activate/Deactivate SubMenu</h3>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-12 col-md-3 col-lg-3">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12 col-md-12">
+                            <h4 class="text-uppercase" style="text-align: center;color: rgb(206, 136, 6);">Items</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Items</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Price List</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-3">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12 col-md-12">
+                            <h4 class="text-uppercase" style="text-align: center;color: rgb(206, 136, 6);">Bank And Cash</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Offline Banking</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Banking</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-3">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12 col-md-12">
+                            <h4 class="text-uppercase" style="text-align: center;color: rgb(206, 136, 6);">sales</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Customers</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Estimates</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Retainer Invoices</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Sales Orders</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Delivery Challan</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Invoices</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Credit Notes</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Recurring Invoices</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-3">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12 col-md-12">
+                            <h4 class="text-uppercase" style="text-align: center;color: rgb(206, 136, 6);">Purchases</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Vendors</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Vendors Credit</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Expenses</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Recurring Expenses</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Purchase Orders</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Payment Made</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Bills</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Recurring Bills</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12 col-md-12">
+                            <h4 class="text-uppercase" style="text-align: center;color: rgb(206, 136, 6);">Time Tracking</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Projects</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3 col-lg-3 col-md-3">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12 col-md-12">
+                            <h4 class="text-uppercase" style="text-align: center;color: rgb(206, 136, 6);">Accountant</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Chart Of Accounts</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-lg-3 col-md-3">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12 col-md-12">
+                            <h4 class="text-uppercase" style="text-align: center;color: rgb(206, 136, 6);">Payroll</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Employees</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-lg-10 col-md-10">
+                            <h6 style="color: rgb(240, 239, 238);">Employee's Loan</h6>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+        </fieldset>
+        
+    </div>
+
+</div>
+
+{% endblock %}

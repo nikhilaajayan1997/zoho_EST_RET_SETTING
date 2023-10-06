@@ -1348,3 +1348,33 @@ class LoanAttach(models.Model):
     payroll = models.ForeignKey('Payroll', on_delete=models.CASCADE)  
     attach = models.FileField(upload_to='loan_attachments/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+
+# ......................................................  Settings  ........................................
+
+class settings(models.Model):
+    items=models.CharField(max_length=25,null=True,blank=True)
+    pricelist=models.CharField(max_length=25,null=True,blank=True)
+    offline_banking=models.CharField(max_length=25,null=True,blank=True)
+    banking=models.CharField(max_length=25,null=True,blank=True)
+    customers=models.CharField(max_length=25,null=True,blank=True)
+    estimates=models.CharField(max_length=25,null=True,blank=True)
+    retainer_invoices=models.CharField(max_length=25,null=True,blank=True)
+    sales_orders=models.CharField(max_length=25,null=True,blank=True)
+    delivery_challans=models.CharField(max_length=25,null=True,blank=True)
+    invoices=models.CharField(max_length=25,null=True,blank=True)
+    credit_notes=models.CharField(max_length=25,null=True,blank=True)
+    recurring_invoices=models.CharField(max_length=25,null=True,blank=True)
+    vendors=models.CharField(max_length=25,null=True,blank=True)
+    vendor_credits=models.CharField(max_length=25,null=True,blank=True)
+    expenses=models.CharField(max_length=25,null=True,blank=True)
+    recurring_expenses=models.CharField(max_length=25,null=True,blank=True)
+    purchase_orders=models.CharField(max_length=25,null=True,blank=True)
+    payment_made=models.CharField(max_length=25,null=True,blank=True)
+    bills=models.CharField(max_length=25,null=True,blank=True)
+    recurring_bills=models.CharField(max_length=25,null=True,blank=True)
+    projects=models.CharField(max_length=25,null=True,blank=True)
+    chart_of_accounts=models.CharField(max_length=25,null=True,blank=True)
+    employees=models.CharField(max_length=25,null=True,blank=True)
+    employees_loan=models.CharField(max_length=25,null=True,blank=True)
