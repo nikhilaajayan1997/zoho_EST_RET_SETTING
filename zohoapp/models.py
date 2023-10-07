@@ -1353,7 +1353,7 @@ class LoanAttach(models.Model):
 
 # ......................................................  Settings  ........................................
 
-class settings(models.Model):
+class setting_list(models.Model):
     items=models.CharField(max_length=25,null=True,blank=True)
     pricelist=models.CharField(max_length=25,null=True,blank=True)
     offline_banking=models.CharField(max_length=25,null=True,blank=True)

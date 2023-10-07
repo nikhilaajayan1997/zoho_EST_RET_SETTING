@@ -676,7 +676,7 @@ urlpatterns = [
     path('bill_customize_report',views.bill_customize_report,name='bill_customize_report'),
 
     # ...........................................settings
-    path('settings',views.settings,name='settings'),
+    path('go_settings',views.go_settings,name='go_settings'),
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
     

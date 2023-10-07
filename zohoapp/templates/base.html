@@ -475,17 +475,21 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
+                                        <div class="dropdown-item " >
 
-                                        <div class="dropdown-item">
-                                            <a class="d-inline-block" style="color: #fafbfc" href="{% url 'itemview' %}">Items</a>
-                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'additem' %}">
+                                            <a class="d-inline-block " style="color: #fafbfc" href="{% url 'itemview' %}" >Items </a>
+                                            <a class="d-inline-block " style="color: #000000;margin-left: 2px;" href="{% url 'additem' %}">
                                                 <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
                     <i class="mdi mdi-plus"></i>
                   </span>
                                             </a>
-                                        </div>
+                                            
+                                            
+                                            
 
-                                        <div class="dropdown-item">
+                                        </div>
+                                        
+                                        <div class="dropdown-item " >
                                             <a class="d-inline-block" style="color: #f7f8f8" href="{% url 'viewpricelist' %}">Price List</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'addprice' %}">
                                                 <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
@@ -493,6 +497,7 @@
                   </span>
                                             </a>
                                         </div>
+                                        
 
 
 
@@ -931,7 +936,7 @@
                             </li>
                             <li>
                                 <div class="icons">
-                                    <a href="{% url 'settings' %}"><i class="fa fa-gear" style="font-size:30px;"></i></a>
+                                    <a href="{% url 'go_settings' %}"><i class="fa fa-gear" style="font-size:30px;"></i></a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">

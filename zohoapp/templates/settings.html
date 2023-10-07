@@ -18,6 +18,7 @@
                     <h3>Activate/Deactivate SubMenu</h3>
                 </div>
             </div>
+            {% for i in my_settings %}
             <div class="row mt-3">
                 <div class="col-sm-12 col-md-3 col-lg-3">
                     <div class="row">
@@ -30,7 +31,13 @@
                             <h6 style="color: rgb(240, 239, 238);">Items</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            {% if i.items == 'yes' %}
+
+                            <input type="checkbox" name="item" checked>
+                            {% else %}
+                            <input type="checkbox" name="item" >
+                            {% endif %}
+
                         </div>
                     </div>
                     <div class="row">
@@ -38,7 +45,13 @@
                             <h6 style="color: rgb(240, 239, 238);">Price List</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            {% if i.pricelist == 'yes' %}
+
+                            <input type="checkbox" name="pricelist" checked>
+                            {% else %}
+                            <input type="checkbox" name="pricelist" >
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
@@ -53,7 +66,12 @@
                             <h6 style="color: rgb(240, 239, 238);">Offline Banking</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            {% if i.offline_banking == 'yes' %}
+                            <input type="checkbox" name="offlinebanking" checked>
+                            {% else %}
+                            <input type="checkbox" name="offlinebanking" >
+
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
@@ -61,7 +79,11 @@
                             <h6 style="color: rgb(240, 239, 238);">Banking</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            {% if i.banking == 'yes' %}
+                            <input type="checkbox" name="banking" checked>
+                            {% else %}
+                            <input type="checkbox" name="banking" >
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -76,7 +98,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Customers</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="customer" >
                         </div>
                     </div>
                     <div class="row">
@@ -84,7 +106,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Estimates</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="estimate" >
                         </div>
                     </div>
                     
@@ -93,7 +115,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Retainer Invoices</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="retainerinvoice" >
                         </div>
                     </div>
                     <div class="row">
@@ -101,7 +123,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Sales Orders</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="salesorder" >
                         </div>
                     </div>
                     <div class="row">
@@ -109,7 +131,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Delivery Challan</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="deliverychallan" >
                         </div>
                     </div>
                     <div class="row">
@@ -117,7 +139,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Invoices</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="invoice" >
                         </div>
                     </div>
                     <div class="row">
@@ -125,7 +147,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Credit Notes</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="creditnotes" >
                         </div>
                     </div>
                     <div class="row">
@@ -133,7 +155,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Recurring Invoices</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="recurringinvoice" >
                         </div>
                     </div>
                 </div>
@@ -148,7 +170,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Vendors</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="vendor" >
                         </div>
                     </div>
                     <div class="row">
@@ -156,7 +178,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Vendors Credit</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="vendorcredit" >
                         </div>
                     </div>
                     
@@ -165,7 +187,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Expenses</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="expense" >
                         </div>
                     </div>
                     <div class="row">
@@ -173,7 +195,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Recurring Expenses</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="recurringexpense" >
                         </div>
                     </div>
                     <div class="row">
@@ -181,7 +203,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Purchase Orders</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="purchaseorder" >
                         </div>
                     </div>
                     <div class="row">
@@ -189,7 +211,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Payment Made</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="paymentmade" >
                         </div>
                     </div>
                     <div class="row">
@@ -197,7 +219,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Bills</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="bill" >
                         </div>
                     </div>
                     <div class="row">
@@ -205,7 +227,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Recurring Bills</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="recurringbill" >
                         </div>
                     </div>
                 </div>
@@ -222,7 +244,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Projects</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="project" >
                         </div>
                     </div>
 
@@ -238,7 +260,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Chart Of Accounts</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="chartofaccount" >
                         </div>
                     </div>
                 </div>
@@ -253,7 +275,7 @@
                             <h6 style="color: rgb(240, 239, 238);">Employees</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="payroll" >
                         </div>
                     </div>
                     <div class="row">
@@ -261,11 +283,19 @@
                             <h6 style="color: rgb(240, 239, 238);">Employee's Loan</h6>
                         </div>
                         <div class="col-sm-2 col-lg-2 col-md-2">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" name="emplyeeloan" >
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-3"></div>
+            </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col-sm-12 col-md-4 col-lg-4"></div>
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                    <button class="btn" style="background-color: rgb(210, 132, 30);" type="submit" name="action" value="Save">Save</button> 
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4"></div>
             </div>
         </fieldset>
         

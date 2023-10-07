@@ -192,6 +192,14 @@ def login(request):
                 if not Chart_of_Account.objects.filter(account_name=account['account_name']).exists():
                     new_account = Chart_of_Account(user=account['user'],account_name=account['account_name'],account_type=account['account_type'],credit_no=account['credit_no'],sub_account=account['sub_account'],parent_account=account['parent_account'],bank_account_no=account['bank_account_no'],currency=account['currency'],account_code=account['account_code'],description=account['description'],watchlist=account['watchlist'],create_status=account['create_status'],status=account['status'])
                     new_account.save()
+            
+            if not setting_list.objects.all().exists():
+                settings_row=setting_list(items='yes',pricelist='yes',offline_banking='yes',banking='yes',customers='yes',
+                estimates='yes',retainer_invoices='yes',sales_orders='yes',delivery_challans='yes',invoices='yes',
+                credit_notes='yes',recurring_invoices='yes',vendors='yes',vendor_credits='yes',expenses='yes',recurring_expenses='yes',
+                purchase_orders='yes',payment_made='yes',bills='yes',recurring_bills='yes',projects='yes',chart_of_accounts='yes',
+                employees='yes',employees_loan='yes')
+                settings_row.save()
 
             
 
@@ -14071,5 +14079,6 @@ def bill_customize_report(request):
 
 
 # ................................  Settings.........................................
-def settings(request):
-    return render (request,'settings.html')
+def go_settings(request):
+    my_settings=setting_list.objects.all()
+    return render (request,'settings.html',{'my_settings':my_settings})
