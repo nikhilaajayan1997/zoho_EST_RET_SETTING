@@ -1354,6 +1354,7 @@ class LoanAttach(models.Model):
 # ......................................................  Settings  ........................................
 
 class setting_list(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,default='')
     items=models.CharField(max_length=25,null=True,blank=True)
     pricelist=models.CharField(max_length=25,null=True,blank=True)
     offline_banking=models.CharField(max_length=25,null=True,blank=True)

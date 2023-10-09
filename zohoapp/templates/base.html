@@ -475,19 +475,27 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <div class="dropdown-item " >
-
+                                        {% if setting_variable.items  == "yes" %}
+                                        <div class="dropdown-item" >
                                             <a class="d-inline-block " style="color: #fafbfc" href="{% url 'itemview' %}" >Items </a>
                                             <a class="d-inline-block " style="color: #000000;margin-left: 2px;" href="{% url 'additem' %}">
                                                 <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
                     <i class="mdi mdi-plus"></i>
                   </span>
                                             </a>
-                                            
-                                            
-                                            
-
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block " style="color: #fafbfc" href="{% url 'itemview' %}" >Items </a>
+                                            <a class="d-inline-block " style="color: #000000;margin-left: 2px;" href="{% url 'additem' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+
+                                        {% endif %}
+                                        
                                         
                                         <div class="dropdown-item " >
                                             <a class="d-inline-block" style="color: #f7f8f8" href="{% url 'viewpricelist' %}">Price List</a>

@@ -193,8 +193,9 @@ def login(request):
                     new_account = Chart_of_Account(user=account['user'],account_name=account['account_name'],account_type=account['account_type'],credit_no=account['credit_no'],sub_account=account['sub_account'],parent_account=account['parent_account'],bank_account_no=account['bank_account_no'],currency=account['currency'],account_code=account['account_code'],description=account['description'],watchlist=account['watchlist'],create_status=account['create_status'],status=account['status'])
                     new_account.save()
             
-            if not setting_list.objects.all().exists():
-                settings_row=setting_list(items='yes',pricelist='yes',offline_banking='yes',banking='yes',customers='yes',
+            if not setting_list.objects.filter(user=request.user.id).exists():
+                user_id=User.objects.get(id=request.user.id)
+                settings_row=setting_list(user=user_id,items='yes',pricelist='yes',offline_banking='yes',banking='yes',customers='yes',
                 estimates='yes',retainer_invoices='yes',sales_orders='yes',delivery_challans='yes',invoices='yes',
                 credit_notes='yes',recurring_invoices='yes',vendors='yes',vendor_credits='yes',expenses='yes',recurring_expenses='yes',
                 purchase_orders='yes',payment_made='yes',bills='yes',recurring_bills='yes',projects='yes',chart_of_accounts='yes',
@@ -14079,6 +14080,46 @@ def bill_customize_report(request):
 
 
 # ................................  Settings.........................................
+
 def go_settings(request):
-    my_settings=setting_list.objects.all()
+    user_id=User.objects.get(id=request.user.id)
+    my_settings=setting_list.objects.get(user=user_id)
     return render (request,'settings.html',{'my_settings':my_settings})
+
+def edit_setting(request,pk):
+    setting_obj=setting_list.objects.get(id=pk)
+    items1=request.POST.get('item',False)
+    pricelist1=request.POST['pricelist']
+    offlinebanking1=request.POST['offlinebanking']
+    banking1=request.POST['banking']
+    customer1=request.POST['customer']
+    estimate1=request.POST['estimate']
+    retainerinvoice1=request.POST['retainerinvoice']
+    salesorder1=request.POST['salesorder']
+    deliverychallan1=request.POST['deliverychallan']
+    invoice1=request.POST['invoice']
+    creditnotes1=request.POST['creditnotes']
+    recurringinvoice1=request.POST['recurringinvoice']
+    vendor1=request.POST['vendor']
+    vendorcredit1=request.POST['vendorcredit']
+    expense1=request.POST['expense']
+    recurringexpense1=request.POST['recurringexpense']
+    purchaseorder1=request.POST['purchaseorder']
+    paymentmade1=request.POST['paymentmade']
+    bill1=request.POST['bill']
+    recurringbill1=request.POST['recurringbill']
+    project1=request.POST['project']
+    chartofaccount1=request.POST['chartofaccount']
+    employee1=request.POST['employee']
+    employeeloan1=request.POST['employeeloan']
+    if not items1:
+        x="no"
+        setting_obj.items=x
+    else:
+        x="yes"
+        setting_obj.items=x
+        print("haiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+
+
+    setting_obj.save()
+    return redirect("go_settings")
