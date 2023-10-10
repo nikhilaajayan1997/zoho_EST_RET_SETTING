@@ -496,7 +496,7 @@
 
                                         {% endif %}
                                         
-                                        
+                                        {% if setting_variable.pricelist  == "yes" %}
                                         <div class="dropdown-item " >
                                             <a class="d-inline-block" style="color: #f7f8f8" href="{% url 'viewpricelist' %}">Price List</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'addprice' %}">
@@ -505,6 +505,16 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item " style="display: none;">
+                                            <a class="d-inline-block" style="color: #f7f8f8" href="{% url 'viewpricelist' %}">Price List</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'addprice' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
                                         
 
 
@@ -525,6 +535,7 @@
                                 <ul class="dropdown-menu">
                                     <li>
 
+                                        {% if setting_variable.offline_banking  == "yes" %}
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #f7fbff" href="{% url 'banking_home' %}">Offline Banking</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'create_banking' %}">
@@ -533,7 +544,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #f7fbff" href="{% url 'banking_home' %}">Offline Banking</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'create_banking' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
+                                        {% if setting_variable.banking  == "yes" %}
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'bank_home' %}">Banking</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'create_bank' %}">
@@ -542,6 +564,16 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'bank_home' %}">Banking</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'create_bank' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
                                     </li>
                                 </ul>
@@ -561,6 +593,7 @@
                                 </a>
                                 <ul class="dropdown-menu ">
                                     <li>
+                                        {% if setting_variable.customers  == "yes" %}
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #f6f7f8" href="{% url 'view_customr' %}">Customers</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'add_customers' %}">
@@ -569,6 +602,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #f6f7f8" href="{% url 'view_customr' %}">Customers</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'add_customers' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if setting_variable.estimates  == "yes" %}
 
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'allestimates'%}">Estimates</a>
@@ -578,6 +623,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'allestimates'%}">Estimates</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'newestimate' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if setting_variable.retainer_invoices  == "yes" %}
 
                                         <div class="dropdown-item ">
                                             <a class="d-inline-block" style="color: #fdfeff" href="{% url 'retainer_invoice' %}">Retainer Invoices</a>
@@ -587,6 +644,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item " style="display: none;">
+                                            <a class="d-inline-block" style="color: #fdfeff" href="{% url 'retainer_invoice' %}">Retainer Invoices</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'add_invoice' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if setting_variable.sales_orders  == "yes" %}
 
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #fafcff" href="{% url 'view_sales_order' %}">Sales Orders</a>
@@ -596,7 +665,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #fafcff" href="{% url 'view_sales_order' %}">Sales Orders</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'create_sales_order' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
+                                        {% if setting_variable.delivery_challans  == "yes" %}
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #fbfdff" href="{% url 'create_and_send_challan' %}">Delivery Challans</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'create_delivery_chellan' %}">
@@ -605,7 +685,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #fbfdff" href="{% url 'create_and_send_challan' %}">Delivery Challans</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'create_delivery_chellan' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
+                                        {% if setting_variable.invoices  == "yes" %}
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'invoiceview' %}">Invoices</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'add_prod' %}">
@@ -614,7 +705,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'invoiceview' %}">Invoices</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'add_prod' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
+                                        {% if setting_variable.credit_notes  == "yes" %}
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'creditnotes' %}">Credit Notes</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'newcredit' %}">
@@ -623,6 +725,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'creditnotes' %}">Credit Notes</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'newcredit' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if setting_variable.recurring_invoices  == "yes" %}
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'view_recurpage' %}">Recurring Invoice</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'create_recur' %}">
@@ -631,6 +745,16 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'view_recurpage' %}">Recurring Invoice</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'create_recur' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
                                     </li>
                                 </ul>
@@ -649,6 +773,7 @@
                                 <ul class="dropdown-menu">
                                     <li>
 
+                                        {% if setting_variable.vendors  == "yes" %}
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'view_vendor_list' %}">Vendors</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'vendor' %}">
@@ -657,7 +782,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'view_vendor_list' %}">Vendors</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'vendor' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
+                                        {% if setting_variable.vendor_credits  == "yes" %}                                        
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'vendor_credits_home' %}">Vendors Credit</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 3px;" href="{% url 'add_vendor_credits' %}">
@@ -665,9 +801,20 @@
                                                 <i class="mdi mdi-plus"></i>
                                               </span>
                                             </a>
-                                          </div> 
+                                        </div> 
+                                          {% else %}
+                                          <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'vendor_credits_home' %}">Vendors Credit</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 3px;" href="{% url 'add_vendor_credits' %}">
+                                              <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;"> 
+                                                <i class="mdi mdi-plus"></i>
+                                              </span>
+                                            </a>
+                                        </div> 
+                                          {% endif %}
 
-                                        <div class="dropdown-item">
+                                          {% if setting_variable.expenses  == "yes" %}                                        
+                                          <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'expensepage' %}">Expenses</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{%url 'save_expense'%}">
                                                 <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
@@ -675,7 +822,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'expensepage' %}">Expenses</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{%url 'save_expense'%}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
+                                        {% if setting_variable.recurring_expenses  == "yes" %} 
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'recurringbase' %}">Recurring Expenses</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'recurringhome' %}">
@@ -684,7 +842,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'recurringbase' %}">Recurring Expenses</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'recurringhome' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
+                                        {% if setting_variable.purchase_orders  == "yes" %}                                        
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'purchaseView' %}">Purchase Orders</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'purchase_order' %}">
@@ -693,7 +862,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'purchaseView' %}">Purchase Orders</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'purchase_order' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
+                                        {% if setting_variable.payment_made  == "yes" %}                                        
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'paymentmethod' %}">Payment Made</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'paymentadd_method' %}">
@@ -702,7 +882,19 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'paymentmethod' %}">Payment Made</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'paymentadd_method' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
+
+                                        {% if setting_variable.bills  == "yes" %}                                        
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'view_bills' %}">Bills</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'new_bill' %}">
@@ -711,7 +903,18 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'view_bills' %}">Bills</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'new_bill' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
+                                        {% if setting_variable.recurring_bills  == "yes" %}                                        
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'recurring_bill' %}">Recurring Bills</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'add_recurring_bills' %}">
@@ -720,6 +923,16 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'recurring_bill' %}">Recurring Bills</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'add_recurring_bills' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
                                     </li>
                                 </ul>
 
@@ -736,6 +949,8 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
+                                        {% if setting_variable.projects  == "yes" %}                                        
+
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'vproj' %}">Projects</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'proj' %}">
@@ -744,6 +959,16 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'vproj' %}">Projects</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'proj' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
                                     </li>
                                 </ul>
@@ -761,6 +986,8 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
+                                        {% if setting_variable.chart_of_accounts  == "yes" %}                                        
+
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'chartofaccount_home' %}">Chart Of Accounts</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'chartofaccount_home' %}">
@@ -769,6 +996,16 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'chartofaccount_home' %}">Chart Of Accounts</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'chartofaccount_home' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
                                     </li>
                                 </ul>
@@ -806,6 +1043,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
+                                        {% if setting_variable.employees  == "yes" %}                                        
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'payroll_list' %}">Employees</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'payroll_list' %}">
@@ -814,9 +1052,20 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'payroll_list' %}">Employees</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'payroll_list' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
                                     </li>
                                     <li>
+                                        {% if setting_variable.employees_loan  == "yes" %}                                        
                                         <div class="dropdown-item">
                                             <a class="d-inline-block" style="color: #ffffff" href="{% url 'employee_list' %}">Employe's Loan</a>
                                             <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'employee_list' %}">
@@ -825,6 +1074,16 @@
                   </span>
                                             </a>
                                         </div>
+                                        {% else %}
+                                        <div class="dropdown-item" style="display: none;">
+                                            <a class="d-inline-block" style="color: #ffffff" href="{% url 'employee_list' %}">Employe's Loan</a>
+                                            <a class="d-inline-block" style="color: #000000;margin-left: 2px;" href="{% url 'employee_list' %}">
+                                                <span class="icon bg-light rounded-circle" style="text-align: right; width: 25px;">
+                    <i class="mdi mdi-plus"></i>
+                  </span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
 
                                     </li>
                                 </ul>

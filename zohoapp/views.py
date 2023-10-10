@@ -14089,36 +14089,208 @@ def go_settings(request):
 def edit_setting(request,pk):
     setting_obj=setting_list.objects.get(id=pk)
     items1=request.POST.get('item',False)
-    pricelist1=request.POST['pricelist']
-    offlinebanking1=request.POST['offlinebanking']
-    banking1=request.POST['banking']
-    customer1=request.POST['customer']
-    estimate1=request.POST['estimate']
-    retainerinvoice1=request.POST['retainerinvoice']
-    salesorder1=request.POST['salesorder']
-    deliverychallan1=request.POST['deliverychallan']
-    invoice1=request.POST['invoice']
-    creditnotes1=request.POST['creditnotes']
-    recurringinvoice1=request.POST['recurringinvoice']
-    vendor1=request.POST['vendor']
-    vendorcredit1=request.POST['vendorcredit']
-    expense1=request.POST['expense']
-    recurringexpense1=request.POST['recurringexpense']
-    purchaseorder1=request.POST['purchaseorder']
-    paymentmade1=request.POST['paymentmade']
-    bill1=request.POST['bill']
-    recurringbill1=request.POST['recurringbill']
-    project1=request.POST['project']
-    chartofaccount1=request.POST['chartofaccount']
-    employee1=request.POST['employee']
-    employeeloan1=request.POST['employeeloan']
+    pricelist1=request.POST.get('pricelist',False)
+    offlinebanking1=request.POST.get('offlinebanking',False)
+    banking1=request.POST.get('banking',False)
+    customer1=request.POST.get('customer',False)
+    estimate1=request.POST.get('estimate',False)
+    retainerinvoice1=request.POST.get('retainerinvoice',False)
+    salesorder1=request.POST.get('salesorder',False)
+    deliverychallan1=request.POST.get('deliverychallan',False)
+    invoice1=request.POST.get('invoice',False)
+    creditnotes1=request.POST.get('creditnotes',False)
+    recurringinvoice1=request.POST.get('recurringinvoice',False)
+    vendor1=request.POST.get('vendor',False)
+    vendorcredit1=request.POST.get('vendorcredit',False)
+    expense1=request.POST.get('expense',False)
+    recurringexpense1=request.POST.get('recurringexpense',False)
+    purchaseorder1=request.POST.get('purchaseorder',False)
+    paymentmade1=request.POST.get('paymentmade',False)
+    bill1=request.POST.get('bill',False)
+    recurringbill1=request.POST.get('recurringbill',False)
+    project1=request.POST.get('project',False)
+    chartofaccount1=request.POST.get('chartofaccount',False)
+    employee1=request.POST.get('employee',False)
+    employeeloan1=request.POST.get('employeeloan',False)
     if not items1:
         x="no"
         setting_obj.items=x
     else:
         x="yes"
         setting_obj.items=x
-        print("haiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+# ................................    
+    if not pricelist1:
+        x="no"
+        setting_obj.pricelist=x
+    else:
+        x="yes"
+        setting_obj.pricelist=x
+# ................................  
+    if not offlinebanking1:
+        x="no"
+        setting_obj.offline_banking=x
+    else:
+        x="yes"
+        setting_obj.offline_banking=x
+# ................................  
+    if not banking1:
+        x="no"
+        setting_obj.banking=x
+    else:
+        x="yes"
+        setting_obj.banking=x
+# ................................  
+    if not customer1:
+        x="no"
+        setting_obj.customers=x
+    else:
+        x="yes"
+        setting_obj.customers=x
+# ................................  
+    if not estimate1:
+        x="no"
+        setting_obj.estimates=x
+    else:
+        x="yes"
+        setting_obj.estimates=x
+# ................................  
+    if not retainerinvoice1:
+        x="no"
+        setting_obj.retainer_invoices=x
+    else:
+        x="yes"
+        setting_obj.retainer_invoices=x   
+
+
+
+# ................................  
+    if not salesorder1:
+        x="no"
+        setting_obj.sales_orders=x
+    else:
+        x="yes"
+        setting_obj.sales_orders=x  
+
+# ................................  
+    if not deliverychallan1:
+        x="no"
+        setting_obj.delivery_challans=x
+    else:
+        x="yes"
+        setting_obj.delivery_challans=x  
+# ................................  
+    if not invoice1:
+        x="no"
+        setting_obj.invoices=x
+    else:
+        x="yes"
+        setting_obj.invoices=x  
+# ................................  
+    if not creditnotes1:
+        x="no"
+        setting_obj.credit_notes=x
+    else:
+        x="yes"
+        setting_obj.credit_notes=x  
+# ................................  
+    if not recurringinvoice1:
+        x="no"
+        setting_obj.recurring_invoices=x
+    else:
+        x="yes"
+        setting_obj.recurring_invoices=x  
+# ................................  
+    if not vendor1:
+        x="no"
+        setting_obj.vendors=x
+    else:
+        x="yes"
+        setting_obj.vendors=x  
+# ................................  
+    if not vendorcredit1:
+        x="no"
+        setting_obj.vendor_credits=x
+    else:
+        x="yes"
+        setting_obj.vendor_credits=x  
+# ................................  
+    if not expense1:
+        x="no"
+        setting_obj.expenses=x
+    else:
+        x="yes"
+        setting_obj.expenses=x  
+# ................................  
+    if not recurringexpense1:
+        x="no"
+        setting_obj.recurring_expenses=x
+    else:
+        x="yes"
+        setting_obj.recurring_expenses=x  
+# ................................  
+    if not purchaseorder1:
+        x="no"
+        setting_obj.purchase_orders=x
+    else:
+        x="yes"
+        setting_obj.purchase_orders=x  
+# ................................  
+    if not paymentmade1:
+        x="no"
+        setting_obj.payment_made=x
+    else:
+        x="yes"
+        setting_obj.payment_made=x  
+# ................................  
+    if not bill1:
+        x="no"
+        setting_obj.bills=x
+    else:
+        x="yes"
+        setting_obj.bills=x  
+# ................................  
+    if not recurringbill1:
+        x="no"
+        setting_obj.recurring_bills=x
+    else:
+        x="yes"
+        setting_obj.recurring_bills=x  
+# ................................  
+    if not project1:
+        x="no"
+        setting_obj.projects=x
+    else:
+        x="yes"
+        setting_obj.projects=x  
+# ................................  
+    if not retainerinvoice1:
+        x="no"
+        setting_obj.retainer_invoices=x
+    else:
+        x="yes"
+        setting_obj.retainer_invoices=x  
+# ................................  
+    if not chartofaccount1:
+        x="no"
+        setting_obj.chart_of_accounts=x
+    else:
+        x="yes"
+        setting_obj.chart_of_accounts=x  
+# ................................  
+    if not employee1:
+        x="no"
+        setting_obj.employees=x
+    else:
+        x="yes"
+        setting_obj.employees=x    
+
+# ................................  
+    if not employeeloan1:
+        x="no"
+        setting_obj.employees_loan=x
+    else:
+        x="yes"
+        setting_obj.employees_loan=x   
 
 
     setting_obj.save()

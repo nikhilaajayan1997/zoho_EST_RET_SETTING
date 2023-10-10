@@ -5,16 +5,25 @@
 
 <div class="container-fulid containerprof" >
     <div class="card radius-15 p-3">
+        
         <div class="card-body">
             <div class="card-title">
               <h2 class="mb-0 text-uppercase text-right">Settings</h2>
             </div>
         </div>
     </div>
-    <div class="card radius-15 p-5">
-        <form action="{% url 'edit_setting' my_settings.id %}" method="post" enctype="multipart/form-data">
+    <div class="card radius-15 ">
+        <div class="row mt-1">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <button class="btn  ms-3" style="background-color: rgb(212, 139, 3);" onclick="set_submenu()">Sub Menu</button>
+                <button class="btn " style="background-color: rgb(212, 139, 3);" onclick="set_slip()">slip/pdf/print</button>
+            </div>
+           
+        </div>
+        <form class="p-5" action="{% url 'edit_setting' my_settings.id %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <fieldset>
+           
+            <fieldset1  id="sub_menu" >
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <h3>Activate/Deactivate SubMenu</h3>
@@ -373,25 +382,47 @@
                                 {% if my_settings.employees_loan == 'yes' %}
                                 <input type="checkbox" name="employeeloan" checked>
                                 {% else %}
-                                <input type="checkbox" name="emplyeeloan" >
+                                <input type="checkbox" name="employeeloan" >
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-3"></div>
                 </div>
+                
+            </fieldset1>
+            <fieldset2 id="slip" >
                 <div class="row">
-                    <div class="col-sm-12 col-md-4 col-lg-4"></div>
-                    <div class="col-sm-12 col-md-4 col-lg-4">
-                        <button class="btn" style="background-color: rgb(210, 132, 30);" type="submit" name="action" value="Save">Save</button> 
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <h3>Activate/Deactivate <span style="font-style: italic;">slip,pdf,print</span> options</h3>
                     </div>
-                    <div class="col-sm-12 col-md-4 col-lg-4"></div>
                 </div>
-            </fieldset>
+
+            </fieldset2>
+            <div class="row mt-4 mb-4">
+                <div class="col-sm-12 col-md-4 col-lg-4"></div>
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                    <button class="btn" style="background-color: rgb(210, 132, 30);" type="submit" name="action" value="Save">Save</button> 
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4"></div>
+            </div>
         </form>
         
     </div>
 
 </div>
+
+<script>
+    function set_slip()
+    {
+        document.getElementById("sub_menu").style.display="none";
+        document.getElementById("slip").style.display="block";
+    }
+    function set_submenu()
+    {
+        document.getElementById("sub_menu").style.display="block";
+        document.getElementById("slip").style.display="none";
+    }
+</script>
 
 {% endblock %}
