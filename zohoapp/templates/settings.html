@@ -391,10 +391,50 @@
                 </div>
                 
             </fieldset1>
-            <fieldset2 id="slip" >
+            <fieldset2 id="slip" style="display: none;">
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <h3>Activate/Deactivate <span style="font-style: italic;">slip,pdf,print</span> options</h3>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-sm-3 col-lg-3 col-md-3">
+                        <div class="row">
+                            <div class="col-sm-10 col-md-10 col-lg-10">
+                                <h6 style="color: rgb(240, 239, 238);">pdf</h6>
+                            </div>
+                            <div class="col-sm-2 col-lg-2 col-md-2">
+                                {% if my_settings.pdf == 'yes' %}
+                                <input type="checkbox" name="pdf" checked>
+                                {% else %}
+                                <input type="checkbox" name="pdf">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10 col-md-10 col-lg-10">
+                                <h6 style="color: rgb(240, 239, 238);">slip</h6>
+                            </div>
+                            <div class="col-sm-2 col-lg-2 col-md-2">
+                                {% if my_settings.slip == 'yes' %}
+                                <input type="checkbox" name="slip" checked>
+                                {% else %}
+                                <input type="checkbox" name="slip">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10 col-md-10 col-lg-10">
+                                <h6 style="color: rgb(240, 239, 238);">print</h6>
+                            </div>
+                            <div class="col-sm-2 col-lg-2 col-md-2">
+                                {% if my_settings.print_opt == 'yes' %}
+                                <input type="checkbox" name="print" checked>
+                                {% else %}
+                                <input type="checkbox" name="print">
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
 

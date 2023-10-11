@@ -199,13 +199,9 @@ def login(request):
                 estimates='yes',retainer_invoices='yes',sales_orders='yes',delivery_challans='yes',invoices='yes',
                 credit_notes='yes',recurring_invoices='yes',vendors='yes',vendor_credits='yes',expenses='yes',recurring_expenses='yes',
                 purchase_orders='yes',payment_made='yes',bills='yes',recurring_bills='yes',projects='yes',chart_of_accounts='yes',
-                employees='yes',employees_loan='yes')
+                employees='yes',employees_loan='yes',pdf='yes',slip='yes',print_opt='yes')
                 settings_row.save()
-
-            
-
             return redirect('dashboard')
-           
         else:
             return redirect('/')
         
@@ -1172,6 +1168,7 @@ def create_invoice_draft(request):
         references=request.POST['references']
         retainer_invoice_date=request.POST['invoicedate']
         total_amount=request.POST.get('total')
+        bal_amount=request.POST['balance']
         customer_notes=request.POST['customer_notes']
         terms_and_conditions=request.POST['terms']
         payment_opt=request.POST['pay_method']
@@ -1190,7 +1187,7 @@ def create_invoice_draft(request):
         upi_id=request.POST['upi_id']
         
         retainer_invoice=RetainerInvoice(
-            user=user,customer_name=customer_name,customer_name1=customer_name1,customer_mailid=customer_mailid,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
+            user=user,customer_name=customer_name,customer_name1=customer_name1,customer_mailid=customer_mailid,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,balance=bal_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
     
         retainer_invoice.save()
 
@@ -1224,6 +1221,7 @@ def create_invoice_send(request):
         references=request.POST['references']
         retainer_invoice_date=request.POST['invoicedate']
         total_amount=request.POST.get('total')
+        bal_amount=request.POST['balance']
         customer_notes=request.POST['customer_notes']
         terms_and_conditions=request.POST['terms']
         payment_opt=request.POST['pay_method']
@@ -1243,7 +1241,7 @@ def create_invoice_send(request):
 
         retainer_invoice=RetainerInvoice(
         user=user,customer_name=customer_name,customer_name1=customer_name1,customer_mailid=customer_mailid,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,
-        total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions,is_draft=False)
+        total_amount=total_amount,balance=bal_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions,is_draft=False)
         retainer_invoice.save()
 
         if payment_opt != '':
@@ -1304,8 +1302,15 @@ def invoice_view(request,pk):
     item=Retaineritems.objects.filter(retainer=pk)
     ret_comments=retainer_invoice_comments.objects.filter(retainer=invoice.id,user=user)
 
-    context={'invoices':invoices,'invoice':invoice,'item':item,'company':company,'ret_comments':ret_comments}
+    if retainer_payment_details.objects.filter(retainer=invoice.id,user=user).exists():
+        ret_payments=retainer_payment_details.objects.get(retainer=invoice.id)
+        context={'invoices':invoices,'invoice':invoice,'item':item,'company':company,'ret_comments':ret_comments,'ret_payments':ret_payments}
+    else:
+        context={'invoices':invoices,'invoice':invoice,'item':item,'company':company,'ret_comments':ret_comments}
+
     return render(request,'invoice_view.html',context)
+
+    
 
 
 
@@ -1351,6 +1356,7 @@ def retainer_update(request,pk):
         retainer_invoice.refrences=request.POST['references']
         retainer_invoice.retainer_invoice_date=request.POST['invoicedate']
         retainer_invoice.total_amount=request.POST.get('total')
+        retainer_invoice.balance=request.POST['balance']
         retainer_invoice.customer_notes=request.POST['customer_notes']
         retainer_invoice.terms_and_conditions=request.POST['terms']
     
@@ -14112,6 +14118,9 @@ def edit_setting(request,pk):
     chartofaccount1=request.POST.get('chartofaccount',False)
     employee1=request.POST.get('employee',False)
     employeeloan1=request.POST.get('employeeloan',False)
+    pdf1=request.POST.get('pdf',False)
+    slip1=request.POST.get('slip',False)
+    print1=request.POST.get('print',False)
     if not items1:
         x="no"
         setting_obj.items=x
@@ -14290,7 +14299,30 @@ def edit_setting(request,pk):
         setting_obj.employees_loan=x
     else:
         x="yes"
-        setting_obj.employees_loan=x   
+        setting_obj.employees_loan=x  
+# ................................  
+    if not pdf1:
+        x="no"
+        setting_obj.pdf=x
+    else:
+        x="yes"
+        setting_obj.pdf=x  
+
+# ................................  
+    if not slip1:
+        x="no"
+        setting_obj.slip=x
+    else:
+        x="yes"
+        setting_obj.slip=x  
+
+# ................................  
+    if not print1:
+        x="no"
+        setting_obj.print_opt=x
+    else:
+        x="yes"
+        setting_obj.print_opt=x   
 
 
     setting_obj.save()

@@ -224,6 +224,7 @@ class RetainerInvoice(models.Model):
     terms_and_conditions=models.TextField()
     is_draft=models.BooleanField(default=True)
     is_sent=models.BooleanField(default=False)
+    balance=models.CharField(max_length=100,null=True,blank=True)
 
 class Retaineritems(models.Model):
     retainer=models.ForeignKey(RetainerInvoice, on_delete=models.CASCADE)
@@ -1379,3 +1380,6 @@ class setting_list(models.Model):
     chart_of_accounts=models.CharField(max_length=25,null=True,blank=True)
     employees=models.CharField(max_length=25,null=True,blank=True)
     employees_loan=models.CharField(max_length=25,null=True,blank=True)
+    pdf=models.CharField(max_length=25,null=True,blank=True)
+    slip=models.CharField(max_length=25,null=True,blank=True)
+    print_opt=models.CharField(max_length=25,null=True,blank=True)

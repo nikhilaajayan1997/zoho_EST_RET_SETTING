@@ -124,6 +124,7 @@
                                         <th>CUSTOMER NAME</th>
                                         <th>CUSTOMER MAIL ID</th>
                                         <th>AMOUNT</th>
+                                        <th>BALANCE</th>
                                         <th>STATUS</th>
                                     </tr>
                                 </thead>
@@ -135,6 +136,7 @@
                                         <td class="align-top">{{i.customer_name1}}</td>
                                         <td class="align-top">{{i.customer_mailid}}</td>
                                         <td class="align-top">₹{{i.total_amount}}</td>
+                                        <td class="align-top">₹{{i.balance}}</td>
                                         <td class="align-top">
                                             {% if i.is_sent %}
                                             Send
