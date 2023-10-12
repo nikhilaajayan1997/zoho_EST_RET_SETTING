@@ -308,7 +308,11 @@ $(function() {
                                 </a>
         
                                 <div class="dropdown-menu" aria-labelledby="attachmentDropdown">
-                                    <a href="" class="dropdown-item" style="cursor: pointer;" onclick="return confirm('Do you want to convert this estimate to an invoice?');" >To Invoice</a>
+                                    {% if estimate.convert_invoice == "not_converted" %}
+                                    <a href="{% url 'converttoinvoice' estimate.id %}" class="dropdown-item" style="cursor: pointer;" onclick="return confirm('Do you want to convert this estimate to an invoice?');" >To Invoice</a>
+                                    {% else %}
+                                    <a href="{% url 'converttoinvoice' estimate.id %}" class="dropdown-item disabled" style="cursor: pointer;" onclick="return confirm('Do you want to convert this estimate to an invoice?');" >To Invoice <br>(converted)</a>
+                                    {% endif %}
                                     {% if estimate.convert_sales == "not_converted" %}
                                     <a href="{% url 'convert_to_salesorder' estimate.id %}" class="dropdown-item" style="cursor: pointer;" onclick="return confirm('Do you want to convert this estimate to sales order?');">To SalesOrder</a>
                                     {% else %}  

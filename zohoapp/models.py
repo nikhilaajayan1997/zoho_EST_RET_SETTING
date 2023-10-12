@@ -248,7 +248,7 @@ class retainer_payment_details(models.Model):
 
             
 
-class Estimates(models.Model):
+class Estimates(models.Model): 
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     customer=models.ForeignKey(customer,on_delete=models.CASCADE,null=True,blank=True)
     customer_name = models.CharField(max_length=100,null=True,blank=True)
@@ -318,6 +318,8 @@ class invoice(models.Model):
     file=models.ImageField(upload_to='documents')
     terms_condition=models.TextField(max_length=255)
     status=models.TextField(max_length=255)
+    estimate=models.CharField(max_length=100,null=True,blank=True)
+
     
     def __str__(self) :
         return self.invoice_no
@@ -331,7 +333,17 @@ class invoice_item(models.Model):
     discount = models.FloatField(null=True,blank=True)
     rate=models.TextField(max_length=255)
     inv=models.ForeignKey(invoice,on_delete=models.CASCADE)
+    paid_amount = models.FloatField(default=0.0)  # updation
+    balance = models.FloatField(null=True, blank=True)  
+    
+    def save(self, *args, **kwargs):
+        self.balance = self.total - self.paid_amount
+        super().save(*args, **kwargs)
 
+class invoice_comments(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    invoice=models.ForeignKey(invoice,on_delete=models.CASCADE,null=True,blank=True)
+    comments=models.CharField(max_length=500,null=True,blank=True)
 
 
 class Pricelist(models.Model):
@@ -1225,10 +1237,6 @@ class EWayBillItem(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2,null=True)     
     
     
-class invoice_comments(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
-    invoice=models.ForeignKey(invoice,on_delete=models.CASCADE,null=True,blank=True)
-    comments=models.CharField(max_length=500,null=True,blank=True)
 
 
     

@@ -2216,32 +2216,34 @@ def convert_to_salesorder(request,pk):
 
 # ....................................................................................
 
-def converttoinvoice(request,est_id):
-    user = request.user
+def converttoinvoice(request,pk):
+    user = request.user.id
     company = company_details.objects.get(user=user)
-    estimate = Estimates.objects.get(id=est_id)
-    items = EstimateItems.objects.filter(estimate=estimate)
+    estimate = Estimates.objects.get(id=pk)
+    items = EstimateItems.objects.filter(estimate=estimate.id)
     cust = customer.objects.get(customerName=estimate.customer_name,user=user)
     # invoice_count = invoice.objects.count()
     # next_no = invoice_count+1 
     if invoice.objects.all().exists():
         invoice_count = invoice.objects.last().id
         count=invoice_count+1
-        next_no='INV-'+'count'
+        inv_string="INV-"
+        next_no=inv_string+str(count)
     else:
         count=1 
-        next_no='INV-'+'count'
+        inv_string="INV-"
+        next_no=inv_string+str(count)
 
-    inv = invoice(customer=cust,invoice_no=next_no,terms='null',order_no=estimate.estimate_no,
+    inv = invoice(customer=cust,invoice_no=next_no,order_no=estimate.estimate_no,
                       inv_date=estimate.estimate_date,due_date=estimate.expiry_date,igst=estimate.igst,cgst=estimate.cgst,
                       sgst=estimate.sgst,t_tax=estimate.tax_amount,subtotal=estimate.sub_total,grandtotal=estimate.total,
                       cxnote=estimate.customer_notes,file=estimate.attachment,terms_condition=estimate.terms_conditions,
-                      status=estimate.status)
+                      status=estimate.status,estimate=estimate.id)
     inv.save()
     inv = invoice.objects.get(invoice_no=next_no,customer=cust)
     for item in items:
-        items = invoice_item(product=item.item_name,quantity=item.quantity,hsn='null',tax=item.tax_percentage,
-                             total=item.amount,desc=item.discount,rate=item.rate,inv=inv)
+        items = invoice_item(product=item.item_name,quantity=item.quantity,hsn=item.hsn,tax=item.tax_percentage,
+                             total=item.amount,desc=item.discount,rate=item.rate,inv=inv,paid_amount=0.0,balance=0.0)
         items.save()
     
     return redirect('allestimates')
@@ -2518,19 +2520,22 @@ def add_prod(request):
                 hsn=request.POST.getlist('hsn[]')
                 quantity=request.POST.getlist('quantity[]')
                 rate=request.POST.getlist('rate[]')
-                desc=request.POST.getlist('desc[]')
+                desc=request.POST.getlist('discount[]')
                 tax=request.POST.getlist('tax[]')
                 amount=request.POST.getlist('amount[]')
                 # term=payment_terms.objects.get(id=term.id)
+                
+
             else:
                 itemm=request.POST.getlist('itemm[]')
                 hsnn=request.POST.getlist('hsnn[]')
                 quantityy=request.POST.getlist('quantityy[]')
                 ratee=request.POST.getlist('ratee[]')
-                descc=request.POST.getlist('descc[]')
+                descc=request.POST.getlist('discountt[]')
                 taxx=request.POST.getlist('taxx[]')
                 amountt=request.POST.getlist('amountt[]')
                 # term=payment_terms.objects.get(id=term.id)
+                
 
             inv=invoice(user=user,customer=custo,invoice_no=invoice_no,terms=terms,order_no=order_no,inv_date=inv_date,due_date=due_date,
                         cxnote=cxnote,subtotal=subtotal,igst=igst,cgst=cgst,sgst=sgst,t_tax=totaltax,
@@ -2544,7 +2549,7 @@ def add_prod(request):
                     mapped = list(mapped)
                     for element in mapped:
                         created = invoice_item.objects.get_or_create(inv=inv_id,product=element[0],hsn=element[1],
-                                            quantity=element[2],desc=element[3],tax=element[4],total=element[5],rate=element[6])
+                                            quantity=element[2],discount=element[3],tax=element[4],total=element[5],rate=element[6])
                         
                     return redirect('invoiceview')
             else:
@@ -2555,7 +2560,7 @@ def add_prod(request):
                     mapped = list(mapped)
                     for element in mapped:
                         created = invoice_item.objects.get_or_create(inv=inv_id,product=element[0],hsn=element[1],
-                                            quantity=element[2],desc=element[3],tax=element[4],total=element[5],rate=element[6])
+                                            quantity=element[2],discount=element[3],tax=element[4],total=element[5],rate=element[6])
                         
                     return redirect('invoiceview')
 
