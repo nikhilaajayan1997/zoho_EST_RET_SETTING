@@ -297,53 +297,6 @@ class payment_terms(models.Model):
     Terms=models.CharField(max_length=100,null=True,blank=True)
     Days=models.IntegerField(null=True,blank=True)      
 
-class invoice(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
-    customer=models.ForeignKey(customer,on_delete=models.CASCADE,null=True,blank=True)
-    invoice_no=models.TextField(max_length=255)
-    # terms=models.ForeignKey(payment_terms,on_delete=models.CASCADE)
-    terms=models.CharField(max_length=100)
-    order_no=models.IntegerField()
-    inv_date=models.DateField()
-    due_date=models.DateField()
-    igst=models.TextField(max_length=255)
-    cgst=models.TextField(max_length=255)
-    sgst=models.TextField(max_length=255)
-    t_tax=models.FloatField()
-    subtotal=models.FloatField()
-    shipping_charge = models.FloatField(null=True,blank=True)
-    adjustment = models.FloatField(null=True,blank=True)
-    grandtotal=models.FloatField()
-    cxnote=models.TextField(max_length=255)
-    file=models.ImageField(upload_to='documents')
-    terms_condition=models.TextField(max_length=255)
-    status=models.TextField(max_length=255)
-    estimate=models.CharField(max_length=100,null=True,blank=True)
-
-    
-    def __str__(self) :
-        return self.invoice_no
-    
-class invoice_item(models.Model):
-    product=models.TextField(max_length=255)
-    quantity=models.IntegerField() 
-    hsn=models.TextField(max_length=255)
-    tax=models.IntegerField()
-    total=models.FloatField()    
-    discount = models.FloatField(null=True,blank=True)
-    rate=models.TextField(max_length=255)
-    inv=models.ForeignKey(invoice,on_delete=models.CASCADE)
-    paid_amount = models.FloatField(default=0.0)  # updation
-    balance = models.FloatField(null=True, blank=True)  
-    
-    def save(self, *args, **kwargs):
-        self.balance = self.total - self.paid_amount
-        super().save(*args, **kwargs)
-
-class invoice_comments(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
-    invoice=models.ForeignKey(invoice,on_delete=models.CASCADE,null=True,blank=True)
-    comments=models.CharField(max_length=500,null=True,blank=True)
 
 
 class Pricelist(models.Model):
@@ -1391,3 +1344,59 @@ class setting_list(models.Model):
     pdf=models.CharField(max_length=25,null=True,blank=True)
     slip=models.CharField(max_length=25,null=True,blank=True)
     print_opt=models.CharField(max_length=25,null=True,blank=True)
+
+
+class invoice(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    customer=models.ForeignKey(customer,on_delete=models.CASCADE,null=True,blank=True)
+    bank = models.ForeignKey(Bankcreation,on_delete=models.SET_NULL,null=True,blank=True)
+    invoice_no=models.TextField(max_length=255)
+    # terms=models.ForeignKey(payment_terms,on_delete=models.CASCADE)
+    terms=models.CharField(max_length=100)
+    order_no=models.IntegerField()
+    inv_date=models.DateField()
+    due_date=models.DateField()
+    igst=models.TextField(max_length=255)
+    cgst=models.TextField(max_length=255)
+    sgst=models.TextField(max_length=255)
+    t_tax=models.FloatField()
+    subtotal=models.FloatField()
+    shipping_charge = models.FloatField(null=True,blank=True)
+    adjustment = models.FloatField(null=True,blank=True)
+    grandtotal=models.FloatField()
+    cxnote=models.TextField(max_length=255)
+    file=models.ImageField(upload_to='documents')
+    terms_condition=models.TextField(max_length=255)
+    status=models.TextField(max_length=255)
+    estimate=models.CharField(max_length=100,null=True,blank=True)
+    payment_method = models.CharField(max_length=50, choices=(         #updation
+        ('cash', 'Cash'),
+        ('cheque', 'Cheque'),
+        ('upi', 'UPI'),
+        ('bank', 'Bank'),  # Added 'bank' as a payment method
+    ), default='cash')
+
+    
+    def __str__(self) :
+        return self.invoice_no
+    
+class invoice_item(models.Model):
+    product=models.TextField(max_length=255)
+    quantity=models.IntegerField() 
+    hsn=models.TextField(max_length=255)
+    tax=models.IntegerField()
+    total=models.FloatField()    
+    discount = models.FloatField(null=True,blank=True)
+    rate=models.TextField(max_length=255)
+    inv=models.ForeignKey(invoice,on_delete=models.CASCADE)
+    paid_amount = models.FloatField(default=0.0)  # updation
+    balance = models.FloatField(null=True, blank=True)  
+    
+    def save(self, *args, **kwargs):
+        self.balance = self.total - self.paid_amount
+        super().save(*args, **kwargs)
+
+class invoice_comments(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    invoice=models.ForeignKey(invoice,on_delete=models.CASCADE,null=True,blank=True)
+    comments=models.CharField(max_length=500,null=True,blank=True)

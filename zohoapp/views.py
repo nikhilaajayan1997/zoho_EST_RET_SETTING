@@ -2032,6 +2032,40 @@ def updateestimate(request,pk):
                 itemss = sales_item(product=item.item_name,quantity=item.quantity,hsn=item.hsn,tax=item.tax_percentage,
                                     total=item.amount,desc=item.discount,rate=item.rate,sale=saleid)
                 itemss.save()
+        
+# .......................................................................................................        
+        if invoice.objects.filter(estimate=pk).exists():
+            invo=invoice.objects.get(estimate=pk)
+            custt=estimate.customer.id
+            custt_id=customer.objects.get(id=custt)
+            invo.customer=custt_id
+            invo.inv_date=estimate.estimate_date
+            invo.due_date=estimate.expiry_date
+            invo.cxnote=estimate.customer_notes
+            invo.subtotal=estimate.sub_total
+            invo.igst=estimate.igst
+            invo.cgst=estimate.cgst
+            invo.sgst=estimate.sgst
+            invo.t_tax=estimate.tax_amount
+            invo.subtotal=estimate.sub_total
+            invo.grandtotal=estimate.total
+            invo.status=estimate.status
+            invo.terms_condition=estimate.terms_conditions
+            invo.file=estimate.attachment
+            invo.sos=estimate.customer.placeofsupply
+            invo.sh_charge=estimate.shipping_charge
+            invo.save()
+
+            objects_to_delete = invoice_item.objects.filter(inv=invo.id)
+            objects_to_delete.delete()
+
+            items = EstimateItems.objects.filter(estimate=estimate.id)
+            invid = invoice.objects.get(id=invo.id)
+            for item in items:
+                itemss = invoice_item(product=item.item_name,quantity=item.quantity,hsn=item.hsn,tax=item.tax_percentage,
+                                    total=item.amount,discount=item.discount,rate=item.rate,inv=invid,paid_amount=0.0,balance=0.0)
+                itemss.save()
+
 
 
 
@@ -2217,9 +2251,15 @@ def convert_to_salesorder(request,pk):
 # ....................................................................................
 
 def converttoinvoice(request,pk):
-    user = request.user.id
+    user1 = request.user.id
+    user=User.objects.get(id=user1)
     company = company_details.objects.get(user=user)
     estimate = Estimates.objects.get(id=pk)
+    sale_status=estimate.convert_invoice
+    if sale_status=='not_converted':
+        new_status="converted"
+    else:
+        new_status="converted"
     items = EstimateItems.objects.filter(estimate=estimate.id)
     cust = customer.objects.get(customerName=estimate.customer_name,user=user)
     # invoice_count = invoice.objects.count()
@@ -2234,17 +2274,19 @@ def converttoinvoice(request,pk):
         inv_string="INV-"
         next_no=inv_string+str(count)
 
-    inv = invoice(customer=cust,invoice_no=next_no,order_no=estimate.estimate_no,
+    inv = invoice(customer=cust,invoice_no=next_no,order_no=0,
                       inv_date=estimate.estimate_date,due_date=estimate.expiry_date,igst=estimate.igst,cgst=estimate.cgst,
                       sgst=estimate.sgst,t_tax=estimate.tax_amount,subtotal=estimate.sub_total,grandtotal=estimate.total,
                       cxnote=estimate.customer_notes,file=estimate.attachment,terms_condition=estimate.terms_conditions,
-                      status=estimate.status,estimate=estimate.id)
+                      status=estimate.status,estimate=estimate.id,user=user)
     inv.save()
     inv = invoice.objects.get(invoice_no=next_no,customer=cust)
     for item in items:
         items = invoice_item(product=item.item_name,quantity=item.quantity,hsn=item.hsn,tax=item.tax_percentage,
-                             total=item.amount,desc=item.discount,rate=item.rate,inv=inv,paid_amount=0.0,balance=0.0)
+                             total=item.amount,discount=item.discount,rate=item.rate,inv=inv,paid_amount=0.0,balance=0.0)
         items.save()
+    estimate.convert_invoice=new_status
+    estimate.save()
     
     return redirect('allestimates')
 
