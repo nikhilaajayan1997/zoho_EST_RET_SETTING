@@ -18,6 +18,9 @@
     crossorigin="anonymous"></script>
 
 <style>
+
+
+
     .dropdown-item:hover{
     color: rgb(226, 149, 5);
 }
@@ -87,23 +90,23 @@
 
 
 <script>
-    
- 
+
  function printSelectedArea() 
  {
    var selectedArea = document.getElementById("print_slip");
-   var printWindow = window.open('', 'PrintWindow');
-   printWindow.document.write('<html><head><title>Print Selected Area</title></head><body>' + selectedArea.innerHTML + '</body></html>');
+   var printWindow = window.open('','PrintWindow');
+   printWindow.document.write('<html><head><title>Print Selected Area</title></head><body>' + selectedArea.innerHTML+ '</body></html>');
    printWindow.print();
-   printWindow.close();
+   printWindow.close(); 
  }
-
-
 
 $(function() {
     $("#slip").click(printSelectedArea); 
 });
+
 </script>
+
+
 <script>
     
  

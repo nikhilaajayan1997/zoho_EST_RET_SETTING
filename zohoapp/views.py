@@ -2648,7 +2648,6 @@ def add_cx(request):
 
 
 @login_required(login_url='login')
-
 def edited_prod(request,id):
     print(id)
     user=request.user
