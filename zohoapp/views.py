@@ -1206,6 +1206,8 @@ def create_invoice_draft(request):
             pass
 
         return redirect('retainer_invoice')
+
+
         
 
          
@@ -1688,6 +1690,7 @@ def createestimate(request):
         customer_id=request.POST['customer_id']
         customer_id1=customer.objects.get(id=customer_id)
         customer_mailid=request.POST['customer_mail']
+        customer_placesupply=request.POST['cus_place1']
         est_number = request.POST['estimate_number']
         reference = request.POST['reference']
         est_date = request.POST['estimate_date']
@@ -1729,7 +1732,7 @@ def createestimate(request):
         convert_sales='not_converted'
         
 
-        estimate = Estimates(user=user,customer=customer_id1,customer_name=cust_name,customer_mailid=customer_mailid,estimate_no=est_number, reference=reference, estimate_date=est_date, 
+        estimate = Estimates(user=user,customer=customer_id1,customer_name=cust_name,customer_mailid=customer_mailid,customer_placesupply=customer_placesupply,estimate_no=est_number, reference=reference, estimate_date=est_date, 
                              expiry_date=exp_date, sub_total=sub_total,igst=igst,sgst=sgst,cgst=cgst,tax_amount=tax_amnt, shipping_charge=shipping,
                              adjustment=adjustment, total=total, status=status, customer_notes=cust_note, terms_conditions=tearms_conditions, 
                              attachment=attachment,convert_invoice=convert_invoice,convert_sales=convert_sales)
@@ -1769,6 +1772,7 @@ def create_and_send_estimate(request):
         customer_id=request.POST['customer_id']
         customer_id1=customer.objects.get(id=customer_id)
         customer_mailid=request.POST['customer_mail']
+        customer_placesupply=request.POST['cus_place1']
         est_number = request.POST['estimate_number']
         reference = request.POST['reference']
         est_date = request.POST['estimate_date']
@@ -1818,7 +1822,7 @@ def create_and_send_estimate(request):
         convert_invoice='not_converted'
         convert_sales='not_converted'
         tot_in_string = str(total)
-        estimate = Estimates(user=user,customer=customer_id1,customer_name=cust_name,customer_mailid=customer_mailid,estimate_no=est_number, reference=reference, estimate_date=est_date, 
+        estimate = Estimates(user=user,customer=customer_id1,customer_name=cust_name,customer_mailid=customer_mailid,customer_placesupply=customer_placesupply,estimate_no=est_number, reference=reference, estimate_date=est_date, 
                              expiry_date=exp_date, sub_total=sub_total,igst=igst,sgst=sgst,cgst=cgst,tax_amount=tax_amnt, shipping_charge=shipping,
                              adjustment=adjustment, total=total, status=status, customer_notes=cust_note, terms_conditions=tearms_conditions, 
                              attachment=attachment,convert_invoice=convert_invoice,convert_sales=convert_sales)
@@ -1850,6 +1854,10 @@ def create_and_send_estimate(request):
 
     return redirect('allestimates')
 
+def estimste_status_edit(request,pk):
+    est_data=Estimates.objects.get(id=pk)
+    
+
 def estimateslip(request, est_id):
     user = request.user
     company = company_details.objects.get(user=user)
@@ -1878,7 +1886,7 @@ def editestimate(request,est_id):
     items = AddItem.objects.filter(user_id=user.id)
     estimate = Estimates.objects.get(id=est_id)
     
-    cust=estimate.customer.placeofsupply
+    cust=estimate.customer_placesupply
     cust_email=estimate.customer.customerEmail
     cust_id=estimate.customer.id
     cust_gst_treat=estimate.customer.GSTTreatment
@@ -1923,13 +1931,15 @@ def updateestimate(request,pk):
         estimate.user = user
         cust_idd = request.POST['customer_name'].split(" ")[0]
         cust_name2=customer.objects.get(id=cust_idd)
-        cust_name=cust_name2.customerName
+        cust_name1=cust_name2.customerName
+        cust_name=cust_name1.upper()
         estimate.customer_name=cust_name
         
         custr=request.POST['customer_id']
         customer_id=customer.objects.get(id=custr)
         estimate.customer=customer_id
         estimate.customer_mailid=request.POST['customer_mail']
+        estimate.customer_placesupply=request.POST['cus_place1']
         estimate.estimate_no = request.POST['estimate_number']
         estimate.reference = request.POST['reference']
         estimate.estimate_date = request.POST['estimate_date']
@@ -2070,7 +2080,7 @@ def updateestimate(request,pk):
 
 
 
-    return redirect('allestimates')
+    return redirect('estimateslip',estimate.id)
 
 def est_sort_by_estno(request):
     user=request.user.id

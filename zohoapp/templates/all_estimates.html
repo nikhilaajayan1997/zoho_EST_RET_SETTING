@@ -106,6 +106,10 @@
             <th>CUSTOMER MAIL ID</th>
             <th>AMOUNT</th>
             <th>STATUS</th>
+            <th>SALES ORDER</th>
+            <th>INVOICE</th>
+
+
           </tr>
         </thead>
         <tbody id="table">
@@ -113,12 +117,26 @@
           <tr id="tr_data" class="clickable-row" data-href="{% url 'estimateslip' estimate.id %}">
             <td>{{estimate.estimate_date}}</td>
 
-            <td style="color: rgb(230, 151, 6);">{{estimate.estimate_no}}</td>
+            <td >{{estimate.estimate_no}}</td>
 
             <td>{{estimate.customer_name}}</td>
             <td>{{estimate.customer_mailid}}</td>
             <td>{{estimate.total}}</td>
             <td>{{estimate.status}}</td>
+            
+              {% if estimate.convert_sales == 'converted' %}
+              <td style="color: rgb(3, 82, 3);">Done</td>
+              {% else %}
+              <td style="color: rgb(158, 2, 2);">Not Done</td>
+              {% endif %}
+
+              {% if estimate.convert_invoice == 'converted' %}
+              <td style="color: rgb(3, 82, 3);">Done</td>
+              {% else %}
+              <td style="color: rgb(158, 2, 2);">Not Done</td>
+              {% endif %}
+            
+
           </tr>
           {% endfor %}
         </tbody>

@@ -46,6 +46,8 @@
         var plc="{{ cust }}";
         var x=ste.toLowerCase(); 
         var inputstring=plc;
+        document.getElementById("cus_place1").value=plc;
+        document.getElementById("cus_place_second").value=plc;
         const parts = inputstring.split("-");   
         var extractedWord = parts[1];  
         var extractedWord1= extractedWord.trim();
@@ -54,7 +56,6 @@
         document.getElementById("state").value=x;
         document.getElementById("customer_mail").value="{{cust_email}}"
         document.getElementById("customer_id").value="{{ cust_id }}";
-        document.getElementById("cus_place1").value=y;
         document.getElementById("customer_gst_treat").value="{{ cust_gst_treat }}";
         document.getElementById("customer_gstno").value="{{ cust_gstno }}";
 
@@ -307,18 +308,12 @@ function calc(){
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
-
-    
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
-
-
 <section>
     <div style="top: 7rem; ">
-
-
         <div class="row  ml-2">
             <div class="col-md-3 "><a class="text-white" style="font-size: 1.5rem;"><i class="fa-solid fa-plus"></i> Edit 
                     Estimate</a></div>
@@ -329,10 +324,10 @@ function calc(){
             <form method="post" action="{% url 'updateestimate' estimate.id %}" class="p-5" enctype="multipart/form-data" novalidate
                 id="forms">
                 {% csrf_token %}
-                <input class="hidden"  id="state1" name="hidden_state1" value="{{ company.state }}">
-                <input class="hidden"  id="state" name="hidden_state" value="">
-                <input class="hidden" type="text" name="samp" id="samp">
-                <input class="hidden"  id="cus_place" name="hidden_cus_place"  value="">
+                <input class="text"  id="state1" name="hidden_state1" value="{{ company.state }}">
+                <input class="text"  id="state" name="hidden_state" value="">
+                <input class="text" type="text" name="samp" id="samp">
+                <input class="text"  id="cus_place" name="hidden_cus_place"  value="">
                 <input type="number" id="customer_id" name="customer_id" style="display: none;"  readonly>
           
                 <div class="row mb-4 border-top pt-5">
@@ -377,8 +372,50 @@ function calc(){
           </div>
           <div class="row mb-4" id="cplace_supply_row" >
             <div class="col-sm-2"><label for="">Place Of Supply</label></div>
-            <div class="col-sm-6"><input type="text" id="cus_place1" name="" class="form-control text-dark"
-                    value="" readonly>
+            <div class="col-sm-6">
+              <!-- <input type="text" id="cus_place1" name="" class="form-control text-dark"
+                    value="" readonly> -->
+                    <select class="form-control text-dark bg-light" id="cus_place1" name="cus_place1" onclick="place_of_supply()">
+                      <option value="[AN]-Andaman and Nicobar Islads">[AN] Andaman and Nicobar Islads</option>
+                      <option value="[AD]-Andhra Predhesh">[AD] Andhra Predhesh</option>
+                      <option value="[AR]-Arunachal Predesh">[AR] Arunachal Predesh</option>
+                      <option value="[AS]-Assam">[AS] Assam</option>
+                      <option value="[BR]-Bihar">[BR] Bihar</option>
+                      <option value="[CH]-Chandigarh">[CH] Chandigarh</option>
+                      <option value="[CG]-Chhattisgarh">[CG] Chhattisgarh</option>
+                      <option value="[DNH]-Dadra and Nagar Haveli">[DNH] Dadra and Nagar Haveli</option>
+                      <option value="[DD]-Damn anad Diu">[DD] Damn anad Diu</option>
+                      <option value="[DL]-Delhi">[DL] Delhi</option>
+                      <option value="[GA]-Goa">[GA] Goa</option>
+                      <option value="[GJ]-Gujarat">[GJ] Gujarat</option>
+                      <option value="[HR]-Haryana">[HR] Haryana</option>
+                      <option value="[HP]-Himachal Predesh">[HP] Himachal Predesh</option>
+                      <option value="[JK]-Jammu and Kashmir">[JK] Jammu and Kashmir</option>
+                      <option value="[JH]-Jharkhand">[JH] Jharkhand</option>
+                      <option value="[KA]-Karnataka">[KA] Karnataka</option>
+                      <option value="[KL]-Kerala">[KL] Kerala</option>
+                      <option value="[LA]-Ladakh">[LA] Ladakh</option>
+                      <option value="[LD]-Lakshadweep">[LD] Lakshadweep</option>
+                      <option value="[MP]-Madhya Predesh">[MP] Madhya Predesh</option>
+                      <option value="[MH]-Maharashtra">[MH] Maharashtra</option>
+                      <option value="[MN]-Manipur">[MN] Manipur</option>
+                      <option value="[ML]-Meghalaya">[ML] Meghalaya</option>
+                      <option value="[MZ]-Mizoram">[MZ] Mizoram</option>
+                      <option value="[NL]-Nagaland">[NL] Nagaland</option>
+                      <option value="[OD]-Odisha">[OD] Odisha</option>
+                      <option value="[PY]-Puducherry">[PY] Puducherry</option>
+                      <option value="[PB]-Punjab">[PB] Punjab</option>
+                      <option value="[RJ]-Rajasthan">[RJ] Rajasthan</option>
+                      <option value="[SK]-Sikkim">[SK] Sikkim</option>
+                      <option value="[TN]-Tamil Nadu">[TN] Tamil Nadu</option>
+                      <option value="[TS]-Telangana">[TS] Telangana</option>
+                      <option value="[TR]-Tripura">[TR] Tripura</option>
+                      <option value="[UP]-Uttar Predesh">[UP] Uttar Predesh</option>
+                      <option value="[UK]-Uttarakhand">[UK] Uttarakhand</option>
+                      <option value="[WB]-West Bengal">[WB] West Bengal</option>
+                      <option value="[OT]-Other Territory">[OT] Other Territory</option>
+                    </select>
+                    <input type="text" id="cus_place_second" name="" class="form-control text-dark"  value="">
                 
             </div>
         </div>
@@ -1655,7 +1692,40 @@ function calc(){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     
-
+    <script>
+      function place_of_supply()
+      {
+        var place_dropdown=document.getElementById("cus_place1").value;
+        document.getElementById("cus_place_second").value=place_dropdown;
+        var place=document.getElementById("cus_place_second").value;
+        var ste=document.getElementById("state1").value;
+        var y=ste.toLowerCase();
+        const parts = place.split("-");   
+        var extractedWord = parts[1];  
+        var extractedWord1= extractedWord.trim();
+        var x=extractedWord1.toLowerCase();
+        var place=document.getElementById("cus_place").value=x;    
+        if ( x == y )
+          {
+             document.getElementById("item_table").style.display="block"
+             document.getElementById("item_tablee").style.display="none"
+             document.getElementById("label_tab1").style.display="block"
+             document.getElementById("label_tab2").style.display="none"
+             document.getElementById("add-row").style.display="block"
+             document.getElementById("add-roww").style.display="none"
+          
+          }
+          else
+          {
+             document.getElementById("item_table").style.display="none"
+             document.getElementById("item_tablee").style.display="block"
+             document.getElementById("label_tab1").style.display="none"
+             document.getElementById("label_tab2").style.display="block"
+             document.getElementById("add-row").style.display="none"
+             document.getElementById("add-roww").style.display="block"
+          }
+      }
+    </script>
 
 
 
@@ -1889,6 +1959,7 @@ $(document).ready(function() {
               $('#samp').val(data.cust_place_supply);
               $('#customer_id').val(data.cust_id);
               $('#cus_place1').val(data.cust_place_supply);
+              $('#cus_place_second').val(data.cust_place_supply);
               $('#customer_gst_treat').val(data.cust_gst_treat);
               $('#customer_gstno').val(data.cust_gstno);
               var GSTNO=document.getElementById('customer_gstno').value;
