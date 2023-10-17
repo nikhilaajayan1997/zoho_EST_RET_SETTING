@@ -49,6 +49,7 @@ urlpatterns = [
     path('retainer_invoice_sort_by_no',views.retainer_invoice_sort_by_no,name='retainer_invoice_sort_by_no'),
     path('sort_retainer_view_name/<int:pk>',views.sort_retainer_view_name,name='sort_retainer_view_name'),
     path('sort_retainer_view_no/<int:pk>',views.sort_retainer_view_no,name='sort_retainer_view_no'),
+    path('ret_invoice_status_edit/<int:pk>',views.ret_invoice_status_edit,name='ret_invoice_status_edit'),
     path('get_retainer_accno',views.get_retainer_accno,name='get_retainer_accno'),
 
     path('create_invoice_draft/',views.create_invoice_draft,name='create_invoice_draft'),
@@ -69,6 +70,7 @@ urlpatterns = [
     path('est_sort_by_name_estimate_view/<int:pk>',views.est_sort_by_name_estimate_view,name='est_sort_by_name_estimate_view'),
     path('est_sort_by_estno_estimate_view/<int:pk>',views.est_sort_by_estno_estimate_view,name='est_sort_by_estno_estimate_view'),
     path('convert_to_salesorder/<int:pk>',views.convert_to_salesorder,name='convert_to_salesorder'),
+    path('estimste_status_edit/<int:pk>',views.estimste_status_edit,name='estimste_status_edit'),
     path('createestimate/',views.createestimate,name='createestimate'),
     path('itemdata_est/',views.itemdata_est,name='itemdata_est'),
     path('create_and_send_estimate/',views.create_and_send_estimate,name='create_and_send_estimate'),

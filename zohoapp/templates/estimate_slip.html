@@ -224,7 +224,9 @@ $(function() {
                     {{estimate.estimate_no }}
                     <button class="btn" onclick="overview_function()" style="background-color:rgb(212, 139, 3)  ;border-radius: 5px;height: 1.7rem;" title="Overview"><i class="fa fa-eye"></i></button>
                     <button class="btn" onclick="template_function()" style="background-color:rgb(212, 139, 3)  ;border-radius: 5px;height: 1.7rem;" title="Template"><i class="fa fa-file-word"></i></button>
+                    {% if estimate.status == 'Draft' %}
                     <a href="{% url 'estimste_status_edit' estimate.id %}" class="btn" style="background-color:rgb(212, 139, 3);border-radius: 5px;height: 1.7rem;">Save</a>
+                    {% endif %}
                 </div>
                 <div class="col-md-7 text-white text-right my-auto " style="text-align: end;">
                     <div class="btn-group" role="group" aria-label="Basic example">

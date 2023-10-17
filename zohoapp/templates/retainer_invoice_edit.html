@@ -116,8 +116,50 @@
           </div>
           <div class="row mb-4" id="cplace_supply_row" >
             <div class="col-sm-2"><label for="">Place Of Supply</label></div>
-            <div class="col-sm-6"><input type="text" id="cus_place1" name="" class="form-control text-dark"
-                    value="" readonly>
+            <div class="col-sm-6">
+              <!-- <input type="text" id="cus_place1" name="" class="form-control text-dark"
+                    value="" readonly> -->
+                    <select class="form-control text-dark bg-light" id="cus_place1" name="cus_place1" onclick="place_of_supply()">
+                      <option value="[AN]-Andaman and Nicobar Islads">[AN] Andaman and Nicobar Islads</option>
+                      <option value="[AD]-Andhra Predhesh">[AD] Andhra Predhesh</option>
+                      <option value="[AR]-Arunachal Predesh">[AR] Arunachal Predesh</option>
+                      <option value="[AS]-Assam">[AS] Assam</option>
+                      <option value="[BR]-Bihar">[BR] Bihar</option>
+                      <option value="[CH]-Chandigarh">[CH] Chandigarh</option>
+                      <option value="[CG]-Chhattisgarh">[CG] Chhattisgarh</option>
+                      <option value="[DNH]-Dadra and Nagar Haveli">[DNH] Dadra and Nagar Haveli</option>
+                      <option value="[DD]-Damn anad Diu">[DD] Damn anad Diu</option>
+                      <option value="[DL]-Delhi">[DL] Delhi</option>
+                      <option value="[GA]-Goa">[GA] Goa</option>
+                      <option value="[GJ]-Gujarat">[GJ] Gujarat</option>
+                      <option value="[HR]-Haryana">[HR] Haryana</option>
+                      <option value="[HP]-Himachal Predesh">[HP] Himachal Predesh</option>
+                      <option value="[JK]-Jammu and Kashmir">[JK] Jammu and Kashmir</option>
+                      <option value="[JH]-Jharkhand">[JH] Jharkhand</option>
+                      <option value="[KA]-Karnataka">[KA] Karnataka</option>
+                      <option value="[KL]-Kerala">[KL] Kerala</option>
+                      <option value="[LA]-Ladakh">[LA] Ladakh</option>
+                      <option value="[LD]-Lakshadweep">[LD] Lakshadweep</option>
+                      <option value="[MP]-Madhya Predesh">[MP] Madhya Predesh</option>
+                      <option value="[MH]-Maharashtra">[MH] Maharashtra</option>
+                      <option value="[MN]-Manipur">[MN] Manipur</option>
+                      <option value="[ML]-Meghalaya">[ML] Meghalaya</option>
+                      <option value="[MZ]-Mizoram">[MZ] Mizoram</option>
+                      <option value="[NL]-Nagaland">[NL] Nagaland</option>
+                      <option value="[OD]-Odisha">[OD] Odisha</option>
+                      <option value="[PY]-Puducherry">[PY] Puducherry</option>
+                      <option value="[PB]-Punjab">[PB] Punjab</option>
+                      <option value="[RJ]-Rajasthan">[RJ] Rajasthan</option>
+                      <option value="[SK]-Sikkim">[SK] Sikkim</option>
+                      <option value="[TN]-Tamil Nadu">[TN] Tamil Nadu</option>
+                      <option value="[TS]-Telangana">[TS] Telangana</option>
+                      <option value="[TR]-Tripura">[TR] Tripura</option>
+                      <option value="[UP]-Uttar Predesh">[UP] Uttar Predesh</option>
+                      <option value="[UK]-Uttarakhand">[UK] Uttarakhand</option>
+                      <option value="[WB]-West Bengal">[WB] West Bengal</option>
+                      <option value="[OT]-Other Territory">[OT] Other Territory</option>
+                    </select>
+                
                 
             </div>
         </div>
@@ -235,52 +277,47 @@
                       <div class="col-sm-12 col-md-12 col-lg-12">
                         <label for="" class="text-black"><b>Payment Method</b></label>
                         {% if pay_detail.payment_opt %}
-                        <select name="pay_method" id="pay_method" class="form-control text-dark" onclick="payment_method()">
-                          <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------- SELECT --------</option>
-                          <option value="{{ pay_detail.payment_opt }}" selected>{{ pay_detail.payment_opt }}</option>
-                          <option value="Bank">Bank</option>
-                          <option value="UPI">UPI</option>
-                          <option value="Cash">Cash</option>
-                          <option value="Cheque">Cheque</option>
-                        </select>
+                                <select name="pay_method" id="pay_method" class="form-control text-dark" onclick="payment_method()">
+                                  <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------- SELECT --------</option>
+                                  {% if pay_detail.payment_opt != 'Cash' or pay_detail.payment_opt != 'Cheque' or pay_detail.payment_opt != 'UPI' %}
+                                  <option value="{{ pay_detail.bank }} {{ pay_detail.payment_opt }}" selected>{{ pay_detail.payment_opt }}</option>
+                                  {% else %}
+                                  <option value="0 {{ pay_detail.payment_opt }}" selected>{{ pay_detail.payment_opt }}</option>
+                                  {% endif %}
+                                  <option value="0 UPI">UPI</option>
+                                  <option value="0 Cash">Cash</option>
+                                  <option value="0 Cheque">Cheque</option>
+                                  {% for i in banks %}
+                                  <option value="{{ i.id }} {{ i.name }}">{{ i.name }}</option>
+                                  {% endfor %}
+                                </select>
                         {% else %}
                         <select name="pay_method" id="pay_method" class="form-control text-dark" onclick="payment_method()">
                           <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------- SELECT --------</option>
-                          <option value="Bank">Bank</option>
-                          <option value="UPI">UPI</option>
-                          <option value="Cash">Cash</option>
-                          <option value="Cheque">Cheque</option>
+                          <option value="0 UPI">UPI</option>
+                          <option value="0 Cash">Cash</option>
+                          <option value="0 Cheque">Cheque</option>
+                          {% for i in banks %}
+                          <option value="{{ i.id }} {{ i.name }}">{{ i.name }}</option>
+                          {% endfor %}
                         </select>
                         {% endif %}
                       </div>
                     </div>
-                    {% if pay_detail.payment_opt == 'Bank' %}
+                    {% if pay_detail.payment_opt != 'Cash' and pay_detail.payment_opt != 'Cheque' and pay_detail.payment_opt != 'UPI'  %}
                    <fieldset1  style="display: block;" id="bank_row">
                     <div class="row">
                       <div class="col-sm-12 col-md-12 col-lg-12">
-                        <select name="bank" id="bank" class="form-control mt-1 text-dark">
-                          <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------- SELECT BANK -------</option>
-                          <option value="{{ pay_detail.bank_id }} {{ pay_detail.bank_name }}" selected>{{ pay_detail.bank_name }}</option>
-                          {% for i in banks %}
-                            <option value="{{ i.id }} {{ i.name }}">{{ i.name }}</option>
-                          {% endfor %}
-                        </select>
+                        
                         <label for="" class="text-black">Account No:</label>
                       <input type="text" name="acc_no" id="acc_no" class="form-control text-dark" value="{{ pay_detail.acc_no }}" readonly> 
                       </div>
-
                     </div>
                    </fieldset1>
                    {% else %}
                    <fieldset1  style="display: none;" id="bank_row">
                     <div class="row">
                       <div class="col-sm-12 col-md-12 col-lg-12">
-                        <select name="bank" id="bank" class="form-control mt-1 text-dark">
-                          <option value="" selected>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------- SELECT BANK -------</option>
-                          {% for i in banks %}
-                            <option value="{{ i.id }} {{ i.name }}">{{ i.name }}</option>
-                          {% endfor %}
-                        </select>
                         <label for="" class="text-black">Account No:</label>
                       <input type="text" name="acc_no" id="acc_no" class="form-control text-dark" readonly> 
                       </div>
@@ -1011,18 +1048,8 @@
 <script>
   function payment_method(){
     var pay_opt=document.getElementById("pay_method").value;
-    if(pay_opt=='Bank')
-    {
-       document.getElementById("bank_row").style.display="block";
-       document.getElementById("upi_row").style.display="none";
-       document.getElementById("chq_row").style.display="none";
-       document.getElementById('upi_id').value="";
-       document.getElementById('chq_no').value="";
-       document.getElementById('acc_no').value="";
-      document.getElementById('bank').value="";
-       document.getElementById('chq_label').innerHTML=" ";
-    }
-    else if(pay_opt=='Cheque')
+    
+    if(pay_opt=='0 Cheque')
     {
       document.getElementById("bank_row").style.display="none";
       document.getElementById("upi_row").style.display="none";
@@ -1033,7 +1060,7 @@
       document.getElementById('acc_no').value="";
       document.getElementById('bank').value="";
     }
-    else if(pay_opt=='UPI')
+    else if(pay_opt=='0 UPI')
     {
       document.getElementById("bank_row").style.display="none";
       document.getElementById("upi_row").style.display="block";
@@ -1044,7 +1071,7 @@
       document.getElementById('acc_no').value="";
       document.getElementById('bank').value="";
     }
-    else if(pay_opt=='Cash')
+    else if(pay_opt=='0 Cash')
     {
       document.getElementById("bank_row").style.display="none";
       document.getElementById("upi_row").style.display="none";
@@ -1055,7 +1082,16 @@
       document.getElementById('acc_no').value="";
       document.getElementById('bank').value="";
     }
-    
+    else{
+      document.getElementById("bank_row").style.display="block";
+       document.getElementById("upi_row").style.display="none";
+       document.getElementById("chq_row").style.display="none";
+       document.getElementById('upi_id').value="";
+       document.getElementById('chq_no').value="";
+       document.getElementById('acc_no').value="";
+      document.getElementById('bank').value="";
+       document.getElementById('chq_label').innerHTML=" ";
+    }
 
   }
 </script> 
@@ -1285,8 +1321,8 @@ $(document).ready(function() {
 
 
 $(document).ready(function(){
-  $('#bank').change(function(){
-    var bank=$('#bank').val();
+  $('#pay_method').change(function(){
+    var bank=$('#pay_method').val();
     var bank_id=bank.split(" ")[0];
     $.ajax({
       url:"{% url 'get_retainer_accno' %}",
