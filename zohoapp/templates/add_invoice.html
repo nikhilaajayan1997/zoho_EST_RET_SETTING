@@ -217,7 +217,7 @@
                                     <label for="" class="mt-4"><h4 class="text-black">Paid:</h4>
                                   </th>
                                   <td>
-                                    <input type="number" name="paid" id="paid" class="form-control mt-3 text-black" onchange="show_bal()" style="width: 100%;" value="0">
+                                    <input type="number" name="paid" id="paid" class="form-control mt-3 text-black" onchange="show_bal()" style="width: 100%;" value="">
     
                                   </td>
                                 </tr>
@@ -1525,14 +1525,14 @@ $('#retainer-table').on('click', '.clone-row', function () {
 
     var frm=document.getElementById("home");
     
-    let customMsg = "Do you want to save as draft?";
+    // let customMsg = "Do you want to save as draft?";
   
-    if (confirm(customMsg)) {
+    // if (confirm(customMsg)) {
 
       frm.action=("{% url 'create_invoice_draft' %}")
-    } else {
-      console.log("User Clicked CANCEL");
-    }
+    // } else {
+    //   console.log("User Clicked CANCEL");
+    // }
   }
 
   function savesend() {

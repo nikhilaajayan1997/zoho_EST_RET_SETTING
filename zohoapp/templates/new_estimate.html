@@ -294,11 +294,11 @@ function calc() {
             <form method="POST" action="" class="p-5" enctype="multipart/form-data" novalidate
                 id="forms">
                 {% csrf_token %}
-                <input class="text"  id="state1" name="hidden_state1" value="{{ company.state }}">
-                <input class="text"  id="state" name="hidden_state" value="">
+                <input class="hidden"  id="state1" name="hidden_state1" value="{{ company.state }}">
+                <input class="hidden"  id="state" name="hidden_state" value="">
 
-                <input class="text" type="text" name="samp" id="samp" >
-                <input class="text"  id="cus_place" name="hidden_cus_place"  value="">
+                <input class="hidden" type="text" name="samp" id="samp" >
+                <input class="hidden"  id="cus_place" name="hidden_cus_place"  value="">
                 
                 <div class="row mb-4 border-top pt-5">
                     <div class="col-sm-2"><label for="customer_name">Customer Name*</label></div>

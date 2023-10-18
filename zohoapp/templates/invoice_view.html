@@ -549,7 +549,7 @@
                                 </div>
                             </div>
                             <hr>
-                            {% if ret_payments.payment_opt == 'Bank' or ret_payments.payment_opt == 'UPI' or ret_payments.payment_opt == 'Cash' or ret_payments.payment_opt == 'Cheque' %}
+                            {% if ret_payments.payment_opt %}
                             <h4 style="color: rgb(233, 153, 5);text-align: center;">Payment Details</h4>
                             <div class="row">
                                 <div class="col-sm-6 col-md-6 col-lg-6">
@@ -561,18 +561,7 @@
                                     <label for=""><b>{{ ret_payments.payment_opt }}</b></label>
                                 </div>
                             </div>
-                            {% if ret_payments.bank_name != 'null' %}
-                            <div class="row">
-                                <div class="col-sm-6 col-md-6 col-lg-6">
-                                    <label class="text-light" for="" style="font-weight: 500;">Bank Name &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        :</label>
-        
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-6">
-                                    <label for=""><b>{{ ret_payments.bank_name }}</b></label>
-                                </div>
-                            </div>
-                            {% endif %}
+                            
                             {% if ret_payments.acc_no %}
                             <div class="row">
                                 <div class="col-sm-6 col-md-6 col-lg-6">

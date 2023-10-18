@@ -231,7 +231,7 @@
               <div class="row mb-4 mt-4">
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
-                  <textarea class="form-control   text-dark" style="height: 50%;" cols="5" rows="10" name="customer_notes"  id="floatingTextarea" required>{{invoice.customer_notes}}</textarea>
+                  <textarea class="form-control   text-dark" style="height: 50%;" cols="5" rows="10" name="customer_notes"  id="floatingTextarea" >{{invoice.customer_notes}}</textarea>
                   
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-4">
@@ -268,19 +268,20 @@
               <div class="row mb-4">
                 <div class="col-sm-6 col-md-6 col-lg-6">                        
                   <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
-                  <textarea class="form-control  bg-light text-dark" style="height: 50%;" cols="5" rows="10"  name="terms"   id="floatingTextarea" required>{{invoice.terms_and_conditions}}</textarea>
+                  <textarea class="form-control  bg-light text-dark" style="height: 50%;" cols="5" rows="10"  name="terms"   id="floatingTextarea" >{{invoice.terms_and_conditions}}</textarea>
 
                 </div>
                 <div class="col-sm-4 col-md-4 col-lg-4">
                   <div class="p-3 mt-4 pb-4" style="width: 100%;background-color: #888888a9;">
                     <div class="row">
                       <div class="col-sm-12 col-md-12 col-lg-12">
+                        <!-- <input type="text" name="bnk_id" id="bnk_id" value="{{  bnk.id }}"> -->
                         <label for="" class="text-black"><b>Payment Method</b></label>
                         {% if pay_detail.payment_opt %}
                                 <select name="pay_method" id="pay_method" class="form-control text-dark" onclick="payment_method()">
                                   <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------- SELECT --------</option>
                                   {% if pay_detail.payment_opt != 'Cash' or pay_detail.payment_opt != 'Cheque' or pay_detail.payment_opt != 'UPI' %}
-                                  <option value="{{ pay_detail.bank }} {{ pay_detail.payment_opt }}" selected>{{ pay_detail.payment_opt }}</option>
+                                  <option value="{{ pay_detail.bank.id }} {{ pay_detail.payment_opt }}" selected>{{ pay_detail.payment_opt }}</option>
                                   {% else %}
                                   <option value="0 {{ pay_detail.payment_opt }}" selected>{{ pay_detail.payment_opt }}</option>
                                   {% endif %}
@@ -304,7 +305,7 @@
                         {% endif %}
                       </div>
                     </div>
-                    {% if pay_detail.payment_opt != 'Cash' and pay_detail.payment_opt != 'Cheque' and pay_detail.payment_opt != 'UPI'  %}
+                    {% if pay_detail.payment_opt != 'Cash' and pay_detail.payment_opt != 'Cheque' and pay_detail.payment_opt != 'UPI' %}
                    <fieldset1  style="display: block;" id="bank_row">
                     <div class="row">
                       <div class="col-sm-12 col-md-12 col-lg-12">
@@ -370,7 +371,7 @@
               
 
               <button class="btn" style="background-color: rgb(210, 132, 30);" type="submit" name="action" value="Save">Save</button> 
-              <button class="btn" style="background-color:  rgb(59, 59, 58) ;" onclick="window.history.back()" >Cancel</button>         
+              <button class="btn" style="background-color:  rgb(210, 132, 30);" onclick="window.history.back()" >Cancel</button>         
             </form>
 
             <!-- ......................customer modal ........................................ -->
@@ -1048,6 +1049,8 @@
 <script>
   function payment_method(){
     var pay_opt=document.getElementById("pay_method").value;
+    // document.getElementById('acc_no').style.display="none";
+
     
     if(pay_opt=='0 Cheque')
     {
