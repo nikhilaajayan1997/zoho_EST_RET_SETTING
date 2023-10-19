@@ -1831,14 +1831,14 @@ def createestimate(request):
              mapped = zip(item,hsn,quantity, rate, discount, tax, amount)
              mapped = list(mapped)
              for element in mapped:
-                created = EstimateItems.objects.get_or_create(
+                created = EstimateItems.objects.create(
                     estimate=estimate, item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
         else:
             if len(itemm) == len(hsnn) == len(quantityy) == len(ratee) == len(discountt) == len(taxx) == len(amountt):
              mapped = zip(itemm,hsnn,quantityy, ratee, discountt, taxx, amountt )
              mapped = list(mapped)
              for element in mapped:
-                created = EstimateItems.objects.get_or_create(
+                created = EstimateItems.objects.create(
                     estimate=estimate, item_name=element[0],hsn=element[1], quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
 
     return redirect('allestimates')
@@ -1920,7 +1920,7 @@ def create_and_send_estimate(request):
               mapped = zip(item,hsn,quantity, rate, discount, tax, amount)
               mapped = list(mapped)
               for element in mapped:
-                    created = EstimateItems.objects.get_or_create(
+                    created = EstimateItems.objects.create(
                     estimate=estimate,item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
         
         else:
@@ -1928,7 +1928,7 @@ def create_and_send_estimate(request):
               mapped = zip(itemm,hsnn,quantityy,ratee,discountt,taxx,amountt)
               mapped = list(mapped)
               for element in mapped:
-                    created = EstimateItems.objects.get_or_create(
+                    created = EstimateItems.objects.create(
                     estimate=estimate,item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
 
         cust_email = customer.objects.get(
@@ -2102,14 +2102,14 @@ def updateestimate(request,pk):
               mapped = zip(item,hsn,quantity,rate,discount,tax,amount)
               mapped = list(mapped)
               for element in mapped:
-                created = EstimateItems.objects.get_or_create(
+                created = EstimateItems.objects.create(
                     estimate=estimate,item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
         else:
            if len(itemm)==len(hsnn)==len(quantityy)==len(ratee)==len(discountt)==len(taxx)==len(amountt):
               mapped = zip(itemm,hsnn,quantityy, ratee, discountt, taxx, amountt)
               mapped = list(mapped)
               for element in mapped:
-                created = EstimateItems.objects.get_or_create(
+                created = EstimateItems.objects.create(
                     estimate=estimate,item_name=element[0],hsn=element[1],quantity=element[2], rate=element[3], discount=element[4], tax_percentage=element[5], amount=element[6])
         
         if SalesOrder.objects.filter(estimate=pk).exists():
@@ -4947,9 +4947,6 @@ def itemdata_challan(request):
     print(company.state)
     id = request.GET.get('id')
     
-
-    
-
     item = AddItem.objects.get(Name=id, user=user)
     name=item.Name
     rate = item.p_price

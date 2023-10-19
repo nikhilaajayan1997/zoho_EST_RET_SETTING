@@ -63,6 +63,7 @@ urlpatterns = [
     path('retainer_delete/<int:pk>',views.retainer_delete,name='retainer_delete'),
     path('allestimates',views.allestimates,name='allestimates'),
     path('newestimate/',views.newestimate,name='newestimate'),
+
     path('new_estimate_customer',views.new_estimate_customer,name='new_estimate_customer'),
     path('new_estimate_item',views.new_estimate_item,name='new_estimate_item'),
     path('est_sort_by_name',views.est_sort_by_name,name='est_sort_by_name'),
@@ -71,6 +72,7 @@ urlpatterns = [
     path('est_sort_by_estno_estimate_view/<int:pk>',views.est_sort_by_estno_estimate_view,name='est_sort_by_estno_estimate_view'),
     path('convert_to_salesorder/<int:pk>',views.convert_to_salesorder,name='convert_to_salesorder'),
     path('estimste_status_edit/<int:pk>',views.estimste_status_edit,name='estimste_status_edit'),
+
     path('createestimate/',views.createestimate,name='createestimate'),
     path('itemdata_est/',views.itemdata_est,name='itemdata_est'),
     path('create_and_send_estimate/',views.create_and_send_estimate,name='create_and_send_estimate'),
@@ -677,7 +679,7 @@ urlpatterns = [
     path('vendor_customize_report',views.vendor_customize_report,name='vendor_customize_report'),
     path('bill_customize_report',views.bill_customize_report,name='bill_customize_report'),
 
-    # ...........................................settings..............................
+    # ...........................................settings     Nikhila  ..............................
     path('go_settings',views.go_settings,name='go_settings'),
     path('edit_setting/<int:pk>',views.edit_setting,name='edit_setting'),
     

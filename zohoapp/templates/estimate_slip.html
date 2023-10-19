@@ -225,7 +225,7 @@ $(function() {
                     <button class="btn" onclick="overview_function()" style="background-color:rgb(212, 139, 3)  ;border-radius: 5px;height: 1.7rem;" title="Overview"><i class="fa fa-eye"></i></button>
                     <button class="btn" onclick="template_function()" style="background-color:rgb(212, 139, 3)  ;border-radius: 5px;height: 1.7rem;" title="Template"><i class="fa fa-file-word"></i></button>
                     {% if estimate.status == 'Draft' %}
-                    <a href="{% url 'estimste_status_edit' estimate.id %}" class="btn" style="background-color:rgb(212, 139, 3);border-radius: 5px;height: 1.7rem;">Save</a>
+                    <a href="{% url 'estimste_status_edit' estimate.id %}" class="btn" title="save this draft" style="background-color:rgb(212, 139, 3);border-radius: 5px;height: 1.7rem;"><i class="fas fa-save"></i></a>
                     {% endif %}
                 </div>
                 <div class="col-md-7 text-white text-right my-auto " style="text-align: end;">
@@ -865,25 +865,28 @@ $(function() {
                                 </div>
                           </div>
                           <div class="row">
-                            <div class="col-sm-6 col-lg-6 col-md-6">
+                            <div class="col-sm-12 col-lg-12 col-md-12">
                                 <p class="text-dark" style="font-size: small;"><span class="text-black" style="font-size:medium;">Bill to :</span> <br>
                                 
                                  {{ estimate.customer_name }} <br>{{ estimate.customer.customerEmail }} <br><span class="text-black " style="font-size: medium;">Order date:</span> <br> {{estimate.estimate_date }} </p>
+                                 <p class="text-dark" style="font-size: small;margin-left: 70%;margin-top: -20%;"><span class="text-black" style="font-size: medium;">Estimate no:</span><br>{{estimate.estimate_no }}</p>
+
+
 
                             </div>
-                            <div class="col-sm-2 col-md-2 col-lg-2"></div>
+                            <!-- <div class="col-sm-2 col-md-2 col-lg-2"></div>
                             <div class="col-sm-4 col-md-4 col-lg-4">
-                                <p class="text-dark" style="font-size: small;"><span class="text-black" style="font-size: medium;">Estimate no:</span><br>{{estimate.estimate_no }}</p>
-                            </div>
+                            </div> -->
                           </div>
                           
-                          <div class="row">
+                          <div class="row ">
                             <div class="col-sm-12 col-md-12 col-lg-12">
-                                <table class="table-bordered mb-3">
+                                <table class="table-bordered mb-3" style="margin-top: 8%;">
                                     <thead >
                                         <tr>
                                             <th style="color: black;font-size: smaller;">#</th>
                                             <th style="width: 30rem;color: black;font-size: smaller;">Item</th>
+                                            <th style="width: 30rem;color: black;font-size: smaller;">Hsn</th>
                                             <th class="text-right;" style="color: black;font-size: smaller;">Qty</th>
                                             <th class="text-right;" style="width:10rem;color: black;font-size: smaller;">Rate</th>
                                             <th class="text-right;" style="color: black;font-size: smaller;">Discount</th>
@@ -896,6 +899,7 @@ $(function() {
                                <tr>
                                 <td style="color: black;font-size: smaller;">{{ forloop.counter }}</td>
                                 <td style="color: black;font-size: smaller;">{{ item.item_name }}</td>
+                                <td style="color: black;font-size: smaller;">{{ item.hsn }}</td>
                                 <td class="text-right" style="color: black;font-size: smaller;">{{ item.quantity }}</td>
                                 <td class="text-right" style="color: black;font-size: smaller;">{{ item.rate|floatformat:1 }}</td>
                                 <td class="text-right" style="color: black;font-size: smaller;">{{ item.discount|floatformat:1 }}</td>
@@ -908,12 +912,10 @@ $(function() {
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6 col-lg-6 col-md-6"></div>
-                            <div class="col-sm-6 col-lg-6 col-md-6">
-                                <table>
+                            <div class="col-sm-12 col-lg-12 col-md-12">
+                                <table style="margin-left: 60%;">
                                     <tr>
-                                        <td class=" text-dark" style="font-size: smaller;">Sub-Total:</td>
-                                        
+                                        <td class=" text-dark" style="font-size: smaller;">Sub-Total:</td>                                       
                                         <td class="text-right text-dark" style="text-align: end;font-size: smaller;"> {{estimate.sub_total|floatformat:1}}</td>
                                     </tr>
                                     {% if estimate.cgst != 0 %}
@@ -922,6 +924,7 @@ $(function() {
                                         <td class="text-right text-dark" style="text-align: end;font-size: smaller;">{{ estimate.cgst|floatformat:1}}</td>
                                     </tr>
                                     {% endif %}
+                                       
                                     {% if estimate.sgst != 0 %}
                                     <tr>
                                         <td class="text-right text-dark" style="font-size: smaller;">SGST:</td>
