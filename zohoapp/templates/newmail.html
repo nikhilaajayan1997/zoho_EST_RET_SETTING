@@ -17,9 +17,7 @@
           <div class="col-md-3 col-lg-3 col-sm-3">
             <h4 class="ms-5" style="color: rgb(177, 116, 4);text-align: end;">{{ company.company_name }}</h4>
           </div>
-
          </div>
-      
         <div >
           <br>
                 {% if error_message %}
@@ -27,7 +25,6 @@
                   {{error_message}}
                 </div>
                 {% endif %}
-                
                 {% if email_form %}
                 <form method="POST" action ="" enctype="multipart/form-data" class="text-white"  style="width: 90%;">
                   {% csrf_token %}
