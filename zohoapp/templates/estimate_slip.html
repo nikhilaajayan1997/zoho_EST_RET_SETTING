@@ -144,8 +144,8 @@ $(function() {
                             <a class="dropdown-item" href="{% url 'estimateslip' estimate.id %}">All</a>
 
               
-                            <a class="dropdown-item" href="{% url 'est_sort_by_name_estimate_view' estimate.id %}">Name [A-Z]</a>
-                            <a class="dropdown-item" href="{% url 'est_sort_by_estno_estimate_view' estimate.id %}">EST No [1-9]</a>
+                            <a class="dropdown-item" href="{% url 'est_sort_by_name_estimate_view' estimate.id %}">Name</a>
+                            <a class="dropdown-item" href="{% url 'est_sort_by_estno_estimate_view' estimate.id %}">EST No</a>
                         </div>
                       </div>
                         
@@ -304,7 +304,7 @@ $(function() {
                         {%endif%}
                         
                        
-
+                            {% if estimate.convert_invoice == "not_converted" and estimate.convert_sales == "not_converted" %}
                             <div class="dropdown m-0 p-0 ms-1" title="Convert" style="background-color:  rgb(212, 139, 3);border-radius: 5px;height: 1.7rem;">
                                 <a href=" " class=" fas fa-file-invoice dropdown-toggle  btn-sm text-white ms-1"  
                                     data-bs-toggle="dropdown" id="attachmentDropdown" aria-haspopup="true" aria-expanded="false"> 
@@ -327,6 +327,7 @@ $(function() {
                                     {% endif %}   
                                 </div>
                             </div>
+                            {% endif %}
                         
                     </div>
                     
@@ -547,7 +548,7 @@ $(function() {
                         
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-6">
-                        <label for="" style="color: rgb(197, 129, 3);"><b>{{estimate.customer_mailid}}</b></label>
+                        <label for="" style="color: rgb(197, 129, 3);word-break: break-all"><b>{{estimate.customer_mailid}}</b></label>
                     </div>
                 </div>
                 <div class="row mt-2">

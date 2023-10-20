@@ -1,14 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
-
+<!-- ........................................................ By Nikhila Ajayan ........................... -->
 
 <div class="container-fulid containerprof" >
     <div class="card radius-15 p-3">
         
         <div class="card-body">
             <div class="card-title">
-              <h2 class="mb-0 text-uppercase text-right">Settings</h2>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h2 class="mb-0 text-uppercase text-right">Settings</h2>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-3"></div>
+                    <div class="col-md-3 col-lg-3 col-sm-3"></div>
+                    <div class="col-md-3 col-lg-3 col-sm-3">
+                        <h4 class="ms-5" style="color: rgb(177, 116, 4);text-align: end;">{{ company.company_name }}</h4>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

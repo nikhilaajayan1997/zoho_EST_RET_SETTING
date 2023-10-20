@@ -1218,7 +1218,7 @@ def create_invoice_draft(request):
             mapped = zip(description,amount)
             mapped=list(mapped)
             for ele in mapped:
-                created = Retaineritems.objects.get_or_create(description=ele[0],amount=ele[1], retainer=retainer_invoice)
+                created = Retaineritems.objects.create(description=ele[0],amount=ele[1], retainer=retainer_invoice)
         else:
             pass
 
@@ -1246,6 +1246,8 @@ def create_invoice_send(request):
         customer_notes=request.POST['customer_notes']
         terms_and_conditions=request.POST['terms']
         payment_opt=request.POST['pay_method']
+        tot_in_string = str(total_amount)
+
 
         if payment_opt != '':
             pay_opt1=payment_opt.split(" ")[1]
@@ -1269,7 +1271,7 @@ def create_invoice_send(request):
 
         retainer_invoice=RetainerInvoice(
         user=user,customer_name=customer_name,customer_name1=customer_name1,customer_mailid=customer_mailid,customer_placesupply=customer_placesupply,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,
-        total_amount=total_amount,balance=bal_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions,is_draft=False)
+        total_amount=total_amount,balance=bal_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions,is_draft=False,is_sent=True)
         retainer_invoice.save()
 
         if payment_opt != '':
@@ -1292,10 +1294,18 @@ def create_invoice_send(request):
             mapped = zip(description,amount)
             mapped=list(mapped)
             for ele in mapped:
-                created = Retaineritems.objects.get_or_create(description=ele[0],amount=ele[1], retainer=retainer_invoice)
+                created = Retaineritems.objects.create(description=ele[0],amount=ele[1], retainer=retainer_invoice)
         else:
             pass
-        return redirect('invoice_view',pk=retainer_invoice.id)
+        # return redirect('invoice_view',pk=retainer_invoice.id)
+        cust_email = customer.objects.get(
+            user=user, customerName=customer_name1).customerEmail
+        print(cust_email)
+        subject = 'Retainer Invoice'
+        message = 'Dear Customer,\n Your Retainer Invoice has been Saved for a total amount of: ' + tot_in_string
+        recipient = cust_email
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [recipient])
+        return redirect('retainer_invoice')
 
 def retainer_invoice_sort_by_name(request):
     user=request.user.id
@@ -1414,27 +1424,26 @@ def retainer_update(request,pk):
     
         retainer_invoice.save()
 
-       
-
         payment_opt=request.POST['pay_method']
-        pay_opt1=payment_opt.split(" ")[1]
-        pay_opt2=payment_opt.split()[1:]
-        if pay_opt1 == 'Cash':
-            bankid="null"
-        elif pay_opt1 == 'UPI':
-            bankid="null"
-        elif pay_opt1 == 'Cheque':
-            bankid="null"
-            bank_name1=0
-        else:
-            bnkid=payment_opt.split(" ")[0]
-            # bankna=payment_opt.split()[1:]
-            bank_name1=Bankcreation.objects.get(id=bnkid)
-            bankname=bank_name1.name
+        if payment_opt != '':
+            pay_opt1=payment_opt.split(" ")[1]
+            pay_opt2=payment_opt.split()[1:]
+            if pay_opt1 == 'Cash':
+                bankid="null"
+            elif pay_opt1 == 'UPI':
+                bankid="null"
+            elif pay_opt1 == 'Cheque':
+                bankid="null"
+                bank_name1=0
+            else:
+                bnkid=payment_opt.split(" ")[0]
+                # bankna=payment_opt.split()[1:]
+                bank_name1=Bankcreation.objects.get(id=bnkid)
+                bankname=bank_name1.name
 
-        acc_no=request.POST['acc_no']
-        cheque_no=request.POST['chq_no']
-        upi_id=request.POST['upi_id']
+            acc_no=request.POST['acc_no']
+            cheque_no=request.POST['chq_no']
+            upi_id=request.POST['upi_id']
         if payment_opt != '':
             if retainer_payment_details.objects.filter(retainer=retainer_invoice.id).exists():
                 if pay_opt1 == 'Cash':
@@ -1492,7 +1501,7 @@ def retainer_update(request,pk):
               mapped = zip(description,amount)
               mapped = list(mapped)
               for element in mapped:
-                created = Retaineritems.objects.get_or_create(
+                created = Retaineritems.objects.create(
                     retainer=retainer_invoice, description=element[0], amount=element[1])
 
         
@@ -1975,8 +1984,6 @@ def estimateslip(request, est_id):
     return render(request, 'estimate_slip.html', context)
 
 
-
-
 def editestimate(request,est_id):
     user = request.user
     company = company_details.objects.get(user=user)
@@ -2416,13 +2423,14 @@ class EmailAttachementView(View):
             message = form.cleaned_data['message']
             email = form.cleaned_data['email']
             files = request.FILES.getlist('attach')
-
             try:
                 mail = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [email])
                 for f in files:
                     mail.attach(f.name, f.read(), f.content_type)
                 mail.send()
+                
                 return render(request, self.template_name, {'email_form': form, 'error_message': 'Sent email to %s'%email})
+
             except:
                 return render(request, self.template_name, {'email_form': form, 'error_message': 'Either the attachment is too big or corrupt'})
 

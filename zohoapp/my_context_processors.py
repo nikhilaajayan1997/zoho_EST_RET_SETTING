@@ -10,3 +10,12 @@ def base_setting(request):
         return{
         "setting_variable":"null",
       }
+def get_company_name(request):
+  if company_details.objects.filter(user=request.user.id).exists():
+      return{
+        "company":company_details.objects.get(user=request.user.id),
+      }
+  else:
+    return{
+      "company":"No company name",
+    }

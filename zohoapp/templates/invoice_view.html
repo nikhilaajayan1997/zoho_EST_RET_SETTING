@@ -128,8 +128,8 @@
                                             <a class="dropdown-item" href="{% url 'invoice_view' invoice.id %}">All</a>
                 
                               
-                                            <a class="dropdown-item" href="{% url 'sort_retainer_view_name' invoice.id %}">Name [A-Z]</a>
-                                            <a class="dropdown-item" href="{% url 'sort_retainer_view_no' invoice.id %}">EST No [1-9]</a>
+                                            <a class="dropdown-item" href="{% url 'sort_retainer_view_name' invoice.id %}">Name</a>
+                                            <a class="dropdown-item" href="{% url 'sort_retainer_view_no' invoice.id %}">EST No</a>
                                         </div>
                                       </div>
                                 </div>
@@ -229,6 +229,9 @@
                             data-toggle="tooltip" title="PDF" id="pdf">
                             <i class="far fa-file-pdf"></i></a>
                             {% endif %}
+                            <a href="{% url 'emailattachment' %}" class="btn btn-sm text-white ms-1"
+                        style="background-color:  rgb(212, 139, 3);border-radius: 5px;height: 1.7rem;" data-toggle="tooltip" title="Email">
+                            <i class="fas fa-envelope"></i></a>
 
                             {% if setting_variable.print_opt == 'yes' %}   
                         <button class="btn btn-sm text-white ms-1 print-button" onclick="printRetainerInvoice()" style="background-color:  rgb(212, 139, 3);border-radius: 5px;"
@@ -239,7 +242,7 @@
                             data-toggle="tooltip" title="Print">
                             <i class="fa fa-print"></i></button>
                             {% endif %}
-                        <button  class="btn btn-sm text-white ms-1 attach-button"
+                        <!-- <button  class="btn btn-sm text-white ms-1 attach-button"
                         style="background-color:  rgb(212, 139, 3);border-radius: 5px;" id="attach-button" data-toggle="tooltip" title="Email">
                             <i class="fas fa-paperclip"></i></button>
 
@@ -254,7 +257,7 @@
                                 <div id="hiddencomments"></div>
                                 
 
-                            </form>
+                            </form> -->
                   
                             {% if setting_variable.slip == 'yes' %}   
                             <div class="dropdown m-0 p-0 ms-1" title="slip" style="background-color:  rgb(212, 139, 3);border-radius: 5px;height: 1.7rem;">
@@ -321,7 +324,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="row ">
+                <div class="row" style=" border-bottom:1px solid rgb(24, 24, 24);padding-bottom: 2%;">
                     <div class="col-md-12 ">
                         <h3 class="text-black" style="text-transform: uppercase;">{{ company.company_name }}</h3>
                         <h6 class="text-dark">{{ company.address }}</h6>
@@ -331,8 +334,8 @@
                         <h6 class="text-dark" style="margin-left: 60%;">Retainer Number : <span class="text-black" style="font-weight: bold;">{{invoice.retainer_invoice_number}}</span></h6>
                     </div>
                 </div>
-                <hr style="color: #555;">
-                <div class="row ">
+                <!-- <hr style="color: #555;"> -->
+                <div class="row " style="padding-top: 3%;">
                     <div class="col-md-12 mt-auto">
                         <h6 class="text-dark">Bill To</h6>
                         <h6 style="color: rgb(218, 142, 3);">{{invoice.customer_name.customerName}} <br><span class="text-dark">{{ invoice.customer_name.customerEmail }}</span><br>
@@ -432,8 +435,8 @@
                                 <label for="" style="font-weight: 500;">Customer Mail ID:</label>
                                 
                             </div>
-                            <div class="col-sm-6 col-md-6 col-lg-6">
-                                <label for="" style="color: rgb(197, 129, 3);"><b>{{invoice.customer_mailid}}</b></label>
+                            <div class="col-sm-6 col-md-6 col-lg-6" >
+                                <label for="" style="color: rgb(197, 129, 3);width: 100%;word-break: break-all;"><b>{{invoice.customer_mailid}}</b></label>
                             </div>
                         </div>
                         <div class="row mt-2">

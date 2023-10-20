@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'zohoapp.my_context_processors.base_setting',
+                'zohoapp.my_context_processors.get_company_name',
             ],
         },
     },
