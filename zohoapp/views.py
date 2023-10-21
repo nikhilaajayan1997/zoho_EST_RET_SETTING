@@ -2694,7 +2694,6 @@ def add_prod(request):
                 taxx=request.POST.getlist('taxx[]')
                 amountt=request.POST.getlist('amountt[]')
                 # term=payment_terms.objects.get(id=term.id)
-                
 
             inv=invoice(user=user,customer=custo,invoice_no=invoice_no,terms=terms,order_no=order_no,inv_date=inv_date,due_date=due_date,
                         cxnote=cxnote,subtotal=subtotal,igst=igst,cgst=cgst,sgst=sgst,t_tax=totaltax,
