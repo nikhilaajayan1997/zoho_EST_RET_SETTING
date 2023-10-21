@@ -536,11 +536,11 @@ function calc() {
             <tbody>
 
                 <tr id='row1'>
-                    <td style="width: 15%;">
+                    <td >
                         <div class='form-group'><select
                                 class=' bg-transparent text-light border-0 item_selectt itmm'
                                 name='itemm[]' id='itemm1'>
-                                <option class='text-dark'>Select Items</option>
+                                <option class='text-dark'>Select</option>
                                 {% for i in items %}
                                 <option class="text-dark" value="{{i.Name}}">{{i.Name}}</option>
                                 {% endfor %}
@@ -551,7 +551,7 @@ function calc() {
                       class='form-control  bg-transparent border-0 text-light  hsnn' name='hsnn[]'
                       value='0' style="width: 100%;" readonly>
                     </td>
-                    <td class='text-right' style="width: 15%;"><input type='number' id='qtyy1'
+                    <td class='text-right'><input type='number' id='qtyy1'
                             class='form-control bg-transparent border-0 text-light text-right qtyy' name='quantityy[]'
                             value='0'>
                     </td>
@@ -559,13 +559,13 @@ function calc() {
                             class='form-control bg-transparent border-0 text-light text-right ratee' name='ratee[]'
                             value='0.00'>
                     </td>
-                    <td class='text-right' style="width: 15%;"><input type='number' id='discountt1'
+                    <td class='text-right'><input type='number' id='discountt1'
                             class='form-control bg-transparent border-0 text-light text-right discountt' name='discountt[]'
-                            value='0.00'>
+                            value='0.00' style="width: 100%;">
                     </td>
-                    <td class='text-right' style="width: 15%;"> 
+                    <td class='text-right' style="width: 20%;"> 
                         <select name='taxx[]' id='taxx'
-                            class='bg-transparent  text-light border-0 taxx'  >
+                            class='bg-transparent  text-light border-0 taxx'  style="width: 100%;">
                             <option value="" selected>select</option>
 
                             <!-- <option value=0 class="opt1">Non Taxable</option> -->
@@ -586,9 +586,9 @@ function calc() {
                         <input type="number" name='taxamountt[]' id="taxamountt1"
                             class="form-control bg-transparent border-0 text-light text-right taxamountt" />
                     </td>
-                    <td class='text-right' style="width: 15%;"><input type='number' id='amountt1'
+                    <td class='text-right' ><input type='number' id='amountt1'
                             class='bg-transparent border-0 text-light text-right amountt' name='amountt[]'
-                            value='0.00' style="width: 85%;"></td>
+                            value='0.00' style="width: 100%;"></td>
                     <td class='text-center'><button type='button' id='del_btnn1'
                             class='btn btn-transparent text-danger btn-sm btn-outline-danger rounded-circle delete-roww'
                             style='width:30px'><i class='fa fa-times'></i></button>

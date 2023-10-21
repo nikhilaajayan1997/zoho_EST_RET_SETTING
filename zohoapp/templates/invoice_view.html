@@ -324,19 +324,19 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="row" style=" border-bottom:1px solid rgb(24, 24, 24);padding-bottom: 2%;">
-                    <div class="col-md-12 ">
+                <div class="row" style=" border-bottom:1px solid rgb(24, 24, 24);">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
                         <h3 class="text-black" style="text-transform: uppercase;">{{ company.company_name }}</h3>
-                        <h6 class="text-dark">{{ company.address }}</h6>
-                        <h6 class="text-dark mb-5">{{ company.city }},{{ company.state }}</h6>
+                        <h6 class="text-dark" style="margin-top: 0%;">{{ company.address }} <br>{{ company.city }},{{ company.state }}</h6>
+                        <!-- <h6 class="text-dark mb-5"></h6> -->
                    
-                        <h3 class="text-black" style="font-size: 1.6rem;margin-left:60%;margin-top: -25%; ">RETAINER INVOICE</h3>
+                        <h3 class="text-black" style="font-size: 1.6rem;margin-left:55%;margin-top: -10%; ">RETAINER INVOICE</h3>
                         <h6 class="text-dark" style="margin-left: 60%;">Retainer Number : <span class="text-black" style="font-weight: bold;">{{invoice.retainer_invoice_number}}</span></h6>
                     </div>
                 </div>
-                <!-- <hr style="color: #555;"> -->
+            
                 <div class="row " style="padding-top: 3%;">
-                    <div class="col-md-12 mt-auto">
+                    <div class="col-md-12  col-lg-12">
                         <h6 class="text-dark">Bill To</h6>
                         <h6 style="color: rgb(218, 142, 3);">{{invoice.customer_name.customerName}} <br><span class="text-dark">{{ invoice.customer_name.customerEmail }}</span><br>
                             <span class="text-dark">{{invoice.customer_name.customerMobile}}</span> 
@@ -344,11 +344,11 @@
                             <h6 class="text-dark ">GSTIN : {{ invoice.customer_name.GSTIN }}</h6>
                             {% endif %}
                         </h6>
-                    <!-- </div>
-                    <div class="col-md-6 text-right mt-auto"> -->
+                   
                         <h6 class="text-dark " style="margin-left: 60%;margin-top: -10%;">Retainer  <br>Invoice Date : {{invoice.retainer_invoice_date}}</h6>
                     </div>
                 </div>
+                <br>
                 <table class="table mt-2 " style="border-color: black;">
                     <thead >
                         <tr style="border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
@@ -465,7 +465,7 @@
                                 
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-6">
-                                <label for="">{{invoice.customer_name.placeofsupply}}</label>
+                                <label for="">{{invoice.customer_placesupply}}</label>
                             </div>
                         </div> <hr>
                         

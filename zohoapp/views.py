@@ -2168,8 +2168,8 @@ def updateestimate(request,pk):
             invo.status=estimate.status
             invo.terms_condition=estimate.terms_conditions
             invo.file=estimate.attachment
-            invo.sos=estimate.customer.placeofsupply
-            invo.sh_charge=estimate.shipping_charge
+            invo.shipping_charge=estimate.shipping_charge
+            invo.adjustment=estimate.adjustment
             invo.save()
 
             objects_to_delete = invoice_item.objects.filter(inv=invo.id)
@@ -2179,7 +2179,7 @@ def updateestimate(request,pk):
             invid = invoice.objects.get(id=invo.id)
             for item in items:
                 itemss = invoice_item(product=item.item_name,quantity=item.quantity,hsn=item.hsn,tax=item.tax_percentage,
-                                    total=item.amount,discount=item.discount,rate=item.rate,inv=invid,paid_amount=0.0,balance=0.0)
+                                    total=item.amount,discount=item.discount,rate=item.rate,inv=invid)
                 itemss.save()
 
 
@@ -2399,7 +2399,7 @@ def converttoinvoice(request,pk):
     inv = invoice.objects.get(invoice_no=next_no,customer=cust)
     for item in items:
         items = invoice_item(product=item.item_name,quantity=item.quantity,hsn=item.hsn,tax=item.tax_percentage,
-                             total=item.amount,discount=item.discount,rate=item.rate,inv=inv,paid_amount=0.0,balance=0.0)
+                             total=item.amount,discount=item.discount,rate=item.rate,inv=inv)
         items.save()
     estimate.convert_invoice=new_status
     estimate.save()

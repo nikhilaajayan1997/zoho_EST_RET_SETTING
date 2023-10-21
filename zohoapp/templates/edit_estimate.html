@@ -554,34 +554,34 @@ function calc(){
     <tbody>
        {% for item in est_items %}
         <tr id='row{{ forloop.counter }}'>
-            <td style="width: 5%;">
+            <td >
                 <div class='form-group'><select
                         class='form-control bg-transparent text-light border-0 item_selectt itmm'
-                        name='itemm[]' id='itemm{{ forloop.counter }}'>
+                        name='itemm[]' id='itemm{{ forloop.counter }}' style="width: 100%;">
                         <option class='text-dark' value="{{item.item_name}}">{{item.item_name}}</option>
                         {% for i in items %}
                         <option class="text-dark" value="{{i.Name}}">{{i.Name}}</option>
                         {% endfor %}
                     </select></div>
             </td>
-            <td class='text-right' style="width: 18%;"><input type='number' id='hsnn{{ forloop.counter }}'
+            <td class='text-right' style="width: 15%;"><input type='number' style="width: 100%;" id='hsnn{{ forloop.counter }}'
               class='form-control bg-transparent border-0 text-light text-right hsnn' name='hsnn[]'
               value='{{item.hsn}}' readonly>
             </td>
-            <td class='text-right'><input type='number' id='qtyy{{ forloop.counter }}'
+            <td class='text-right' style="width: 10%;"><input type='number' style="width: 100%;" id='qtyy{{ forloop.counter }}'
                     class='form-control bg-transparent border-0 text-light text-right qtyy' name='quantityy[]'
                     value='{{item.quantity}}'>
             </td>
-            <td class='text-right' style="width: 15%;"><input type='number' id='ratee{{ forloop.counter }}'
+            <td class='text-right' style="width: 15%;"><input type='number' style="width: 100%;" id='ratee{{ forloop.counter }}'
                     class='form-control bg-transparent border-0 text-light text-right ratee' name='ratee[]'
                     value='{{item.rate}}'>
             </td>
-            <td class='text-right' style="width: 15%;"><input type='number' id='discountt{{ forloop.counter }}'
+            <td class='text-right' ><input type='number' style="width: 100%;" id='discountt{{ forloop.counter }}'
                     class='form-control bg-transparent border-0 text-light text-right discountt' name='discountt[]'
                     value='{{item.discount}}'>
             </td>
-            <td class='text-right' style="width: 18%;"> 
-                <select name='taxx[]' id='taxx{{ forloop.counter }}'
+            <td class='text-right' style="width: 15%;"> 
+                <select name='taxx[]' style="width: 100%;" id='taxx{{ forloop.counter }}'
                     class='form-control bg-transparent text-light text-right border-0 taxx'>
                     <option value='{{item.tax_percentage}}'>{{item.tax_percentage}} %</option>
                     <option value=0 class="text-dark">0% IGST</option>
@@ -596,7 +596,7 @@ function calc(){
                 <input type="number" name='taxamountt[]' id="taxamountt{{ forloop.counter }}"
                     class="form-control taxamountt" />
             </td>
-            <td class='text-right' style="width: 20%;"><input type='number' id='amountt{{ forloop.counter }}'
+            <td class='text-right'><input type='number' style="width: 100%;" id='amountt{{ forloop.counter }}'
                     class='form-control bg-transparent border-0 text-light text-right amountt' name='amountt[]'
                     value='{{item.amount}}' readonly></td>
             <td class='text-center'><button type='button' id='del_btnn{{ forloop.counter }}'
