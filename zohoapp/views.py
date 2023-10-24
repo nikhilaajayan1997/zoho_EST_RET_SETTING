@@ -2182,10 +2182,6 @@ def updateestimate(request,pk):
                                     total=item.amount,discount=item.discount,rate=item.rate,inv=invid)
                 itemss.save()
 
-
-
-
-
     return redirect('estimateslip',estimate.id)
 
 def est_sort_by_estno(request):
